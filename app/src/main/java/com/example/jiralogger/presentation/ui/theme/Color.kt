@@ -1,4 +1,4 @@
-package com.example.jiralogger.ui.theme
+package com.example.jiralogger.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
