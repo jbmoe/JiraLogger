@@ -1,5 +1,7 @@
 package com.example.jiralogger.presentation.issue_detail
 
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.CircularProgressIndicator
@@ -9,15 +11,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.test.presentation.issue_detail.IssueDetailViewModel
+import com.example.jiralogger.common.TestData
+import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 
 @Composable
 fun IssueDetailScreen(
     viewModel: IssueDetailViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.value
+    DetailBody(state)
+}
+
+@Composable
+private fun DetailBody(state: IssueDetailState) {
     Box(modifier = Modifier.fillMaxSize()) {
         state.issue?.let { issue ->
             LazyColumn(
@@ -68,5 +77,14 @@ fun IssueDetailScreen(
                 modifier = Modifier.align(Alignment.Center)
             )
         }
+    }
+}
+
+@Preview(name = "Light Mode", uiMode = UI_MODE_NIGHT_NO, showBackground = true)
+@Preview(name = "Dark Mode", uiMode = UI_MODE_NIGHT_YES, showBackground = true)
+@Composable
+fun Preview() {
+    JiraLoggerTheme {
+        DetailBody(state = IssueDetailState(issue = TestData.ISSUE_TEST_OBJECT))
     }
 }

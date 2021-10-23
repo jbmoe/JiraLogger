@@ -20,10 +20,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.jiralogger.common.Filters
 import com.example.jiralogger.common.TestData
+import com.example.jiralogger.domain.model.Issue
 import com.example.jiralogger.presentation.Screen
 import com.example.jiralogger.presentation.issue_list.components.IssueListItem
+import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 
 @Composable
 fun IssueListScreen(
@@ -31,22 +32,26 @@ fun IssueListScreen(
     viewModel: IssueListViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.value
-    List(state, navController)
-}
-
-@Composable
-private fun List(
-    state: IssueListState,
-    navController: NavController
-) {
-    Scaffold(topBar = { TopBar() }) {
-        BodyContent(state, navController)
+    ListBody(state) { issue ->
+        navController.navigate(Screen.IssueDetailScreen.route + "/${issue.key}")
     }
 }
 
 @Composable
-private fun TopBar(viewModel: IssueListViewModel = hiltViewModel()) {
-    var isExpanded by remember { mutableStateOf(false) }
+private fun ListBody(
+    state: IssueListState,
+    onItemClicked: (Issue) -> Unit
+) {
+    Scaffold(topBar = { TopBar() }) {
+        BodyContent(state) { issue ->
+            onItemClicked(issue)
+        }
+    }
+}
+
+@Composable
+private fun TopBar() {
+//    var isExpanded by remember { mutableStateOf(false) }
     TopAppBar(
         title = {
             Text(text = "Issues")
@@ -58,24 +63,8 @@ private fun TopBar(viewModel: IssueListViewModel = hiltViewModel()) {
             IconButton(onClick = { /*TODO*/ }) {
                 Icon(Icons.Filled.Refresh, contentDescription = "Refresh")
             }
-            IconButton(onClick = { isExpanded = true }) {
+            IconButton(onClick = { /*TODO*/ }) {
                 Icon(Icons.Filled.MoreVert, contentDescription = "More")
-                DropDownMenu(
-                    expanded = isExpanded,
-                    onAssignedClick = {
-                        isExpanded = false
-                        viewModel.getFilteredIssues(Filters.FILTER_ASSIGNED_TO_ME)
-                    },
-                    onLastSeenClick = {
-                        isExpanded = false
-                        viewModel.getFilteredIssues(Filters.LAST_SEEN)
-                    },
-                    onReportedClick = {
-                        isExpanded = false
-                        viewModel.getFilteredIssues(Filters.REPORTED_BY_ME)
-                    },
-                    onDisMiss = { isExpanded = false }
-                )
             }
         },
         navigationIcon = {
@@ -87,30 +76,9 @@ private fun TopBar(viewModel: IssueListViewModel = hiltViewModel()) {
 }
 
 @Composable
-private fun DropDownMenu(
-    expanded: Boolean,
-    onAssignedClick: () -> Unit,
-    onReportedClick: () -> Unit,
-    onLastSeenClick: () -> Unit,
-    onDisMiss: () -> Unit,
-) {
-    DropdownMenu(expanded = expanded, onDismissRequest = onDisMiss) {
-        DropdownMenuItem(onClick = onAssignedClick) {
-            Text("Assigned To Me")
-        }
-        DropdownMenuItem(onClick = onReportedClick) {
-            Text("Reported By Me")
-        }
-        DropdownMenuItem(onClick = onLastSeenClick) {
-            Text("Last Seen")
-        }
-    }
-}
-
-@Composable
 private fun BodyContent(
     state: IssueListState,
-    navController: NavController
+    onItemClicked: (Issue) -> Unit
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
@@ -118,7 +86,7 @@ private fun BodyContent(
                 IssueListItem(
                     issue = issue!!,
                     onItemClicked = {
-                        navController.navigate(Screen.IssueDetailScreen.route + "/${issue.key}")
+                        onItemClicked(issue)
                     }
                 )
                 Divider(
@@ -152,9 +120,9 @@ private fun BodyContent(
 @Preview(name = "Dark mode", uiMode = UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
 fun Preview() {
-    List(
-        navController = NavController(LocalContext.current),
-        state = IssueListState(issues = TestData.API_RESULT_TEST_OBJECT.toIssuesList())
-    )
+    JiraLoggerTheme {
+        val state = IssueListState(issues = TestData.API_RESULT_TEST_OBJECT.toIssuesList())
+        ListBody(state = state, onItemClicked = {})
+    }
 }
 

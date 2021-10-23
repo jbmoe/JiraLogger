@@ -1,5 +1,6 @@
 package com.example.jiralogger.presentation.ui.theme
 
+import android.hardware.lights.Light
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
@@ -35,13 +36,39 @@ private val LightColorPalette2 = lightColors(
     onPrimary = Navy
 )
 
+private val YellowBlue = lightColors(
+    primary = primaryColor,
+    onPrimary = primaryTextColor,
+    secondary = secondaryColor,
+    onSecondary = secondaryTextColor
+)
+
+private val LightColors = lightColors(
+    primary = Red700,
+    primaryVariant = Red900,
+    onPrimary = Color.White,
+    secondary = Red700,
+    secondaryVariant = Red900,
+    onSecondary = Color.White,
+    error = Red800
+)
+
+private val DarkColors = darkColors(
+    primary = Red300,
+    primaryVariant = Red700,
+    onPrimary = Color.Black,
+    secondary = Red300,
+    onSecondary = Color.Black,
+    error = Red200
+)
+
 
 @Composable
 fun JiraLoggerTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable() () -> Unit) {
     val colors = if (darkTheme) {
-        DarkColorPalette2
+        DarkColors
     } else {
-        LightColorPalette2
+        LightColors
     }
 
     MaterialTheme(
