@@ -25,7 +25,8 @@ object TestData {
                     project = Project(
                         name = "Dansk Auto Logik",
                         avatarUrls = AvatarUrls(imageId = R.drawable.dal_avatar)
-                    )
+                    ),
+                    priority = Priority(iconUrl = "https://jira.elbek-vejrup.dk/images/icons/priorities/critical.svg")
                 )
             ),
             IssueDto(
@@ -54,7 +55,8 @@ object TestData {
                     project = Project(
                         name = "Ennova",
                         avatarUrls = AvatarUrls(imageId = R.drawable.default_project_avatar)
-                    )
+                    ),
+                    priority = Priority(iconUrl = "https://jira.elbek-vejrup.dk/images/icons/priorities/highest.svg")
                 )
             ),
             IssueDto(
@@ -169,7 +171,8 @@ object TestData {
                     project = Project(
                         name = "Esbjerg Havn",
                         avatarUrls = AvatarUrls(imageId = R.drawable.esbj_avatar)
-                    )
+                    ),
+                    priority = Priority(iconUrl = "https://jira.elbek-vejrup.dk/images/icons/priorities/high.svg")
                 )
             ),
             IssueDto(
@@ -186,7 +189,8 @@ object TestData {
                     project = Project(
                         name = "Ennova",
                         avatarUrls = AvatarUrls(imageId = R.drawable.default_project_avatar)
-                    )
+                    ),
+                    priority = Priority(iconUrl = "https://jira.elbek-vejrup.dk/images/icons/priorities/medium.svg")
                 )
             ),
             IssueDto(
@@ -252,7 +256,8 @@ object TestData {
                     project = Project(
                         name = "QuineQuintax",
                         avatarUrls = AvatarUrls(imageId = R.drawable.qq_avatar)
-                    )
+                    ),
+                    priority = Priority(iconUrl = "https://jira.elbek-vejrup.dk/images/icons/priorities/low.svg")
                 )
             ),
             IssueDto(
@@ -264,7 +269,8 @@ object TestData {
                     project = Project(
                         name = "WHT",
                         avatarUrls = AvatarUrls(imageId = R.drawable.wht_avatar)
-                    )
+                    ),
+                    priority = Priority(iconUrl = "https://jira.elbek-vejrup.dk/images/icons/priorities/lowest.svg")
                 )
             ),
             IssueDto(
@@ -343,7 +349,8 @@ object TestData {
                     project = Project(
                         name = "Esbjerg Havn",
                         avatarUrls = AvatarUrls(imageId = R.drawable.esbj_avatar)
-                    )
+                    ),
+                    priority = Priority(iconUrl = "https://jira.elbek-vejrup.dk/images/icons/priorities/low.svg")
                 )
             ),
             IssueDto(
@@ -376,7 +383,8 @@ object TestData {
                     project = Project(
                         name = "Esbjerg Havn",
                         avatarUrls = AvatarUrls(imageId = R.drawable.esbj_avatar)
-                    )
+                    ),
+                    priority = Priority(iconUrl = "https://jira.elbek-vejrup.dk/images/icons/priorities/medium.svg")
                 )
             ),
             IssueDto(
@@ -415,7 +423,8 @@ object TestData {
                     project = Project(
                         name = "Kolding Havn",
                         avatarUrls = AvatarUrls(imageId = R.drawable.kol_avatar)
-                    )
+                    ),
+                    priority = Priority(iconUrl = "https://jira.elbek-vejrup.dk/images/icons/priorities/high.svg")
                 )
             ),
             IssueDto(
@@ -428,7 +437,8 @@ object TestData {
                     project = Project(
                         name = "Esbjerg Havn",
                         avatarUrls = AvatarUrls(imageId = R.drawable.esbj_avatar)
-                    )
+                    ),
+                    priority = Priority(iconUrl = "https://jira.elbek-vejrup.dk/images/icons/priorities/highest.svg")
                 )
             )
 //            ,

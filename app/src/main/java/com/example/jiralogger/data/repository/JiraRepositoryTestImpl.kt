@@ -8,7 +8,7 @@ class JiraRepositoryTestImpl : JiraRepository {
     private val data = TestData.API_RESULT_TEST_OBJECT.toIssuesList()
 
     override suspend fun getIssues(): List<Issue> {
-        return data
+        return data.shuffled()
     }
 
     override suspend fun getIssuesByFilter(filter: String): List<Issue> {

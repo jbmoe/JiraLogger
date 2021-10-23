@@ -10,14 +10,17 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.example.jiralogger.R
 import com.example.jiralogger.common.constant.TestData
 import com.example.jiralogger.domain.model.Issue
+import com.example.jiralogger.presentation.preview_paramater.IssueListItemPreviewParameterProvider
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 
 @Composable
@@ -37,7 +40,7 @@ fun IssueListItem(issue: Issue, onItemClicked: (Issue) -> Unit) {
                 .clip(RoundedCornerShape(10.dp))
                 .border(1.dp, MaterialTheme.colors.secondary, RoundedCornerShape(10.dp))
         )
-        Spacer(Modifier.width(8.dp))
+        Spacer(Modifier.width(4.dp))
         ColumnTexts(issue)
     }
 
@@ -47,31 +50,64 @@ fun IssueListItem(issue: Issue, onItemClicked: (Issue) -> Unit) {
 private fun ColumnTexts(issue: Issue) {
     var isExpanded by remember { mutableStateOf(false) }
 
-    Column {
-        Text(
-            text = "${issue.projectName} / ${issue.key}",
-            color = MaterialTheme.colors.secondaryVariant,
-            style = MaterialTheme.typography.subtitle2,
-        )
-        Spacer(Modifier.padding(4.dp))
+    Column(Modifier.padding(4.dp)) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                text = "${issue.key}",
+                color = MaterialTheme.colors.secondaryVariant,
+                style = MaterialTheme.typography.subtitle2
+            )
+            Spacer(Modifier.padding(4.dp))
+            Image(
+                painter = painterResource(id = getPriorityImage(issue)),
+                contentDescription = "Priority Icon",
+
+                )
+        }
+        Spacer(Modifier.padding(2.dp))
         Text(
             text = "${issue.summary}",
-            modifier = Modifier
-                .padding(4.dp),//.clickable { isExpanded = !isExpanded },
             maxLines = 1, //if (isExpanded) Int.MAX_VALUE else 1,
-            style = MaterialTheme.typography.body2
+            style = MaterialTheme.typography.body2,
+            color = MaterialTheme.colors.onBackground,
         )
     }
+}
+
+fun getPriorityImage(issue: Issue): Int {
+    var priorityIcon: Int = R.drawable.priority_medium
+    val url = issue.priorityUrl;
+
+    if (url != null)
+        when {
+            url.contains("critical") -> {
+                priorityIcon = R.drawable.priority_critical
+            }
+            url.contains("highest") -> {
+                priorityIcon = R.drawable.priority_highest
+            }
+            url.contains("lowest") -> {
+                priorityIcon = R.drawable.priority_lowest
+            }
+            url.contains("high") -> {
+                priorityIcon = R.drawable.priority_high
+            }
+            url.contains("low") -> {
+                priorityIcon = R.drawable.priority_low
+            }
+        }
+
+    return priorityIcon
 }
 
 
 @Preview(name = "Light mode", uiMode = UI_MODE_NIGHT_NO, showBackground = true)
 @Preview(name = "Dark mode", uiMode = UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
-fun Preview() {
+fun Preview(@PreviewParameter(IssueListItemPreviewParameterProvider::class) issue: Issue) {
     JiraLoggerTheme {
         IssueListItem(
-            issue = TestData.ISSUE_TEST_OBJECT,
+            issue = issue,
             onItemClicked = {
 
             }

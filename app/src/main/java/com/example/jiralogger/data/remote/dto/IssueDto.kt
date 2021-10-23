@@ -32,7 +32,8 @@ data class IssueDto(
             projectImageUrl = fields?.project?.avatarUrls?.x48,
             projectImage = fields?.project?.avatarUrls?.imageId,
             summary = fields?.summary,
-            description = fields?.description
+            description = fields?.description,
+            priorityUrl = fields?.priority?.iconUrl
         )
     }
 }
@@ -96,10 +97,10 @@ data class Watches(
 )
 
 data class Priority(
-    val self: String?, // https://jira.elbek-vejrup.dk/rest/api/2/priority/3
-    val iconUrl: String?, // https://jira.elbek-vejrup.dk/images/icons/priorities/medium.svg
-    val name: String?, // Normal
-    val id: String? // 3
+    val self: String = "", // https://jira.elbek-vejrup.dk/rest/api/2/priority/3
+    val iconUrl: String = "", // https://jira.elbek-vejrup.dk/images/icons/priorities/medium.svg
+    val name: String = "", // Normal
+    val id: String = ""  // 3
 )
 
 data class Assignee(
