@@ -16,7 +16,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.jiralogger.R
-import com.example.jiralogger.common.TestData
+import com.example.jiralogger.common.constant.TestData
 import com.example.jiralogger.domain.model.Issue
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 
@@ -28,7 +28,9 @@ fun IssueListItem(issue: Issue, onItemClicked: (Issue) -> Unit) {
         .fillMaxWidth()
     ) {
         Image(
-            painter = painterResource(id = R.drawable.project_avatar), //rememberImagePainter(issue.projectImageUrl),
+            painter = painterResource(
+                id = issue.projectImage ?: R.drawable.default_project_avatar
+            ),
             contentDescription = "Project Image",
             modifier = Modifier
                 .size(50.dp)

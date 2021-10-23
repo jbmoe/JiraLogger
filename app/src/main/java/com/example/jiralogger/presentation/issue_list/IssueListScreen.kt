@@ -14,13 +14,12 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.jiralogger.common.TestData
+import com.example.jiralogger.common.constant.TestData
 import com.example.jiralogger.domain.model.Issue
 import com.example.jiralogger.presentation.Screen
 import com.example.jiralogger.presentation.issue_list.components.IssueListItem

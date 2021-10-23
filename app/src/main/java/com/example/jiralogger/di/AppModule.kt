@@ -1,9 +1,10 @@
 package com.example.jiralogger.di
 
 import com.example.jiralogger.data.remote.JiraApi
-import com.example.jiralogger.data.repository.JiraRepositoryImpl
 import com.example.jiralogger.domain.repository.JiraRepository
-import com.example.jiralogger.common.Constants
+import com.example.jiralogger.common.constant.Constants
+import com.example.jiralogger.data.repository.JiraRepositoryImpl
+import com.example.jiralogger.data.repository.JiraRepositoryTestImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -36,8 +37,8 @@ object AppModule {
     @Provides
     @Singleton
     fun provideIssueRepository(api: JiraApi): JiraRepository {
-//        return TestImpl()
-        return JiraRepositoryImpl(api)
+        return JiraRepositoryTestImpl()
+//        return JiraRepositoryImpl(api)
     }
 }
 

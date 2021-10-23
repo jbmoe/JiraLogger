@@ -10,9 +10,8 @@ interface JiraApi {
     @GET("/rest/api/2/search")
     suspend fun getIssues(): ApiResult
 
-    @GET("/rest/api/2/search?jql")
+    @GET("/rest/api/2/search")
     suspend fun getIssuesByFilter(@Query("jql") filter: String): ApiResult
-
 
     @GET("/rest/api/2/issue/{issueKey}")
     suspend fun getIssueByKey(@Path("issueKey") issueKey: String): IssueDto

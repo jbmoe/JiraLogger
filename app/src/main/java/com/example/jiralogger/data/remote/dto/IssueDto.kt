@@ -1,5 +1,6 @@
 package com.example.jiralogger.data.remote.dto
 
+import com.example.jiralogger.R
 import com.example.jiralogger.domain.model.Issue
 import com.google.gson.annotations.SerializedName
 
@@ -29,6 +30,7 @@ data class IssueDto(
             key = key,
             projectName = fields?.project?.name,
             projectImageUrl = fields?.project?.avatarUrls?.x48,
+            projectImage = fields?.project?.avatarUrls?.imageId,
             summary = fields?.summary,
             description = fields?.description
         )
@@ -180,13 +182,14 @@ data class Comment(
 
 data class AvatarUrls(
     @SerializedName("48x48")
-    val x48: String?, // https://jira.elbek-vejrup.dk/secure/projectavatar?pid=11045&avatarId=11303
+    val x48: String = "", // https://jira.elbek-vejrup.dk/secure/projectavatar?pid=11045&avatarId=11303
     @SerializedName("24x24")
-    val x24: String?, // https://jira.elbek-vejrup.dk/secure/projectavatar?size=small&pid=11045&avatarId=11303
+    val x24: String = "", // https://jira.elbek-vejrup.dk/secure/projectavatar?size=small&pid=11045&avatarId=11303
     @SerializedName("16x16")
-    val x16: String?, // https://jira.elbek-vejrup.dk/secure/projectavatar?size=xsmall&pid=11045&avatarId=11303
+    val x16: String = "", // https://jira.elbek-vejrup.dk/secure/projectavatar?size=xsmall&pid=11045&avatarId=11303
     @SerializedName("32x32")
-    val x32: String? // https://jira.elbek-vejrup.dk/secure/projectavatar?size=medium&pid=11045&avatarId=11303
+    val x32: String = "", // https://jira.elbek-vejrup.dk/secure/projectavatar?size=medium&pid=11045&avatarId=11303
+    val imageId: Int?
 )
 
 data class ProjectCategory(

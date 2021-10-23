@@ -1,11 +1,4 @@
-package com.example.jiralogger.common
-
-object Constants {
-    const val USERNAME = "jem"
-    const val PASSWORD = "kARSTEN3609!"
-    const val BASE_URL = "https://jira.elbek-vejrup.dk/"
-    const val PARAM_ISSUE_KEY = "issueKey"
-}
+package com.example.jiralogger.common.constant
 
 object Filters {
     const val FILTER_ASSIGNED_TO_ME =
