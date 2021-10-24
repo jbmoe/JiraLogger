@@ -11,18 +11,16 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.jiralogger.R
 import com.example.jiralogger.domain.model.Issue
 import com.example.jiralogger.presentation.Screen
 import com.example.jiralogger.presentation.issue_list.components.IssueListItem
+import com.example.jiralogger.presentation.issue_list.components.Tabs
 import com.example.jiralogger.presentation.preview_paramater.IssueListPreviewParameterProvider
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 
@@ -77,7 +75,6 @@ private fun TopBar(
     onLastSeenTapped: () -> Unit,
     onAssignedToMeTapped: () -> Unit
 ) {
-//    var isExpanded by remember { mutableStateOf(false) }
     Column {
         TopAppBar(
             title = {
@@ -100,37 +97,18 @@ private fun TopBar(
                 }
             }
         )
-        var selectedIndex by remember { mutableStateOf(0) }
-        TabRow(
-            selectedTabIndex = selectedIndex, modifier = Modifier
-                .height(40.dp)
-                .shadow(elevation = 6.dp, clip = true)
-        ) {
-            Tab(selected = selectedIndex == 0, onClick = {
-                selectedIndex = 0
-                onAssignedToMeTapped()
-            }) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_baseline_person_24),
-                    contentDescription = "Assigned To Me"
-                )
-            }
-            Tab(selected = selectedIndex == 1, onClick = {
-                selectedIndex = 1
-                onLastSeenTapped()
-            }) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_baseline_remove_red_eye_24),
-                    contentDescription = "Last Seen"
-                )
-            }
-            Tab(selected = selectedIndex == 2, onClick = {
-                selectedIndex = 2
-                onFavouritesTapped()
-            }) {
-                Icon(Icons.Filled.Favorite, contentDescription = "Favourite")
-            }
+
+        val tab1 = @Composable { Text("Assigned") } to {
+            onAssignedToMeTapped()
         }
+        val tab2 = @Composable { Text("Seen") } to {
+            onLastSeenTapped()
+        }
+        val tab3 = @Composable { Text("EV") } to {
+            onFavouritesTapped()
+        }
+
+        Tabs(tabs = listOf(tab1, tab2, tab3))
     }
 }
 

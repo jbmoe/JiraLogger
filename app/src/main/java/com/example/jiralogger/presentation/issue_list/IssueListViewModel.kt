@@ -44,7 +44,7 @@ class IssueListViewModel @Inject constructor(
     }
 
     fun getFavourites() {
-        getFilteredIssues()
+        getFilteredIssues(Filters.EV)
         _refreshAction = { getFavourites() }
     }
 
