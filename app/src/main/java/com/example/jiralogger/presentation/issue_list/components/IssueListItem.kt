@@ -18,7 +18,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.example.jiralogger.R
-import com.example.jiralogger.common.constant.TestData
 import com.example.jiralogger.domain.model.Issue
 import com.example.jiralogger.presentation.preview_paramater.IssueListItemPreviewParameterProvider
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
@@ -26,8 +25,8 @@ import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 @Composable
 fun IssueListItem(issue: Issue, onItemClicked: (Issue) -> Unit) {
     Row(modifier = Modifier
-        .padding(8.dp)
         .clickable { onItemClicked(issue) }
+        .padding(8.dp)
         .fillMaxWidth()
     ) {
         Image(
@@ -61,8 +60,7 @@ private fun ColumnTexts(issue: Issue) {
             Image(
                 painter = painterResource(id = getPriorityImage(issue)),
                 contentDescription = "Priority Icon",
-
-                )
+            )
         }
         Spacer(Modifier.padding(2.dp))
         Text(
@@ -74,29 +72,26 @@ private fun ColumnTexts(issue: Issue) {
     }
 }
 
-fun getPriorityImage(issue: Issue): Int {
+private fun getPriorityImage(issue: Issue): Int {
     var priorityIcon: Int = R.drawable.priority_medium
-    val url = issue.priorityUrl;
+    val priority = issue.priorityName;
 
-    if (url != null)
-        when {
-            url.contains("critical") -> {
-                priorityIcon = R.drawable.priority_critical
-            }
-            url.contains("highest") -> {
-                priorityIcon = R.drawable.priority_highest
-            }
-            url.contains("lowest") -> {
-                priorityIcon = R.drawable.priority_lowest
-            }
-            url.contains("high") -> {
-                priorityIcon = R.drawable.priority_high
-            }
-            url.contains("low") -> {
-                priorityIcon = R.drawable.priority_low
-            }
+
+    when (priority) {
+        "Blocker" -> {
+            priorityIcon = R.drawable.priority_blocker
+        }
+        "Critical" -> {
+            priorityIcon = R.drawable.priority_critical
+        }
+        "High" -> {
+            priorityIcon = R.drawable.priority_major
+        }
+        "Low" -> {
+            priorityIcon = R.drawable.priority_minor
         }
 
+    }
     return priorityIcon
 }
 

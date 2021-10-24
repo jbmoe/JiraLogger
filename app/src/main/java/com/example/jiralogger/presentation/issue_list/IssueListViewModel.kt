@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.jiralogger.common.Resource
+import com.example.jiralogger.common.constant.Filters
 import com.example.jiralogger.domain.use_case.get_filtered_issues.GetFilteredIssuesUseCase
 import com.example.jiralogger.domain.use_case.get_issue.GetIssueUseCase
 import com.example.jiralogger.domain.use_case.get_issues.GetIssuesUseCase
@@ -22,30 +23,32 @@ class IssueListViewModel @Inject constructor(
     private val _state = mutableStateOf(IssueListState())
     val state: State<IssueListState> = _state
 
+    private var _refreshAction: () -> (Unit) = {}
+
     init {
-        getIssues()
+        getFilteredIssues(Filters.ASSIGNED_TO_ME)
     }
 
-    fun getIssues() {
-        getIssuesUseCase().onEach { result ->
-            when (result) {
-                is Resource.Success -> {
-                    _state.value = IssueListState(
-                        issues = result.data ?: emptyList()
-                    )
-                }
-                is Resource.Error -> {
-                    _state.value =
-                        IssueListState(error = result.message ?: "An unexpected error occurred")
-                }
-                is Resource.Loading -> {
-                    _state.value = IssueListState(isLoading = true)
-                }
-            }
-        }.launchIn(viewModelScope)
+    fun refresh() {
+        _refreshAction()
     }
 
-    fun getFilteredIssues(filter: String) {
+    fun getAssignedToMe() {
+        getFilteredIssues(Filters.ASSIGNED_TO_ME)
+        _refreshAction = { getAssignedToMe() }
+    }
+
+    fun getLastSeen() {
+        getFilteredIssues(Filters.LAST_SEEN)
+        _refreshAction = { getLastSeen() }
+    }
+
+    fun getFavourites() {
+        getFilteredIssues()
+        _refreshAction = { getFavourites() }
+    }
+
+    private fun getFilteredIssues(filter: String? = null) {
         getIssuesByFilter(filter).onEach { result ->
             when (result) {
                 is Resource.Success -> {
@@ -62,6 +65,7 @@ class IssueListViewModel @Inject constructor(
                 }
             }
         }.launchIn(viewModelScope)
+        _refreshAction = { getFilteredIssues(filter) }
     }
 
     fun getIssueByKey(issueKey: String) {
@@ -81,5 +85,6 @@ class IssueListViewModel @Inject constructor(
                 }
             }
         }.launchIn(viewModelScope)
+        _refreshAction = { getIssueByKey(issueKey) }
     }
 }

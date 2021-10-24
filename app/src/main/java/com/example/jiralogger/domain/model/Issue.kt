@@ -6,8 +6,9 @@ data class Issue(
     val key: String?,
     val projectName: String?,
     val projectImageUrl: String?,
-    var projectImage: Int?,
-    var priorityUrl: String?,
+    val projectImage: Int?,
+    val priorityName: String?,
+    val priorityUrl: String?,
     val summary: String?,
     val description: String?
 )

@@ -12,7 +12,7 @@ import javax.inject.Inject
 class GetFilteredIssuesUseCase @Inject constructor(
     private val repository: JiraRepository
 ) {
-    operator fun invoke(filter: String): Flow<Resource<List<Issue>>> = flow {
+    operator fun invoke(filter: String?): Flow<Resource<List<Issue>>> = flow {
         try {
             emit(Resource.Loading())
             val issues = repository.getIssuesByFilter(filter)

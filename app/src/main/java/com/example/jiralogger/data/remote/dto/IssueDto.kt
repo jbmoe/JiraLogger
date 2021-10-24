@@ -33,7 +33,8 @@ data class IssueDto(
             projectImage = fields?.project?.avatarUrls?.imageId,
             summary = fields?.summary,
             description = fields?.description,
-            priorityUrl = fields?.priority?.iconUrl
+            priorityUrl = fields?.priority?.iconUrl,
+            priorityName = fields?.priority?.name
         )
     }
 }

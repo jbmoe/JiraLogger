@@ -11,8 +11,8 @@ class JiraRepositoryTestImpl : JiraRepository {
         return data.shuffled()
     }
 
-    override suspend fun getIssuesByFilter(filter: String): List<Issue> {
-        TODO("Not yet implemented")
+    override suspend fun getIssuesByFilter(filter: String?): List<Issue> {
+        return data.shuffled()
     }
 
     override suspend fun getIssueByKey(issueKey: String): Issue {
