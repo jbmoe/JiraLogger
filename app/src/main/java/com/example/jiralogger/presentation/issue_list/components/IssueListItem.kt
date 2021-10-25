@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
@@ -28,7 +29,8 @@ fun IssueListItem(issue: Issue, onItemClicked: (Issue) -> Unit) {
     Row(modifier = Modifier
         .clickable { onItemClicked(issue) }
         .padding(8.dp)
-        .fillMaxWidth()
+        .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         ImageFromUrl(
             url = issue.project.avatarUrls.x48,
@@ -53,13 +55,14 @@ private fun ColumnTexts(issue: Issue) {
             Text(
                 text = issue.key,
                 color = MaterialTheme.colors.secondaryVariant,
-                style = MaterialTheme.typography.subtitle2
+                style = MaterialTheme.typography.h4
             )
             Spacer(Modifier.padding(4.dp))
             ImageFromUrl(
                 url = issue.priority.iconUrl,
                 placeholder = R.drawable.priority_medium,
-                contentDescription = "Priority Icon"
+                contentDescription = "Priority Icon",
+                modifier = Modifier.size(18.dp)
             )
         }
         Spacer(Modifier.padding(2.dp))

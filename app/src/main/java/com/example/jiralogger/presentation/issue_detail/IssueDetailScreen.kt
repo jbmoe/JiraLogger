@@ -99,7 +99,9 @@ private fun TitleContent(issue: Issue) {
             url = issue.issuetype.iconUrl,
             placeholder = R.drawable.default_issuetype,
             contentDescription = "Issue Type",
-            modifier = Modifier.padding(end = 4.dp)
+            modifier = Modifier
+                .padding(end = 4.dp)
+                .size(16.dp)
         )
         Text(
             text = issue.key,
