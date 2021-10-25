@@ -10,14 +10,18 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.jiralogger.R
 import com.example.jiralogger.domain.model.Issue
-import com.example.jiralogger.presentation.preview_paramater.IssueDetailPreviewParameterProvider
+import com.example.jiralogger.presentation.util.preview_paramater.IssueDetailPreviewParameterProvider
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
+import com.example.jiralogger.presentation.util.ImageFromUrl
 
 @Composable
 fun IssueDetailScreen(
@@ -39,7 +43,7 @@ private fun DetailBody(state: IssueDetailState, onBack: () -> Unit) {
                 ) {
                     item {
                         TitleContent(issue)
-                        Spacer(modifier = Modifier.height(15.dp))
+                        Spacer(modifier = Modifier.height(8.dp))
                         Summary(issue)
                         Spacer(modifier = Modifier.height(15.dp))
                         Description(issue)
@@ -88,13 +92,22 @@ private fun ErrorText(state: IssueDetailState, modifier: Modifier = Modifier) {
 private fun TitleContent(issue: Issue) {
     Row(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
     ) {
+        ImageFromUrl(
+            url = issue.issuetype.iconUrl,
+            placeholder = R.drawable.default_issuetype,
+            contentDescription = "Issue Type",
+            modifier = Modifier.padding(end = 4.dp)
+        )
         Text(
-            text = "${issue.projectName} / ${issue.key}",
-            style = MaterialTheme.typography.h2,
+            text = issue.key,
+            style = MaterialTheme.typography.h4,
             color = MaterialTheme.colors.onBackground,
-            modifier = Modifier.weight(8f)
+            modifier = Modifier
+                .weight(8f)
+                .alpha(0.75f)
         )
     }
 }
@@ -102,8 +115,8 @@ private fun TitleContent(issue: Issue) {
 @Composable
 private fun Summary(issue: Issue) {
     Text(
-        text = "${issue.summary}",
-        style = MaterialTheme.typography.body2,
+        text = issue.summary,
+        style = MaterialTheme.typography.h2,
         color = MaterialTheme.colors.onBackground
     )
 }
@@ -116,7 +129,7 @@ private fun Description(issue: Issue) {
         color = MaterialTheme.colors.onBackground
     )
     Text(
-        text = "${issue.description}",
+        text = issue.description,
         style = MaterialTheme.typography.body2,
         color = MaterialTheme.colors.onBackground
     )

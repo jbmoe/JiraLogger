@@ -1,11 +1,10 @@
 package com.example.jiralogger.data.remote.dto
 
-import com.example.jiralogger.R
 import com.example.jiralogger.domain.model.Issue
 import com.google.gson.annotations.SerializedName
 
 
-data class ApiResult(
+data class ApiResponse(
     val expand: String?,
     val startAt: Int?,
     val maxResults: Int?,
@@ -18,36 +17,33 @@ data class ApiResult(
 }
 
 data class IssueDto(
-    val expand: String? = null,
-    val id: String?,
-    val self: String? = null,
-    val key: String?,
-    val fields: Fields?
+    val id: String,
+    val key: String,
+    val fields: Fields
 ) {
     fun toIssue(): Issue {
         return Issue(
             id = id,
             key = key,
-            projectName = fields?.project?.name,
-            projectImageUrl = fields?.project?.avatarUrls?.x48,
-            projectImage = fields?.project?.avatarUrls?.imageId,
-            summary = fields?.summary,
-            description = fields?.description,
-            priorityUrl = fields?.priority?.iconUrl,
-            priorityName = fields?.priority?.name
+            project = fields.project,
+            priority = fields.priority,
+            status = fields.status,
+            issuetype = fields.issuetype,
+            summary = fields.summary ?: "",
+            description = fields.description ?: ""
         )
     }
 }
 
 data class Fields(
-    val issuetype: Issuetype? = null,
+    val issuetype: Issuetype,
     val timespent: Int? = null,
-    val project: Project? = null,
+    val project: Project,
     val aggregatetimespent: Int? = null,
     val lastViewed: String? = null,
     val watches: Watches? = null,
     val created: String? = null,
-    val priority: Priority? = null,
+    val priority: Priority,
     val labels: List<Any>? = null,
     val timeestimate: Any? = null,
     val aggregatetimeoriginalestimate: Any? = null,
@@ -55,14 +51,14 @@ data class Fields(
     val issuelinks: List<Any>? = null,
     val assignee: Assignee? = null,
     val updated: String? = null,
-    val status: Status? = null,
+    val status: Status,
     val components: List<Any>? = null,
     val timeoriginalestimate: Any? = null,
-    val description: String? = null,
+    val description: String? = "",
     val timetracking: Timetracking? = null,
     val attachment: List<Attachment>? = null,
     val aggregatetimeestimate: Any? = null,
-    val summary: String? = null,
+    val summary: String? = "",
     val creator: Creator? = null,
     val subtasks: List<Any>? = null,
     val reporter: Reporter? = null,
@@ -72,23 +68,20 @@ data class Fields(
 )
 
 data class Issuetype(
-    val self: String?, // https://jira.elbek-vejrup.dk/rest/api/2/issuetype/3
-    val id: String?, // 3
-    val description: String?, // A task that needs to be done.
-    val iconUrl: String?, // https://jira.elbek-vejrup.dk/secure/viewavatar?size=xsmall&avatarId=10318&avatarType=issuetype
-    val name: String?, // Task
-    val subtask: Boolean?, // false
-    val avatarId: Int? // 10318
+    val id: String, // 3
+    val description: String, // A task that needs to be done.
+    val iconUrl: String, // https://jira.elbek-vejrup.dk/secure/viewavatar?size=xsmall&avatarId=10318&avatarType=issuetype
+    val name: String, // Task
+    val subtask: Boolean, // false
 )
 
 data class Project(
-    val self: String? = null,
-    val id: String? = null,
-    val key: String? = null,
-    val name: String? = null,
-    val projectTypeKey: String? = null,
-    val avatarUrls: AvatarUrls? = null,
-    val projectCategory: ProjectCategory? = null
+    val id: String,
+    val key: String,
+    val name: String,
+    val projectTypeKey: String,
+    val avatarUrls: AvatarUrls,
+    val projectCategory: ProjectCategory
 )
 
 data class Watches(
@@ -98,7 +91,6 @@ data class Watches(
 )
 
 data class Priority(
-    val self: String = "", // https://jira.elbek-vejrup.dk/rest/api/2/priority/3
     val iconUrl: String = "", // https://jira.elbek-vejrup.dk/images/icons/priorities/medium.svg
     val name: String = "", // Normal
     val id: String = ""  // 3
@@ -116,12 +108,10 @@ data class Assignee(
 )
 
 data class Status(
-    val self: String?, // https://jira.elbek-vejrup.dk/rest/api/2/status/10301
-    val description: String?, // The design has been approved.
-    val iconUrl: String?, // https://jira.elbek-vejrup.dk/images/icons/statuses/generic.png
-    val name: String?, // Design Approved
-    val id: String?, // 10301
-    val statusCategory: StatusCategory?
+    val name: String, // Design Approved
+    val description: String, // The design has been approved.
+    val iconUrl: String, // https://jira.elbek-vejrup.dk/images/icons/statuses/generic.png
+    val statusCategory: StatusCategory
 )
 
 data class Timetracking(
@@ -184,29 +174,26 @@ data class Comment(
 
 data class AvatarUrls(
     @SerializedName("48x48")
-    val x48: String = "", // https://jira.elbek-vejrup.dk/secure/projectavatar?pid=11045&avatarId=11303
+    val x48: String, // https://jira.elbek-vejrup.dk/secure/projectavatar?pid=11045&avatarId=11303
     @SerializedName("24x24")
-    val x24: String = "", // https://jira.elbek-vejrup.dk/secure/projectavatar?size=small&pid=11045&avatarId=11303
+    val x24: String, // https://jira.elbek-vejrup.dk/secure/projectavatar?size=small&pid=11045&avatarId=11303
     @SerializedName("16x16")
-    val x16: String = "", // https://jira.elbek-vejrup.dk/secure/projectavatar?size=xsmall&pid=11045&avatarId=11303
+    val x16: String, // https://jira.elbek-vejrup.dk/secure/projectavatar?size=xsmall&pid=11045&avatarId=11303
     @SerializedName("32x32")
-    val x32: String = "", // https://jira.elbek-vejrup.dk/secure/projectavatar?size=medium&pid=11045&avatarId=11303
-    val imageId: Int?
+    val x32: String  // https://jira.elbek-vejrup.dk/secure/projectavatar?size=medium&pid=11045&avatarId=11303
 )
 
 data class ProjectCategory(
-    val self: String?, // https://jira.elbek-vejrup.dk/rest/api/2/projectCategory/10118
-    val id: String?, // 10118
-    val description: String?,
-    val name: String? // 415 - Transport
+    val id: String, // 10118
+    val description: String,
+    val name: String // 415 - Transport
 )
 
 data class StatusCategory(
-    val self: String?, // https://jira.elbek-vejrup.dk/rest/api/2/statuscategory/4
-    val id: Int?, // 4
-    val key: String?, // indeterminate
-    val colorName: String?, // yellow
-    val name: String? // In Progress
+    val id: Int, // 4
+    val key: String, // indeterminate
+    val colorName: String, // yellow
+    val name: String // In Progress
 )
 
 data class Author(

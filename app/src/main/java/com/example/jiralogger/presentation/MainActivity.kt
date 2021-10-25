@@ -11,6 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.jiralogger.presentation.issue_detail.IssueDetailScreen
 import com.example.jiralogger.presentation.issue_list.IssueListScreen
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
+import com.example.jiralogger.presentation.util.Screen
 import dagger.hilt.android.AndroidEntryPoint
 
 

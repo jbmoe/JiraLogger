@@ -12,7 +12,7 @@ import javax.inject.Inject
 class GetIssueUseCase @Inject constructor(
     private val repository: JiraRepository
 ) {
-    operator fun invoke(issueKey: String): Flow<Resource<Issue>> = flow {
+    operator fun invoke(issueKey: String): Flow<Resource<Issue?>> = flow {
         try {
             emit(Resource.Loading())
             val issue = repository.getIssueByKey(issueKey)

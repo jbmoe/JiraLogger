@@ -18,10 +18,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.jiralogger.domain.model.Issue
-import com.example.jiralogger.presentation.Screen
+import com.example.jiralogger.presentation.util.Screen
 import com.example.jiralogger.presentation.issue_list.components.IssueListItem
 import com.example.jiralogger.presentation.issue_list.components.Tabs
-import com.example.jiralogger.presentation.preview_paramater.IssueListPreviewParameterProvider
+import com.example.jiralogger.presentation.util.preview_paramater.IssueListPreviewParameterProvider
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 
 @Composable

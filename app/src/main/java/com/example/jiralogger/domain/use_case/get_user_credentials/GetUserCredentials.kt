@@ -1,7 +1,7 @@
-package com.example.jiralogger.domain.use_case.get_issues
+package com.example.jiralogger.domain.use_case.get_user_credentials
 
 import com.example.jiralogger.common.Resource
-import com.example.jiralogger.domain.model.Issue
+import com.example.jiralogger.data.remote.dto.UserCredentials
 import com.example.jiralogger.domain.repository.JiraRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -9,14 +9,14 @@ import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
 
-class GetIssuesUseCase @Inject constructor(
+class GetUserCredentials @Inject constructor(
     private val repository: JiraRepository
 ) {
-    operator fun invoke(): Flow<Resource<List<Issue>>> = flow {
+    operator fun invoke(username: String): Flow<Resource<UserCredentials>> = flow {
         try {
             emit(Resource.Loading())
-            val issues = repository.getIssues()
-            emit(Resource.Success(issues))
+            val userCredentials = repository.getUserCredentials(username)
+            emit(Resource.Success(userCredentials))
         } catch (e: HttpException) {
             emit(Resource.Error(e.localizedMessage ?: "An unexpected error occurred"))
         } catch (e: IOException) {

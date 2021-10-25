@@ -1,10 +1,9 @@
-package com.example.jiralogger.common.constant
+package com.example.jiralogger.common.test_data
 
-import com.example.jiralogger.R
 import com.example.jiralogger.data.remote.dto.*
 
 object TestData {
-    val API_RESULT_TEST_OBJECT = ApiResult(
+    val API_RESULT_TEST_OBJECT = ApiResponse(
         expand = "schemas,names",
         startAt = 0,
         maxResults = 0,
@@ -22,11 +21,10 @@ object TestData {
                             "Derfor er ønsket at feltet kræves udfyldt ved oprettelse af en booking på billedet \"Bookinger ej klar\". (se vedhæftet).\n" +
                             "\n" +
                             "Vi har en række indlæsninger fra fil - jeg har pt. ikke overblik over hvordan det eventuelt skal løses.",
-                    project = Project(
-                        name = "Dansk Auto Logik",
-                        avatarUrls = AvatarUrls(imageId = R.drawable.dal_avatar)
-                    ),
-                    priority = Priority(iconUrl = "https://jira.elbek-vejrup.dk/images/icons/priorities/critical.svg")
+                    project = Project.DAL,
+                    priority = Priority.CRITICAL,
+                    status = Status.APPROVED,
+                    issuetype = Issuetype.BUG
                 )
             ),
             IssueDto(
@@ -52,11 +50,10 @@ object TestData {
                             "M: +45 22 77 73 22 | E: aj@ennova.com\n" +
                             "\n" +
                             "Website | Newsletter",
-                    project = Project(
-                        name = "Ennova",
-                        avatarUrls = AvatarUrls(imageId = R.drawable.default_project_avatar)
-                    ),
-                    priority = Priority(iconUrl = "https://jira.elbek-vejrup.dk/images/icons/priorities/highest.svg")
+                    project = Project.ENNOVA,
+                    priority = Priority.BLOCKER,
+                    status = Status.AUTHORIZED,
+                    issuetype = Issuetype.CHANGE_REQUEST
                 )
             ),
             IssueDto(
@@ -168,11 +165,10 @@ object TestData {
                             "+45 7612 4000(main)\tDK-6700 Esbjerg\n" +
                             "flp@portesbjerg.dk\twww.portesbjerg.dk\n" +
                             "\t\t2021-07-02_1403_OP_AT_elbek-vejrup.dk.msg\n",
-                    project = Project(
-                        name = "Esbjerg Havn",
-                        avatarUrls = AvatarUrls(imageId = R.drawable.esbj_avatar)
-                    ),
-                    priority = Priority(iconUrl = "https://jira.elbek-vejrup.dk/images/icons/priorities/high.svg")
+                    project = Project.ESBJ,
+                    priority = Priority.HIGH,
+                    status = Status.CLOSED,
+                    issuetype = Issuetype.CHANGE_REQUEST_SUB_TASK
                 )
             ),
             IssueDto(
@@ -186,11 +182,10 @@ object TestData {
                             "• Faktura\n" +
                             "• Kreditnota\n" +
                             "• Ordrebekræftelse Bruges ikke",
-                    project = Project(
-                        name = "Ennova",
-                        avatarUrls = AvatarUrls(imageId = R.drawable.default_project_avatar)
-                    ),
-                    priority = Priority(iconUrl = "https://jira.elbek-vejrup.dk/images/icons/priorities/medium.svg")
+                    project = Project.ENNOVA,
+                    priority = Priority.NORMAL,
+                    status = Status.OPEN,
+                    issuetype = Issuetype.CUSTOMER_TASK
                 )
             ),
             IssueDto(
@@ -253,11 +248,10 @@ object TestData {
                             " \n" +
                             "\n" +
                             "intervallet, der gælder er fra det første vare til og med det sidste.",
-                    project = Project(
-                        name = "QuineQuintax",
-                        avatarUrls = AvatarUrls(imageId = R.drawable.qq_avatar)
-                    ),
-                    priority = Priority(iconUrl = "https://jira.elbek-vejrup.dk/images/icons/priorities/low.svg")
+                    project = Project.QQ,
+                    priority = Priority.LOW,
+                    status = Status.PAUSED,
+                    issuetype = Issuetype.EPIC
                 )
             ),
             IssueDto(
@@ -266,11 +260,10 @@ object TestData {
                 fields = Fields(
                     summary = "nummerserie SAG er slettet og man kan ikke oprette Chartek",
                     description = "\"Slet nummerserie\"",
-                    project = Project(
-                        name = "WHT",
-                        avatarUrls = AvatarUrls(imageId = R.drawable.wht_avatar)
-                    ),
-                    priority = Priority(iconUrl = "https://jira.elbek-vejrup.dk/images/icons/priorities/lowest.svg")
+                    project = Project.WHT,
+                    priority = Priority.NORMAL,
+                    status = Status.REJECTED,
+                    issuetype = Issuetype.IMPROVEMENT
                 )
             ),
             IssueDto(
@@ -346,11 +339,10 @@ object TestData {
                             "\n" +
                             "* \n" +
                             "*2021-08-30_2137_OP_AT_elbek-vejrup.dk.msg",
-                    project = Project(
-                        name = "Esbjerg Havn",
-                        avatarUrls = AvatarUrls(imageId = R.drawable.esbj_avatar)
-                    ),
-                    priority = Priority(iconUrl = "https://jira.elbek-vejrup.dk/images/icons/priorities/low.svg")
+                    project = Project.ESBJ,
+                    priority = Priority.HIGH,
+                    status = Status.REOPENED,
+                    issuetype = Issuetype.NEW_FEATURE
                 )
             ),
             IssueDto(
@@ -380,11 +372,10 @@ object TestData {
                             "Page Crane Bookings (50522)\n" +
                             "\n" +
                             "Der laves en SUBPAGE der viser PAGE Crane Operator Subpage (50530) på siden",
-                    project = Project(
-                        name = "Esbjerg Havn",
-                        avatarUrls = AvatarUrls(imageId = R.drawable.esbj_avatar)
-                    ),
-                    priority = Priority(iconUrl = "https://jira.elbek-vejrup.dk/images/icons/priorities/medium.svg")
+                    project = Project.ESBJ,
+                    priority = Priority.LOW,
+                    status = Status.RESOLVED,
+                    issuetype = Issuetype.STORY
                 )
             ),
             IssueDto(
@@ -420,11 +411,10 @@ object TestData {
                             "\n" +
                             "Tangen 6 • 8200 Aarhus N\n" +
                             "Tlf.: 7020 2086 • elbek-vejrup.dk",
-                    project = Project(
-                        name = "Kolding Havn",
-                        avatarUrls = AvatarUrls(imageId = R.drawable.kol_avatar)
-                    ),
-                    priority = Priority(iconUrl = "https://jira.elbek-vejrup.dk/images/icons/priorities/high.svg")
+                    project = Project.KOL,
+                    priority = Priority.BLOCKER,
+                    status = Status.REVIEW,
+                    issuetype = Issuetype.SUB_TASK
                 )
             ),
             IssueDto(
@@ -434,76 +424,14 @@ object TestData {
                     summary = "En Kran booking i NAV kan strække sig over flere dage på flere forskellige kranfører. Ønske om at kunne angive alle forskellige kranfører på samme Kranbooking",
                     description = "I vores kranbooking er vi nødsaget til at oprette en ”opgave” pr kranfører på et job. Det vil sige, at hvis vi har et skib inde, og de skal kranes over 3 dage – så give det mange linjer.\n" +
                             "Har du eller kodedrengene en ide til hvordan dette kan løses. Det vil være godt hvis der kan sættes flere kranføre på det samme job, men så er jeg godt klar over at vi ikke kan specificere hvem der skal krane fra 7-16 og fra 16-22 osv.",
-                    project = Project(
-                        name = "Esbjerg Havn",
-                        avatarUrls = AvatarUrls(imageId = R.drawable.esbj_avatar)
-                    ),
-                    priority = Priority(iconUrl = "https://jira.elbek-vejrup.dk/images/icons/priorities/highest.svg")
+                    project = Project.ESBJ,
+                    priority = Priority.NORMAL,
+                    status = Status.PAUSED,
+                    issuetype = Issuetype.SUPPORT
                 )
             )
-//            ,
-//            IssueDto(
-//                id = "11",
-//                key = "",
-//                fields = Fields(
-//                    summary = "",
-//                    description = "",
-//                    project = Project(
-//                        name = "",
-//                        avatarUrls = AvatarUrls(imageId = R.drawable.default_project_avatar)
-//                    )
-//                )
-//            ),
-//            IssueDto(
-//                id = "12",
-//                key = "",
-//                fields = Fields(
-//                    summary = "",
-//                    description = "",
-//                    project = Project(
-//                        name = "",
-//                        avatarUrls = AvatarUrls(imageId = R.drawable.default_project_avatar)
-//                    )
-//                )
-//            ),
-//            IssueDto(
-//                id = "13",
-//                key = "",
-//                fields = Fields(
-//                    summary = "",
-//                    description = "",
-//                    project = Project(
-//                        name = "",
-//                        avatarUrls = AvatarUrls(imageId = R.drawable.default_project_avatar)
-//                    )
-//                )
-//            ),
-//            IssueDto(
-//                id = "14",
-//                key = "",
-//                fields = Fields(
-//                    summary = "",
-//                    description = "",
-//                    project = Project(
-//                        name = "",
-//                        avatarUrls = AvatarUrls(imageId = R.drawable.default_project_avatar)
-//                    )
-//                )
-//            ),
-//            IssueDto(
-//                id = "15",
-//                key = "",
-//                fields = Fields(
-//                    summary = "",
-//                    description = "",
-//                    project = Project(
-//                        name = "",
-//                        avatarUrls = AvatarUrls(imageId = R.drawable.default_project_avatar)
-//                    )
-//                )
-//            )
         )
     )
 
-    val ISSUE_TEST_OBJECT = API_RESULT_TEST_OBJECT.toIssuesList()[1]
+    val ISSUE_TEST_OBJECT = API_RESULT_TEST_OBJECT.toIssuesList().random()
 }

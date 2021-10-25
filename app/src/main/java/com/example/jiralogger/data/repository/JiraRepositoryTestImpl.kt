@@ -2,7 +2,8 @@ package com.example.jiralogger.data.repository
 
 import com.example.jiralogger.domain.model.Issue
 import com.example.jiralogger.domain.repository.JiraRepository
-import com.example.jiralogger.common.constant.TestData
+import com.example.jiralogger.common.test_data.TestData
+import com.example.jiralogger.data.remote.dto.UserCredentials
 
 class JiraRepositoryTestImpl : JiraRepository {
     private val data = TestData.API_RESULT_TEST_OBJECT.toIssuesList()
@@ -15,9 +16,13 @@ class JiraRepositoryTestImpl : JiraRepository {
         return data.shuffled()
     }
 
-    override suspend fun getIssueByKey(issueKey: String): Issue {
+    override suspend fun getIssueByKey(issueKey: String): Issue? {
         return data.find {
-            it.key.equals(issueKey)
-        }!!
+            it.key == issueKey
+        }
+    }
+
+    override suspend fun getUserCredentials(username: String): UserCredentials {
+        TODO("Not yet implemented")
     }
 }
