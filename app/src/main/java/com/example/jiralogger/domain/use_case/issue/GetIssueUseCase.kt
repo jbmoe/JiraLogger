@@ -1,4 +1,4 @@
-package com.example.jiralogger.domain.use_case.get_issue
+package com.example.jiralogger.domain.use_case.issue
 
 import com.example.jiralogger.common.Resource
 import com.example.jiralogger.domain.model.Issue

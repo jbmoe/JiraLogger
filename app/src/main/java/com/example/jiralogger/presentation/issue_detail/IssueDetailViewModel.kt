@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.jiralogger.common.constant.Constants
 import com.example.jiralogger.common.Resource
-import com.example.jiralogger.domain.use_case.get_issue.GetIssueUseCase
+import com.example.jiralogger.domain.use_case.issue.GetIssueUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach

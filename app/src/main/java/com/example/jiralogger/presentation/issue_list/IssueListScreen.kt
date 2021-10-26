@@ -7,8 +7,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -18,48 +21,41 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.jiralogger.domain.model.Issue
-import com.example.jiralogger.presentation.util.Screen
+import com.example.jiralogger.domain.util.IssueFilter
 import com.example.jiralogger.presentation.issue_list.components.IssueListItem
-import com.example.jiralogger.presentation.issue_list.components.Tabs
-import com.example.jiralogger.presentation.util.preview_paramater.IssueListPreviewParameterProvider
+import com.example.jiralogger.presentation.issue_list.components.TabSection
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
+import com.example.jiralogger.presentation.util.Screen
+import com.example.jiralogger.presentation.util.preview_paramater.IssueListPreviewParameterProvider
 
 @Composable
 fun IssueListScreen(
     navController: NavController,
     viewModel: IssueListViewModel = hiltViewModel()
 ) {
-    val state = viewModel.state.value
-    ListBody(
-        state = state,
+    Content(
+        state = viewModel.state.value,
         onItemClicked = { issue ->
             navController.navigate(Screen.IssueDetailScreen.route + "/${issue.key}")
         },
-        onRefresh = { viewModel.refresh() },
-        onLastSeenTapped = { viewModel.getLastSeen() },
-        onAssignedToMeTapped = { viewModel.getAssignedToMe() },
-        onFavouritesTapped = { viewModel.getFavourites() }
+        onEvent = { viewModel.onEvent(it) },
     )
 }
 
 @Composable
-private fun ListBody(
+private fun Content(
     state: IssueListState,
     onItemClicked: (Issue) -> Unit = {},
-    onRefresh: () -> Unit = {},
-    onFavouritesTapped: () -> Unit = {},
-    onLastSeenTapped: () -> Unit = {},
-    onAssignedToMeTapped: () -> Unit = {}
+    onEvent: (IssuesEvent) -> Unit = {}
 ) {
-    Scaffold(topBar = {
-        TopBar(
-            onRefresh = onRefresh,
-            onFavouritesTapped = onFavouritesTapped,
-            onAssignedToMeTapped = onAssignedToMeTapped,
-            onLastSeenTapped = onLastSeenTapped
-        )
-    }) {
-        BodyContent(
+    Scaffold(
+        topBar = {
+            TopBar(
+                onRefresh = { onEvent(IssuesEvent.Refresh) },
+                onFilterChange = { onEvent(IssuesEvent.Filter(it)) }
+            )
+        }) {
+        List(
             state = state,
             onItemClicked = { issue ->
                 onItemClicked(issue)
@@ -71,9 +67,7 @@ private fun ListBody(
 @Composable
 private fun TopBar(
     onRefresh: () -> Unit,
-    onFavouritesTapped: () -> Unit,
-    onLastSeenTapped: () -> Unit,
-    onAssignedToMeTapped: () -> Unit
+    onFilterChange: (IssueFilter) -> Unit
 ) {
     Column {
         TopAppBar(
@@ -97,23 +91,14 @@ private fun TopBar(
                 }
             }
         )
-
-        val tab1 = @Composable { Text("Assigned") } to {
-            onAssignedToMeTapped()
-        }
-        val tab2 = @Composable { Text("Seen") } to {
-            onLastSeenTapped()
-        }
-        val tab3 = @Composable { Text("EV") } to {
-            onFavouritesTapped()
-        }
-
-        Tabs(tabs = listOf(tab1, tab2, tab3))
+        TabSection(onFilterChange = {
+            onFilterChange(it)
+        })
     }
 }
 
 @Composable
-private fun BodyContent(
+private fun List(
     state: IssueListState,
     onItemClicked: (Issue) -> Unit
 ) {
@@ -157,7 +142,7 @@ private fun ErrorText(state: IssueListState, modifier: Modifier = Modifier) {
 @Composable
 fun Preview(@PreviewParameter(IssueListPreviewParameterProvider::class) state: IssueListState) {
     JiraLoggerTheme {
-        ListBody(state = state)
+        Content(state = state)
     }
 }
 

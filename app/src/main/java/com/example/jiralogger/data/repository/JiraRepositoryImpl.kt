@@ -10,10 +10,6 @@ class
 JiraRepositoryImpl @Inject constructor(
     private val api: JiraApi
 ) : JiraRepository {
-    override suspend fun getIssues(): List<Issue> {
-        return api.getIssues().toIssuesList()
-    }
-
     override suspend fun getIssuesByFilter(filter: String?): List<Issue> {
         return api.getIssuesByFilter(filter).toIssuesList()
     }

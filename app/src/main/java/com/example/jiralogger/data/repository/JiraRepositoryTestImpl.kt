@@ -8,10 +8,6 @@ import com.example.jiralogger.data.remote.dto.UserCredentials
 class JiraRepositoryTestImpl : JiraRepository {
     private val data = TestData.API_RESULT_TEST_OBJECT.toIssuesList()
 
-    override suspend fun getIssues(): List<Issue> {
-        return data.shuffled()
-    }
-
     override suspend fun getIssuesByFilter(filter: String?): List<Issue> {
         return data.shuffled()
     }

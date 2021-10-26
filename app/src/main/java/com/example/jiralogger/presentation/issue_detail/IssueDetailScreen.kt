@@ -119,7 +119,7 @@ private fun Summary(issue: Issue) {
     Text(
         text = issue.summary,
         style = MaterialTheme.typography.h2,
-        color = MaterialTheme.colors.onBackground
+        color = MaterialTheme.colors.onBackground,
     )
 }
 

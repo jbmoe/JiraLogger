@@ -8,7 +8,7 @@ class IssueDetailPreviewParameterProvider : PreviewParameterProvider<IssueDetail
     override val values: Sequence<IssueDetailState>
         get() = sequenceOf(
             IssueDetailState(
-                issue = TestData.API_RESULT_TEST_OBJECT.toIssuesList().find { it.key == "DAL-656" }
+                issue = TestData.API_RESULT_TEST_OBJECT.toIssuesList().find { it.key == "ESBJ-233" }
             )
         )
 }
