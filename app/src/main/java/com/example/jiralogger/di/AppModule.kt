@@ -3,6 +3,7 @@ package com.example.jiralogger.di
 import android.app.Application
 import androidx.room.Room
 import com.example.jiralogger.common.constant.Constants
+import com.example.jiralogger.common.test_data.TestDB
 import com.example.jiralogger.data.JiraLoggerDatabase
 import com.example.jiralogger.data.remote.JiraApi
 import com.example.jiralogger.data.repository.ApiRepositoryImpl
@@ -42,7 +43,7 @@ object AppModule {
     @Provides
     @Singleton
     fun provideIssueRepository(api: JiraApi): ApiRepository {
-//        return JiraRepositoryTestImpl()
+//        return ApiRepositoryTestImpl()
         return ApiRepositoryImpl(api)
     }
 
@@ -59,6 +60,6 @@ object AppModule {
     @Provides
     @Singleton
     fun provideLogRepository(db: JiraLoggerDatabase): DbRepository {
-        return DbRepositoryImpl(db.jiraLoggerDao)
+        return DbRepositoryImpl(TestDB)
     }
 }

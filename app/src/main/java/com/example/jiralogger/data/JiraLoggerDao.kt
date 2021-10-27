@@ -7,14 +7,14 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface JiraLoggerDao {
     @Query("SELECT * FROM work_log")
-    fun getLogs(): Flow<List<WorkLog>>
+    fun getWorkLogs(): Flow<List<WorkLog>>
 
     @Query("SELECT * FROM work_log WHERE id = :id")
-    suspend fun getLogById(id: Int): WorkLog?
+    suspend fun getWorkLogById(id: Int): WorkLog?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertLog(workLog: WorkLog)
+    suspend fun insertWorkLog(workLog: WorkLog)
 
     @Delete
-    suspend fun deleteLog(workLog: WorkLog)
+    suspend fun deleteWorkLog(workLog: WorkLog)
 }

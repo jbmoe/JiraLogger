@@ -1,8 +1,102 @@
 package com.example.jiralogger.common.test_data
 
 import com.example.jiralogger.data.remote.dto.*
+import com.example.jiralogger.domain.model.WorkLog
 
 object TestData {
+    val WORK_LOG_TEST_DATA = mutableListOf(
+        WorkLog(
+            id = 1,
+            issueId = "DAL-656",
+            userId = "JIRAUSER25235",
+            timeSpent = "1h 30m",
+            timeSpentSeconds = 5400,
+            dateWorked = System.currentTimeMillis(),
+            comment = "Working on issue DAL-656"
+        ),
+        WorkLog(
+            id = 2,
+            issueId = "ENNOVA-57",
+            userId = "JIRAUSER25235",
+            timeSpent = "1h 30m",
+            timeSpentSeconds = 5400,
+            dateWorked = System.currentTimeMillis(),
+            comment = "Working on issue ENNOVA-57"
+        ),
+        WorkLog(
+            id = 3,
+            issueId = "ESBJ-237",
+            userId = "JIRAUSER25235",
+            timeSpent = "1h 30m",
+            timeSpentSeconds = 5400,
+            dateWorked = System.currentTimeMillis(),
+            comment = "Working on issue ESBJ-237"
+        ),
+        WorkLog(
+            id = 4,
+            issueId = "ENNOVA-46",
+            userId = "JIRAUSER25235",
+            timeSpent = "1h 30m",
+            timeSpentSeconds = 5400,
+            dateWorked = System.currentTimeMillis(),
+            comment = "Working on issue ENNOVA-46"
+        ),
+        WorkLog(
+            id = 5,
+            issueId = "QQ-10",
+            userId = "JIRAUSER25235",
+            timeSpent = "1h 30m",
+            timeSpentSeconds = 5400,
+            dateWorked = System.currentTimeMillis(),
+            comment = "Working on issue QQ-10"
+        ),
+        WorkLog(
+            id = 6,
+            issueId = "WHT-374",
+            userId = "JIRAUSER25235",
+            timeSpent = "1h 30m",
+            timeSpentSeconds = 5400,
+            dateWorked = System.currentTimeMillis(),
+            comment = "Working on issue WHT-374"
+        ),
+        WorkLog(
+            id = 7,
+            issueId = "ESBJ-248",
+            userId = "JIRAUSER25235",
+            timeSpent = "1h 30m",
+            timeSpentSeconds = 5400,
+            dateWorked = System.currentTimeMillis(),
+            comment = "Working on issue ESBJ-248"
+        ),
+        WorkLog(
+            id = 8,
+            issueId = "ESBJ-243",
+            userId = "JIRAUSER25235",
+            timeSpent = "1h 30m",
+            timeSpentSeconds = 5400,
+            dateWorked = System.currentTimeMillis(),
+            comment = "Working on issue ESBJ-243"
+        ),
+        WorkLog(
+            id = 9,
+            issueId = "ESBJ-233",
+            userId = "JIRAUSER25235",
+            timeSpent = "1h 30m",
+            timeSpentSeconds = 5400,
+            dateWorked = System.currentTimeMillis(),
+            comment = "Working on issue ESBJ-233"
+        ),
+        WorkLog(
+            id = 10,
+            issueId = "KOL-41",
+            userId = "JIRAUSER25235",
+            timeSpent = "1h 30m",
+            timeSpentSeconds = 5400,
+            dateWorked = System.currentTimeMillis(),
+            comment = "Working on issue KOL-41"
+        )
+    )
+
     val API_RESULT_TEST_OBJECT = ApiResponse(
         expand = "schemas,names",
         startAt = 0,

@@ -9,18 +9,18 @@ class DbRepositoryImpl(
     private val dao: JiraLoggerDao
 ) : DbRepository {
     override fun getWorkLogs(): Flow<List<WorkLog>> {
-        return dao.getLogs()
+        return dao.getWorkLogs()
     }
 
     override suspend fun getWorkLogById(id: Int): WorkLog? {
-        return dao.getLogById(id)
+        return dao.getWorkLogById(id)
     }
 
     override suspend fun insertWorkLog(workLog: WorkLog) {
-        return dao.insertLog(workLog)
+        return dao.insertWorkLog(workLog)
     }
 
     override suspend fun deleteWorkLog(workLog: WorkLog) {
-        return dao.deleteLog(workLog)
+        return dao.deleteWorkLog(workLog)
     }
 }

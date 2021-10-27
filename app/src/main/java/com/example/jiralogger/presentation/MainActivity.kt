@@ -12,6 +12,7 @@ import com.example.jiralogger.presentation.issue_detail.IssueDetailScreen
 import com.example.jiralogger.presentation.issue_list.IssueListScreen
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 import com.example.jiralogger.presentation.util.Screen
+import com.example.jiralogger.presentation.work_log_list.WorkLogListScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -30,10 +31,13 @@ class MainActivity : ComponentActivity() {
                         composable(Screen.IssueListScreen.route) {
                             IssueListScreen(navController)
                         }
-                        composable(route = Screen.IssueDetailScreen.route + "/{issueKey}") {
+                        composable(Screen.IssueDetailScreen.route + "/{issueKey}") {
                             IssueDetailScreen() {
                                 navController.popBackStack()
                             }
+                        }
+                        composable(Screen.WorkLogListScreen.route) {
+                            WorkLogListScreen(navController)
                         }
                     }
                 }
