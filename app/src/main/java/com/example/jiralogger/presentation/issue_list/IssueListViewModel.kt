@@ -5,17 +5,20 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.jiralogger.common.Resource
+import com.example.jiralogger.domain.model.WorkLog
 import com.example.jiralogger.domain.use_case.issue.GetFilteredIssues
-import com.example.jiralogger.domain.use_case.issue.GetIssueUseCase
+import com.example.jiralogger.domain.use_case.issue.GetIssue
+import com.example.jiralogger.domain.use_case.work_log.InsertWorkLog
 import com.example.jiralogger.domain.util.IssueFilter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class IssueListViewModel @Inject constructor(
-    private val getIssueUseCase: GetIssueUseCase,
+    private val getIssue: GetIssue,
     private val getIssuesByFilter: GetFilteredIssues
 ) : ViewModel() {
     private val _state = mutableStateOf(IssueListState())
@@ -66,7 +69,7 @@ class IssueListViewModel @Inject constructor(
     }
 
     private fun getIssueByKey(issueKey: String) {
-        getIssueUseCase(issueKey).onEach { result ->
+        getIssue(issueKey).onEach { result ->
             when (result) {
                 is Resource.Success -> {
                     _state.value = IssueListState(

@@ -4,8 +4,8 @@ import com.example.jiralogger.domain.model.WorkLog
 import kotlinx.coroutines.flow.Flow
 
 interface DbRepository {
-    fun getLogs(): Flow<List<WorkLog>>
-    suspend fun getLogById(id: Int): WorkLog?
-    suspend fun insertLog(workLog: WorkLog)
-    suspend fun deleteLog(workLog: WorkLog)
+    fun getWorkLogs(): Flow<List<WorkLog>>
+    suspend fun getWorkLogById(id: Int): WorkLog?
+    suspend fun insertWorkLog(workLog: WorkLog)
+    suspend fun deleteWorkLog(workLog: WorkLog)
 }

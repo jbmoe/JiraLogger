@@ -9,7 +9,7 @@ import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
 
-class GetIssueUseCase @Inject constructor(
+class GetIssue @Inject constructor(
     private val repository: ApiRepository
 ) {
     operator fun invoke(issueKey: String): Flow<Resource<Issue?>> = flow {

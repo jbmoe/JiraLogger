@@ -18,7 +18,6 @@ import com.example.jiralogger.domain.util.IssueFilter
 @Composable
 fun TabSection(
     modifier: Modifier = Modifier,
-    issueFilter: IssueFilter = IssueFilter.Assigned,
     onFilterChange: (IssueFilter) -> Unit
 ) {
     var selectedIndex by rememberSaveable { mutableStateOf(0) }

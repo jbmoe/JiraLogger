@@ -8,19 +8,19 @@ import kotlinx.coroutines.flow.Flow
 class DbRepositoryImpl(
     private val dao: JiraLoggerDao
 ) : DbRepository {
-    override fun getLogs(): Flow<List<WorkLog>> {
+    override fun getWorkLogs(): Flow<List<WorkLog>> {
         return dao.getLogs()
     }
 
-    override suspend fun getLogById(id: Int): WorkLog? {
+    override suspend fun getWorkLogById(id: Int): WorkLog? {
         return dao.getLogById(id)
     }
 
-    override suspend fun insertLog(workLog: WorkLog) {
+    override suspend fun insertWorkLog(workLog: WorkLog) {
         return dao.insertLog(workLog)
     }
 
-    override suspend fun deleteLog(workLog: WorkLog) {
+    override suspend fun deleteWorkLog(workLog: WorkLog) {
         return dao.deleteLog(workLog)
     }
 }

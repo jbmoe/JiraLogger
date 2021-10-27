@@ -6,7 +6,7 @@ import com.example.jiralogger.domain.model.WorkLog
 import com.example.jiralogger.domain.model.UserCredentials
 
 @Database(
-    entities = [WorkLog::class, UserCredentials::class],
+    entities = [WorkLog::class],
     version = 2
 )
 abstract class JiraLoggerDatabase : RoomDatabase() {
