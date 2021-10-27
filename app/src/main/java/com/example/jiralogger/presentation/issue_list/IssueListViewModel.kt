@@ -38,7 +38,7 @@ class IssueListViewModel @Inject constructor(
     }
 
     private fun refresh() {
-        _refreshAction?.let { it() }
+        _refreshAction?.invoke()
     }
 
     private fun getFilteredIssues(issueFilter: IssueFilter) {
