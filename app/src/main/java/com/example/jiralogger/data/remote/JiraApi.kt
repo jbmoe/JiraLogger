@@ -2,11 +2,10 @@ package com.example.jiralogger.data.remote
 
 import com.example.jiralogger.data.remote.dto.ApiResponse
 import com.example.jiralogger.data.remote.dto.IssueDto
-import com.example.jiralogger.data.remote.dto.UserCredentials
+import com.example.jiralogger.domain.model.UserCredentials
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
-import retrofit2.http.Url
 
 interface JiraApi {
     @GET("rest/api/2/search")

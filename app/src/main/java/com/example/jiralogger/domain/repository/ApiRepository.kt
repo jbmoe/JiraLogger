@@ -1,9 +1,9 @@
 package com.example.jiralogger.domain.repository
 
-import com.example.jiralogger.data.remote.dto.UserCredentials
 import com.example.jiralogger.domain.model.Issue
+import com.example.jiralogger.domain.model.UserCredentials
 
-interface JiraRepository {
+interface ApiRepository {
     suspend fun getIssuesByFilter(filter: String?): List<Issue>
 
     suspend fun getIssueByKey(issueKey: String): Issue?

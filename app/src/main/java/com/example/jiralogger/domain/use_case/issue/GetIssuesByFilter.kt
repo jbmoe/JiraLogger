@@ -2,7 +2,7 @@ package com.example.jiralogger.domain.use_case.issue
 
 import com.example.jiralogger.common.Resource
 import com.example.jiralogger.domain.model.Issue
-import com.example.jiralogger.domain.repository.JiraRepository
+import com.example.jiralogger.domain.repository.ApiRepository
 import com.example.jiralogger.domain.util.IssueFilter
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -11,7 +11,7 @@ import java.io.IOException
 import javax.inject.Inject
 
 class GetFilteredIssues @Inject constructor(
-    private val repository: JiraRepository
+    private val repository: ApiRepository
 ) {
     operator fun invoke(issueFilter: IssueFilter): Flow<Resource<List<Issue>>> = flow {
         try {

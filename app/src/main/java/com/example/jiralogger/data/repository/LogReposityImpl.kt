@@ -1,27 +1,26 @@
 package com.example.jiralogger.data.repository
 
-import androidx.compose.foundation.lazy.rememberLazyListState
-import com.example.jiralogger.data.LogDao
-import com.example.jiralogger.domain.model.Log
-import com.example.jiralogger.domain.repository.LogRepository
+import com.example.jiralogger.data.JiraLoggerDao
+import com.example.jiralogger.domain.model.WorkLog
+import com.example.jiralogger.domain.repository.DbRepository
 import kotlinx.coroutines.flow.Flow
 
-class LogRepositoryImpl(
-    private val dao: LogDao
-) : LogRepository {
-    override fun getLogs(): Flow<List<Log>> {
+class DbRepositoryImpl(
+    private val dao: JiraLoggerDao
+) : DbRepository {
+    override fun getLogs(): Flow<List<WorkLog>> {
         return dao.getLogs()
     }
 
-    override suspend fun getLogById(id: Int): Log? {
+    override suspend fun getLogById(id: Int): WorkLog? {
         return dao.getLogById(id)
     }
 
-    override suspend fun insertLog(log: Log) {
-        return dao.insertLog(log)
+    override suspend fun insertLog(workLog: WorkLog) {
+        return dao.insertLog(workLog)
     }
 
-    override suspend fun deleteLog(log: Log) {
-        return dao.deleteLog(log)
+    override suspend fun deleteLog(workLog: WorkLog) {
+        return dao.deleteLog(workLog)
     }
 }

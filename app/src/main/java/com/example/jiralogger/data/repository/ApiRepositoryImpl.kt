@@ -1,15 +1,15 @@
 package com.example.jiralogger.data.repository
 
 import com.example.jiralogger.data.remote.JiraApi
-import com.example.jiralogger.data.remote.dto.UserCredentials
+import com.example.jiralogger.domain.model.UserCredentials
 import com.example.jiralogger.domain.model.Issue
-import com.example.jiralogger.domain.repository.JiraRepository
+import com.example.jiralogger.domain.repository.ApiRepository
 import javax.inject.Inject
 
 class
-JiraRepositoryImpl @Inject constructor(
+ApiRepositoryImpl @Inject constructor(
     private val api: JiraApi
-) : JiraRepository {
+) : ApiRepository {
     override suspend fun getIssuesByFilter(filter: String?): List<Issue> {
         return api.getIssuesByFilter(filter).toIssuesList()
     }
