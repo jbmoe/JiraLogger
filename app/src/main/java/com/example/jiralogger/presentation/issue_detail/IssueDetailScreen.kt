@@ -34,9 +34,9 @@ fun IssueDetailScreen(
 
 @Composable
 private fun DetailBody(state: IssueDetailState, onBack: () -> Unit) {
-    Scaffold(topBar = { TopBar(title = "${state.issue?.key}", onBack = onBack) }) {
+    Scaffold(topBar = { TopBar(title = "${state.item?.key}", onBack = onBack) }) {
         Box(modifier = Modifier.fillMaxSize()) {
-            state.issue?.let { issue ->
+            state.item?.let { issue ->
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
                     contentPadding = PaddingValues(20.dp)

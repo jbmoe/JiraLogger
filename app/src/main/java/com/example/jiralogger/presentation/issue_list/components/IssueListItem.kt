@@ -14,7 +14,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -25,7 +24,6 @@ import com.example.jiralogger.presentation.issue_detail.IssueDetailState
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 import com.example.jiralogger.presentation.util.ImageFromUrl
 import com.example.jiralogger.presentation.util.preview_paramater.IssueDetailPreviewParameterProvider
-import com.example.jiralogger.presentation.util.preview_paramater.IssueListItemPreviewParameterProvider
 
 @Composable
 fun IssueListItem(issue: Issue, onItemClicked: (Issue) -> Unit) {
@@ -82,10 +80,10 @@ private fun ColumnTexts(issue: Issue) {
 @Preview(name = "Light mode", uiMode = UI_MODE_NIGHT_NO, showBackground = true)
 @Preview(name = "Dark mode", uiMode = UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
-fun Preview(@PreviewParameter(IssueDetailPreviewParameterProvider::class) issue: IssueDetailState) {
+fun Preview(@PreviewParameter(IssueDetailPreviewParameterProvider::class) state: IssueDetailState) {
     JiraLoggerTheme {
         IssueListItem(
-            issue = issue.issue!!,
+            issue = state.item as Issue,
             onItemClicked = {
 
             }

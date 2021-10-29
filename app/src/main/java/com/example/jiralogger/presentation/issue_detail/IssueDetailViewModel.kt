@@ -32,7 +32,7 @@ class IssueDetailViewModel @Inject constructor(
             when (result) {
                 is Resource.Success -> {
                     _state.value = IssueDetailState(
-                        issue = result.data
+                        item = result.data
                     )
                 }
                 is Resource.Error -> {

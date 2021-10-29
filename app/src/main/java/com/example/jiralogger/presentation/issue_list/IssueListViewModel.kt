@@ -49,7 +49,7 @@ class IssueListViewModel @Inject constructor(
             when (result) {
                 is Resource.Success -> {
                     _state.value = IssueListState(
-                        issues = result.data ?: emptyList(),
+                        items = result.data ?: emptyList(),
                         issueFilter = issueFilter
                     )
                 }
@@ -73,7 +73,7 @@ class IssueListViewModel @Inject constructor(
             when (result) {
                 is Resource.Success -> {
                     _state.value = IssueListState(
-                        issues = listOf(result.data)
+                        items = listOf(result.data)
                     )
                 }
                 is Resource.Error -> {
