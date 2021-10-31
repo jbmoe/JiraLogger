@@ -1,5 +1,6 @@
 package com.example.jiralogger.presentation.issue_list.components
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
@@ -14,11 +15,12 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.jiralogger.domain.util.IssueFilter
+import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 
 @Composable
 fun TabSection(
     modifier: Modifier = Modifier,
-    onFilterChange: (IssueFilter) -> Unit
+    onFilterChange: (IssueFilter) -> Unit = {}
 ) {
     var selectedIndex by rememberSaveable { mutableStateOf(0) }
     TabRow(
@@ -31,31 +33,47 @@ fun TabSection(
             selected = selectedIndex == 0,
             onClick = {
                 selectedIndex = 0
-                onFilterChange(IssueFilter.Assigned)
+                onFilterChange(IssueFilter.A_Assigned)
             }) {
-            Text("Assigned")
+            Text(IssueFilter.A_Assigned.name)
         }
         Tab(
             selected = selectedIndex == 1,
             onClick = {
                 selectedIndex = 1
-                onFilterChange(IssueFilter.Seen)
+                onFilterChange(IssueFilter.B_Seen)
             }) {
-            Text("Seen")
+            Text(IssueFilter.B_Seen.name)
         }
         Tab(
             selected = selectedIndex == 2,
             onClick = {
                 selectedIndex = 2
-                onFilterChange(IssueFilter.EV)
+                onFilterChange(IssueFilter.C_EV)
             }) {
-            Text("EV")
+            Text(IssueFilter.C_EV.name)
         }
+
+
+//        IssueFilter::class.nestedClasses.forEachIndexed { i, it ->
+//            val element = it.objectInstance as IssueFilter
+//            Tab(
+//                selected = selectedIndex == i,
+//                onClick = {
+//                    selectedIndex = i
+//                    onFilterChange(element)
+//                }) {
+//                Text(element.name)
+//            }
+//        }
     }
 }
 
-@Preview
+@Preview(name = "Light mode", uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
+@Preview(name = "Dark mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
 fun Preview() {
-    TabSection(onFilterChange = {})
+    JiraLoggerTheme {
+        TabSection()
+    }
 }

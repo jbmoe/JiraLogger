@@ -1,9 +1,8 @@
-package com.example.jiralogger.data
+package com.example.jiralogger.data.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.example.jiralogger.domain.model.WorkLog
-import com.example.jiralogger.domain.model.UserCredentials
 
 @Database(
     entities = [WorkLog::class],

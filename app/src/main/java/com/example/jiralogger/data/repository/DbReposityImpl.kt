@@ -1,6 +1,6 @@
 package com.example.jiralogger.data.repository
 
-import com.example.jiralogger.data.JiraLoggerDao
+import com.example.jiralogger.data.local.JiraLoggerDao
 import com.example.jiralogger.domain.model.WorkLog
 import com.example.jiralogger.domain.repository.DbRepository
 import kotlinx.coroutines.flow.Flow

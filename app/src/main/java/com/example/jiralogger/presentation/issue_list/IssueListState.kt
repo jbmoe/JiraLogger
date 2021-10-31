@@ -8,5 +8,5 @@ data class IssueListState(
     override val isLoading: Boolean = false,
     override val items: List<Issue?> = emptyList(),
     override val error: String = "",
-    val issueFilter: IssueFilter = IssueFilter.Assigned
+    val issueFilter: IssueFilter = IssueFilter.A_Assigned
 ) : UiListState

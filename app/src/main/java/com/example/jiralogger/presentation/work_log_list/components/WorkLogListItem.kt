@@ -3,8 +3,7 @@ package com.example.jiralogger.presentation.work_log_list.components
 import android.content.res.Configuration
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
@@ -56,6 +55,7 @@ fun WorkLogListItem(workLog: WorkLog, onItemClicked: (WorkLog) -> Unit) {
     }
 }
 
+@ExperimentalMaterialApi
 @Preview(name = "Light mode", uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 @Preview(name = "Dark mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable

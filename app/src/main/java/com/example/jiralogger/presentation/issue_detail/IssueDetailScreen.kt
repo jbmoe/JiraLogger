@@ -4,14 +4,14 @@ import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.*
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.jiralogger.R
 import com.example.jiralogger.domain.model.Issue
+import com.example.jiralogger.presentation.components.SharedTopAppBar
 import com.example.jiralogger.presentation.util.preview_paramater.IssueDetailPreviewParameterProvider
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 import com.example.jiralogger.presentation.util.ImageFromUrl
@@ -32,9 +33,19 @@ fun IssueDetailScreen(
     DetailBody(state = state, onBack = onBack)
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun DetailBody(state: IssueDetailState, onBack: () -> Unit) {
-    Scaffold(topBar = { TopBar(title = "${state.item?.key}", onBack = onBack) }) {
+    Scaffold(topBar = {
+        SharedTopAppBar(
+            title = { Text(text = "${state.item?.key}") },
+            navigationIcon = {
+                IconButton(onClick = onBack) {
+                    Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
+                }
+            }
+        )
+    }) {
         Box(modifier = Modifier.fillMaxSize()) {
             state.item?.let { issue ->
                 LazyColumn(
@@ -63,24 +74,10 @@ private fun DetailBody(state: IssueDetailState, onBack: () -> Unit) {
 }
 
 @Composable
-private fun TopBar(title: String, onBack: () -> Unit) {
-    TopAppBar(
-        title = {
-            Text(text = title)
-        },
-        navigationIcon = {
-            IconButton(onClick = onBack) {
-                Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
-            }
-        }
-    )
-}
-
-@Composable
 private fun ErrorText(state: IssueDetailState, modifier: Modifier = Modifier) {
     Text(
         text = state.error,
-        color = MaterialTheme.colors.error,
+        color = MaterialTheme.colorScheme.error,
         textAlign = TextAlign.Center,
         modifier = modifier
             .fillMaxSize()
@@ -105,8 +102,8 @@ private fun TitleContent(issue: Issue) {
         )
         Text(
             text = issue.key,
-            style = MaterialTheme.typography.h4,
-            color = MaterialTheme.colors.onBackground,
+            style = MaterialTheme.typography.titleLarge,
+            color = MaterialTheme.colorScheme.primary,
             modifier = Modifier
                 .weight(8f)
                 .alpha(0.75f)
@@ -118,23 +115,25 @@ private fun TitleContent(issue: Issue) {
 private fun Summary(issue: Issue) {
     Text(
         text = issue.summary,
-        style = MaterialTheme.typography.h2,
-        color = MaterialTheme.colors.onBackground,
+        style = MaterialTheme.typography.headlineMedium,
+        color = MaterialTheme.colorScheme.onBackground,
     )
 }
 
 @Composable
 private fun Description(issue: Issue) {
-    Text(
-        text = "Description",
-        style = MaterialTheme.typography.h3,
-        color = MaterialTheme.colors.onBackground
-    )
-    Text(
-        text = issue.description,
-        style = MaterialTheme.typography.body2,
-        color = MaterialTheme.colors.onBackground
-    )
+    if (issue.description != "") {
+        Text(
+            text = "Description",
+            style = MaterialTheme.typography.headlineSmall,
+            color = MaterialTheme.colorScheme.onBackground
+        )
+        Text(
+            text = issue.description,
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onBackground
+        )
+    }
 }
 
 @Preview(name = "Light Mode", uiMode = UI_MODE_NIGHT_NO, showBackground = true)

@@ -1,4 +1,4 @@
-package com.example.jiralogger.data
+package com.example.jiralogger.data.local
 
 import androidx.room.*
 import com.example.jiralogger.domain.model.WorkLog

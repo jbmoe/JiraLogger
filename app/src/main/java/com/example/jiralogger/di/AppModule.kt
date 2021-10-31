@@ -4,10 +4,11 @@ import android.app.Application
 import androidx.room.Room
 import com.example.jiralogger.common.constant.Constants
 import com.example.jiralogger.common.test_data.TestDB
-import com.example.jiralogger.data.JiraLoggerDatabase
+import com.example.jiralogger.data.local.JiraLoggerDatabase
 import com.example.jiralogger.data.remote.JiraApi
 import com.example.jiralogger.data.repository.ApiRepositoryImpl
 import com.example.jiralogger.data.repository.DbRepositoryImpl
+import com.example.jiralogger.data.repository.DbRepositoryTestImpl
 import com.example.jiralogger.domain.repository.ApiRepository
 import com.example.jiralogger.domain.repository.DbRepository
 import com.example.jiralogger.domain.util.BasicAuthInterceptor
@@ -60,6 +61,7 @@ object AppModule {
     @Provides
     @Singleton
     fun provideLogRepository(db: JiraLoggerDatabase): DbRepository {
-        return DbRepositoryImpl(TestDB)
+//        return DbRepositoryTestImpl()
+        return DbRepositoryImpl(db.jiraLoggerDao)
     }
 }

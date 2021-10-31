@@ -8,8 +8,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,7 +43,7 @@ fun SharedList(modifier: Modifier = Modifier, state: UiListState, listItem: @Com
 private fun ErrorText(state: UiListState, modifier: Modifier = Modifier) {
     Text(
         text = state.error,
-        color = MaterialTheme.colors.error,
+        color = MaterialTheme.colorScheme.error,
         textAlign = TextAlign.Center,
         modifier = modifier
             .fillMaxSize()

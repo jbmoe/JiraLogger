@@ -1,6 +1,6 @@
 package com.example.jiralogger.common.test_data
 
-import com.example.jiralogger.data.JiraLoggerDao
+import com.example.jiralogger.data.local.JiraLoggerDao
 import com.example.jiralogger.domain.model.WorkLog
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
