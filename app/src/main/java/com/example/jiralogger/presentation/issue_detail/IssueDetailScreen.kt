@@ -2,6 +2,7 @@ package com.example.jiralogger.presentation.issue_detail
 
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.CircularProgressIndicator
@@ -17,58 +18,67 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.example.jiralogger.R
 import com.example.jiralogger.domain.model.Issue
-import com.example.jiralogger.presentation.components.SharedTopAppBar
-import com.example.jiralogger.presentation.util.preview_paramater.IssueDetailPreviewParameterProvider
+import com.example.jiralogger.presentation.components.SharedScaffold
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 import com.example.jiralogger.presentation.util.ImageFromUrl
+import com.example.jiralogger.presentation.util.preview_paramater.IssueDetailPreviewParameterProvider
 
 @Composable
 fun IssueDetailScreen(
-    viewModel: IssueDetailViewModel = hiltViewModel(),
-    onBack: () -> Unit
+    navController: NavController,
+    viewModel: IssueDetailViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.value
-    DetailBody(state = state, onBack = onBack)
+    Content(
+        state = state,
+        onBack = {
+            navController.popBackStack()
+        }
+    )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
-private fun DetailBody(state: IssueDetailState, onBack: () -> Unit) {
-    Scaffold(topBar = {
-        SharedTopAppBar(
-            title = { Text(text = "${state.item?.key}") },
-            navigationIcon = {
-                IconButton(onClick = onBack) {
-                    Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
+fun Content(state: IssueDetailState, onBack: () -> Unit) {
+    SharedScaffold(
+        title = { Text("${state.item?.key}") },
+        navigationIcon = {
+            IconButton(onClick = onBack) {
+                Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
+            }
+        }
+    ) {
+        DetailBody(state = state)
+    }
+}
+
+@Composable
+private fun DetailBody(state: IssueDetailState) {
+    Box(modifier = Modifier.fillMaxSize()) {
+        state.item?.let { issue ->
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(20.dp)
+            ) {
+                item {
+                    TitleContent(issue)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Summary(issue)
+                    Spacer(modifier = Modifier.height(15.dp))
+                    Description(issue)
                 }
             }
-        )
-    }) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            state.item?.let { issue ->
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(20.dp)
-                ) {
-                    item {
-                        TitleContent(issue)
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Summary(issue)
-                        Spacer(modifier = Modifier.height(15.dp))
-                        Description(issue)
-                    }
-                }
-            }
-            if (state.error.isNotBlank()) {
-                ErrorText(state, Modifier.align(Alignment.Center))
-            }
-            if (state.isLoading) {
-                CircularProgressIndicator(
-                    modifier = Modifier.align(Alignment.Center)
-                )
-            }
+        }
+        if (state.error.isNotBlank()) {
+            ErrorText(state, Modifier.align(Alignment.Center))
+        }
+        if (state.isLoading) {
+            CircularProgressIndicator(
+                modifier = Modifier.align(Alignment.Center)
+            )
         }
     }
 }
@@ -141,6 +151,6 @@ private fun Description(issue: Issue) {
 @Composable
 fun Preview(@PreviewParameter(IssueDetailPreviewParameterProvider::class) state: IssueDetailState) {
     JiraLoggerTheme {
-        DetailBody(state = state) {}
+        Content(state = state) {}
     }
 }

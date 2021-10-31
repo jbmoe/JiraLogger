@@ -9,10 +9,12 @@ import androidx.compose.material.Surface
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.jiralogger.common.constant.Constants
 import com.example.jiralogger.presentation.issue_detail.IssueDetailScreen
 import com.example.jiralogger.presentation.issue_list.IssueListScreen
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 import com.example.jiralogger.presentation.util.Screen
+import com.example.jiralogger.presentation.work_log_detail.WorkLogDetailScreen
 import com.example.jiralogger.presentation.work_log_list.WorkLogListScreen
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -33,13 +35,14 @@ class MainActivity : ComponentActivity() {
                         composable(Screen.IssueListScreen.route) {
                             IssueListScreen(navController)
                         }
-                        composable(Screen.IssueDetailScreen.route + "/{issueKey}") {
-                            IssueDetailScreen() {
-                                navController.popBackStack()
-                            }
+                        composable(Screen.IssueDetailScreen.route + "/{${Constants.PARAM_ISSUE_KEY}}") {
+                            IssueDetailScreen(navController)
                         }
                         composable(Screen.WorkLogListScreen.route) {
                             WorkLogListScreen(navController)
+                        }
+                        composable(Screen.WorkLogDetail.route + "/{workLogId}") {
+                            WorkLogDetailScreen(navController)
                         }
                     }
                 }

@@ -3,7 +3,8 @@ package com.example.jiralogger.presentation.work_log_list.components
 import android.content.res.Configuration
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
@@ -25,37 +26,35 @@ fun WorkLogListItem(workLog: WorkLog, onItemClicked: (WorkLog) -> Unit) {
     ) {
         Text(
             text = workLog.issueId,
-            color = MaterialTheme.colors.secondaryVariant,
-            style = MaterialTheme.typography.h4
+            color = MaterialTheme.colorScheme.primary,
+            style = MaterialTheme.typography.titleMedium
         )
 
         Text(
             text = workLog.timeSpent,
-            style = MaterialTheme.typography.body2,
-            color = MaterialTheme.colors.onBackground,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onBackground,
         )
-
 
         val simpleDateTime = SimpleDateFormat("dd MMM yy")
         val dateString = simpleDateTime.format(workLog.dateWorked)
 
         Text(
             text = dateString,
-            style = MaterialTheme.typography.body2,
-            color = MaterialTheme.colors.onBackground,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onBackground,
         )
 
         Text(
             text = workLog.comment,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            style = MaterialTheme.typography.body2,
-            color = MaterialTheme.colors.onBackground,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onBackground,
         )
     }
 }
 
-@ExperimentalMaterialApi
 @Preview(name = "Light mode", uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 @Preview(name = "Dark mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
