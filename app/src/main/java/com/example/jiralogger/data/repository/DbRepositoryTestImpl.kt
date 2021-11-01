@@ -8,8 +8,8 @@ import kotlinx.coroutines.flow.flow
 
 class DbRepositoryTestImpl : DbRepository {
 
-    override fun getWorkLogs(): Flow<List<WorkLog>> = flow {
-        emit(TestData.WORK_LOG_TEST_DATA)
+    override fun getWorkLogs(): List<WorkLog> {
+        return TestData.WORK_LOG_TEST_DATA
     }
 
     override suspend fun getWorkLogById(id: Int): WorkLog? {

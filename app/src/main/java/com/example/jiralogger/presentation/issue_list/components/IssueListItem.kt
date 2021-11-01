@@ -30,57 +30,63 @@ import com.example.jiralogger.presentation.util.preview_paramater.IssueDetailPre
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun IssueListItem(issue: Issue, onItemClicked: (Issue) -> Unit) {
-    ListItem(
-        modifier = Modifier
-            .clickable { onItemClicked(issue) },
-        icon = {
-            ImageFromUrl(
-                url = issue.project.avatarUrls.x48,
-                placeholder = R.drawable.default_project_avatar,
-                contentDescription = "Project Image",
-                modifier = Modifier
-                    .size(40.dp)
-                    .clip(RoundedCornerShape(10.dp))
-                    .border(1.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(10.dp))
-                    .background(Color.White)
-            )
-        },
-        text = {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(top = 12.dp)
-            ) {
-                Text(
-                    text = issue.key,
-                    color = MaterialTheme.colorScheme.primary,
-                    style = MaterialTheme.typography.titleMedium
-                )
-                Spacer(Modifier.padding(4.dp))
+    Surface(
+        shape = RoundedCornerShape(8.dp),
+        tonalElevation = 8.dp,
+        shadowElevation = 8.dp
+    ) {
+        ListItem(
+            modifier = Modifier
+                .clickable { onItemClicked(issue) },
+            icon = {
                 ImageFromUrl(
-                    url = issue.priority.iconUrl,
-                    placeholder = R.drawable.priority_medium,
-                    contentDescription = "Priority Icon",
-                    modifier = Modifier.size(18.dp)
+                    url = issue.project.avatarUrls.x48,
+                    placeholder = R.drawable.default_project_avatar,
+                    contentDescription = "Project Image",
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                        .border(1.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(10.dp))
+                        .background(Color.White)
+                )
+            },
+            text = {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(top = 12.dp)
+                ) {
+                    Text(
+                        text = issue.key,
+                        color = MaterialTheme.colorScheme.primary,
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                    Spacer(Modifier.padding(4.dp))
+                    ImageFromUrl(
+                        url = issue.priority.iconUrl,
+                        placeholder = R.drawable.priority_medium,
+                        contentDescription = "Priority Icon",
+                        modifier = Modifier.size(18.dp)
+                    )
+                }
+            },
+            secondaryText = {
+                Text(
+                    text = issue.summary,
+                    maxLines = 1,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    overflow = TextOverflow.Ellipsis
+                )
+            },
+            trailing = {
+                Icon(
+                    painter = painterResource(R.drawable.ic_baseline_navigate_next_24),
+                    contentDescription = "Continue",
+                    tint = MaterialTheme.colorScheme.onBackground
                 )
             }
-        },
-        secondaryText = {
-            Text(
-                text = issue.summary,
-                maxLines = 1,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onBackground,
-                overflow = TextOverflow.Ellipsis
-            )
-        },
-        trailing = {
-            Icon(
-                painter = painterResource(R.drawable.ic_baseline_navigate_next_24),
-                contentDescription = "Continue",
-                tint = MaterialTheme.colorScheme.onBackground
-            )
-        }
-    )
+        )
+    }
 }
 
 @Preview(name = "Light mode", uiMode = UI_MODE_NIGHT_NO, showBackground = true)

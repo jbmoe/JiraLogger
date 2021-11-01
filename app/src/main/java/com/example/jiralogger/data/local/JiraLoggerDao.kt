@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface JiraLoggerDao {
     @Query("SELECT * FROM work_log")
-    fun getWorkLogs(): Flow<List<WorkLog>>
+    fun getWorkLogs(): List<WorkLog>
 
     @Query("SELECT * FROM work_log WHERE id = :id")
     suspend fun getWorkLogById(id: Int): WorkLog?

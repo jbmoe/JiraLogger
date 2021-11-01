@@ -8,7 +8,8 @@ class WorkLogDetailPreviewParameterProvider : PreviewParameterProvider<WorkLogDe
     override val values: Sequence<WorkLogDetailState>
         get() = sequenceOf(
             WorkLogDetailState(
-                item = TestData.WORK_LOG_TEST_DATA[0]
+                item = TestData.WORK_LOG_TEST_DATA[0],
+                isEditing = true
             )
         )
 }

@@ -3,8 +3,8 @@ package com.example.jiralogger.presentation.issue_list
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -81,18 +82,23 @@ private fun Content(
                 ),
                 navController = navController,
                 onItemClick = {
-                    if (navController.currentBackStackEntry?.destination?.route != it.route)
-                        navController.navigate(it.route)
+                    navController.navigate(it.route)
                 }
             )
         }
     ) {
         Column {
             TabSection(onFilterChange = { onEvent(IssuesEvent.Filter(it)) })
-            SharedList(state = state) { issue ->
+            SharedList(modifier = Modifier.padding(horizontal = 8.dp), state = state) { issue ->
+                Spacer(Modifier.padding(4.dp))
                 IssueListItem(
                     issue = issue as Issue,
                     onItemClicked = { onItemClicked(issue) }
+                )
+                Spacer(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(4.dp)
                 )
             }
         }

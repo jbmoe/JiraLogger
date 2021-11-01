@@ -4,10 +4,9 @@ import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -16,7 +15,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.example.jiralogger.R
+import com.example.jiralogger.presentation.issue_list.IssuesEvent
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 import com.example.jiralogger.presentation.util.BottomNavItem
 import com.example.jiralogger.presentation.util.Screen
@@ -69,12 +70,12 @@ fun BottomNavigationBar(
     onItemClick: (Screen) -> Unit
 ) {
     val backStackEntry = navController.currentBackStackEntryAsState()
-    NavigationBar(modifier = modifier, tonalElevation = 8.dp) {
+    NavigationBar(modifier = modifier.height(74.dp), tonalElevation = 0.dp) {
         items.forEach { item ->
             val selected = item.route == backStackEntry.value?.destination?.route
             NavigationBarItem(
                 selected = selected,
-                onClick = { onItemClick(item) },
+                onClick = { if (!selected) onItemClick(item) },
                 icon = {
                     Icon(
                         painter = painterResource(id = item.drawableId!!),
@@ -137,10 +138,39 @@ private fun SharedBottomNavigation() {
 @Preview(name = "Light Mode", uiMode = UI_MODE_NIGHT_NO, showBackground = true)
 @Preview(name = "Dark Mode", uiMode = UI_MODE_NIGHT_YES, showBackground = true)
 fun Preview() {
+    val navController = rememberNavController()
     JiraLoggerTheme {
-        SharedScaffold(title = { Text(text = "Title") }) {
+        SharedScaffold(
+            title = { Text(text = "Issues") },
+            actions = {
+                IconButton(onClick = { }) {
+                    Icon(
+                        imageVector = Icons.Filled.Refresh,
+                        contentDescription = "Refresh"
+                    )
+                }
+                IconButton(onClick = { }) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_baseline_filter_alt_24),
+                        contentDescription = "Filter"
+                    )
+                }
+            },
+            bottomBar = {
+                BottomNavigationBar(
+                    items = listOf(
+                        Screen.IssueListScreen,
+                        Screen.WorkLogListScreen
+                    ),
+                    navController = navController,
+                    onItemClick = {
+                        if (navController.currentBackStackEntry?.destination?.route != it.route)
+                            navController.navigate(it.route)
+                    }
+                )
+            }
+        ) {
 
         }
     }
-
 }

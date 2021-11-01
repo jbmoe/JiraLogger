@@ -41,7 +41,7 @@ class MainActivity : ComponentActivity() {
                         composable(Screen.WorkLogListScreen.route) {
                             WorkLogListScreen(navController)
                         }
-                        composable(Screen.WorkLogDetail.route + "/{workLogId}") {
+                        composable(Screen.WorkLogDetail.route + "/{${Constants.PARAM_WORK_LOG_ID}}") {
                             WorkLogDetailScreen(navController)
                         }
                     }

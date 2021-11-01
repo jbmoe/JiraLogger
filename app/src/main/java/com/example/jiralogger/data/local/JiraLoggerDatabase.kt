@@ -14,4 +14,5 @@ abstract class JiraLoggerDatabase : RoomDatabase() {
     companion object {
         const val DATABASE_NAME = "jiralogger_db"
     }
+
 }
