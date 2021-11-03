@@ -28,20 +28,34 @@ class WorkLogDetailViewModel @Inject constructor(
         }
     }
 
+    fun onEvent(event: WorkLogEvent) {
+        when (event) {
+            is WorkLogEvent.Edit -> {
+                _state.value = _state.value.copy(isEditing = true)
+            }
+            is WorkLogEvent.Save -> {
+                _state.value = _state.value.copy(isEditing = false)
+            }
+            is WorkLogEvent.Cancel -> {
+                _state.value = _state.value.copy(isEditing = false)
+            }
+        }
+    }
+
     private fun getWorkLog(id: Int) {
         viewModelScope.launch {
             getWorkLogUseCase(id).onEach { result ->
                 when (result) {
                     is Resource.Success -> {
-                        _state.value = WorkLogDetailState().copy(item = result.data)
+                        _state.value = WorkLogDetailState(item = result.data)
                     }
                     is Resource.Error -> {
-                        _state.value = WorkLogDetailState().copy(
+                        _state.value = WorkLogDetailState(
                             error = result.message ?: "An unexpected error occurred"
                         )
                     }
                     is Resource.Loading -> {
-                        _state.value = WorkLogDetailState().copy(
+                        _state.value = WorkLogDetailState(
                             isLoading = true
                         )
                     }
