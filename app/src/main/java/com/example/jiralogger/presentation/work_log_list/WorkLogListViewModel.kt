@@ -5,16 +5,20 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.jiralogger.common.Resource
+import com.example.jiralogger.common.test_data.TestData
+import com.example.jiralogger.domain.model.WorkLog
 import com.example.jiralogger.domain.use_case.work_log.GetWorkLogs
-import com.example.jiralogger.presentation.issue_list.IssueListState
+import com.example.jiralogger.domain.use_case.work_log.InsertWorkLog
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class WorkLogListViewModel @Inject constructor(
-    private val getWorkLogsUseCase: GetWorkLogs
+    private val getWorkLogsUseCase: GetWorkLogs,
+    private val insertWorkLog: InsertWorkLog
 ) : ViewModel() {
     private val _state = mutableStateOf(WorkLogListState())
     val state: State<WorkLogListState> = _state
@@ -23,6 +27,22 @@ class WorkLogListViewModel @Inject constructor(
 
     init {
         getWorkLogs()
+        initDB()
+    }
+
+    fun mapLogs(logs: List<WorkLog>): Map<Long, List<WorkLog>> {
+        return logs.groupBy {
+            it.dateWorked!!
+        }
+    }
+
+    private fun initDB() {
+        if (state.value.items.isEmpty())
+            viewModelScope.launch {
+                TestData.WORK_LOG_TEST_DATA.forEach {
+                    insertWorkLog(it)
+                }
+            }
     }
 
     fun onEvent(event: WorkLogsEvent) {
@@ -42,7 +62,7 @@ class WorkLogListViewModel @Inject constructor(
             when (result) {
                 is Resource.Success -> {
                     _state.value = WorkLogListState(
-                        items = result.data ?: emptyList()
+                        items = mapLogs(result.data ?: emptyList())
                     )
                 }
                 is Resource.Error -> {

@@ -5,4 +5,5 @@ import com.example.jiralogger.domain.util.IssueFilter
 sealed interface IssuesEvent {
     data class Filter(val filter: IssueFilter) : IssuesEvent
     object Refresh : IssuesEvent
+    object ToggleFilterVisibility: IssuesEvent
 }

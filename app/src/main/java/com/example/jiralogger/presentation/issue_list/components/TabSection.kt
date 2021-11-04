@@ -49,12 +49,18 @@ fun TabSection(
             selected = selectedIndex == 2,
             onClick = {
                 selectedIndex = 2
-                onFilterChange(IssueFilter.C_EV)
+                onFilterChange(IssueFilter.C_WATCHING)
             }) {
-            Text(IssueFilter.C_EV.name)
+            Text(IssueFilter.C_WATCHING.name)
         }
-
-
+        Tab(
+            selected = selectedIndex == 3,
+            onClick = {
+                selectedIndex = 3
+                onFilterChange(IssueFilter.D_EV)
+            }) {
+            Text(IssueFilter.D_EV.name)
+        }
 //        IssueFilter::class.nestedClasses.forEachIndexed { i, it ->
 //            val element = it.objectInstance as IssueFilter
 //            Tab(

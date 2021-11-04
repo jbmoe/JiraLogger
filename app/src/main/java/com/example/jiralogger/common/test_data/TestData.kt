@@ -1,9 +1,12 @@
 package com.example.jiralogger.common.test_data
 
-import com.example.jiralogger.data.remote.dto.*
+import com.example.jiralogger.data.remote.dto.ApiResponse
+import com.example.jiralogger.data.remote.dto.Fields
+import com.example.jiralogger.data.remote.dto.IssueDto
 import com.example.jiralogger.domain.model.WorkLog
 
 object TestData {
+    private const val ONEDAY = 86400000L
     val WORK_LOG_TEST_DATA = mutableListOf(
         WorkLog(
             id = 1,
@@ -11,7 +14,7 @@ object TestData {
             userId = "JIRAUSER25235",
             timeSpent = "1h 30m",
             timeSpentSeconds = 5400,
-            dateWorked = System.currentTimeMillis(),
+            dateWorked = System.currentTimeMillis().minus(ONEDAY),
             comment = "Working on issue DAL-656"
         ),
         WorkLog(
@@ -20,7 +23,7 @@ object TestData {
             userId = "JIRAUSER25235",
             timeSpent = "1h 30m",
             timeSpentSeconds = 5400,
-            dateWorked = System.currentTimeMillis(),
+            dateWorked = System.currentTimeMillis().minus(ONEDAY*2),
             comment = "Working on issue ENNOVA-57"
         ),
         WorkLog(
@@ -29,7 +32,7 @@ object TestData {
             userId = "JIRAUSER25235",
             timeSpent = "1h 30m",
             timeSpentSeconds = 5400,
-            dateWorked = System.currentTimeMillis(),
+            dateWorked = System.currentTimeMillis().minus(ONEDAY*3),
             comment = "Working on issue ESBJ-237"
         ),
         WorkLog(
@@ -38,7 +41,7 @@ object TestData {
             userId = "JIRAUSER25235",
             timeSpent = "1h 30m",
             timeSpentSeconds = 5400,
-            dateWorked = System.currentTimeMillis(),
+            dateWorked = System.currentTimeMillis().minus(ONEDAY*4),
             comment = "Working on issue ENNOVA-46"
         ),
         WorkLog(
@@ -47,7 +50,7 @@ object TestData {
             userId = "JIRAUSER25235",
             timeSpent = "1h 30m",
             timeSpentSeconds = 5400,
-            dateWorked = System.currentTimeMillis(),
+            dateWorked = System.currentTimeMillis().minus(ONEDAY*5),
             comment = "Working on issue QQ-10"
         ),
         WorkLog(
@@ -56,7 +59,7 @@ object TestData {
             userId = "JIRAUSER25235",
             timeSpent = "1h 30m",
             timeSpentSeconds = 5400,
-            dateWorked = System.currentTimeMillis(),
+            dateWorked = System.currentTimeMillis().minus(ONEDAY*6),
             comment = "Working on issue WHT-374"
         ),
         WorkLog(
@@ -65,7 +68,7 @@ object TestData {
             userId = "JIRAUSER25235",
             timeSpent = "1h 30m",
             timeSpentSeconds = 5400,
-            dateWorked = System.currentTimeMillis(),
+            dateWorked = System.currentTimeMillis().minus(ONEDAY*7),
             comment = "Working on issue ESBJ-248"
         ),
         WorkLog(
@@ -74,7 +77,7 @@ object TestData {
             userId = "JIRAUSER25235",
             timeSpent = "1h 30m",
             timeSpentSeconds = 5400,
-            dateWorked = System.currentTimeMillis(),
+            dateWorked = System.currentTimeMillis().minus(ONEDAY*8),
             comment = "Working on issue ESBJ-243"
         ),
         WorkLog(
@@ -83,7 +86,7 @@ object TestData {
             userId = "JIRAUSER25235",
             timeSpent = "1h 30m",
             timeSpentSeconds = 5400,
-            dateWorked = System.currentTimeMillis(),
+            dateWorked = System.currentTimeMillis().minus(ONEDAY*9),
             comment = "Working on issue ESBJ-233"
         ),
         WorkLog(
@@ -92,7 +95,7 @@ object TestData {
             userId = "JIRAUSER25235",
             timeSpent = "1h 30m",
             timeSpentSeconds = 5400,
-            dateWorked = System.currentTimeMillis(),
+            dateWorked = System.currentTimeMillis().minus(ONEDAY*10),
             comment = "Working on issue KOL-41"
         )
     )

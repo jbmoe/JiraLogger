@@ -2,11 +2,12 @@ package com.example.jiralogger.presentation.work_log_list
 
 import android.content.res.Configuration
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Icon
@@ -20,15 +21,17 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.jiralogger.common.constant.Constants
 import com.example.jiralogger.domain.model.WorkLog
 import com.example.jiralogger.presentation.components.BottomNavigationBar
-import com.example.jiralogger.presentation.components.SharedList
 import com.example.jiralogger.presentation.components.SharedScaffold
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 import com.example.jiralogger.presentation.util.Screen
+import com.example.jiralogger.presentation.util.convertLongToTime
 import com.example.jiralogger.presentation.util.preview_paramater.WorkLogListPreviewParameterProvider
 import com.example.jiralogger.presentation.work_log_list.components.WorkLogListItem
 
+@ExperimentalFoundationApi
 @Composable
 fun WorkLogListScreen(
     navController: NavController,
@@ -37,13 +40,14 @@ fun WorkLogListScreen(
     Content(
         state = viewModel.state.value,
         onItemClicked = {
-            navController.navigate(Screen.WorkLogDetail.route + "/${it.id}")
+            navController.navigate(Screen.WorkLogDetail.route + "?${Constants.PARAM_WORK_LOG_ID}=${it.id}")
         },
         onEvent = { viewModel.onEvent(it) },
         navController = navController
     )
 }
 
+@ExperimentalFoundationApi
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun Content(
@@ -75,25 +79,47 @@ fun Content(
             )
         }
     ) {
-        SharedList(modifier = Modifier.padding(horizontal = 8.dp), state = state) { workLog ->
-            Spacer(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(4.dp)
-            )
-            WorkLogListItem(
-                workLog = workLog as WorkLog,
-                onItemClicked = { onItemClicked(workLog) }
-            )
-            Spacer(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(4.dp)
-            )
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(8.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            state.items.forEach { (date, logs) ->
+                item(date) {
+                    Text(
+                        text = convertLongToTime(date, "E MMMM yy"),
+                        modifier = Modifier.padding(4.dp, top = 12.dp)
+                    )
+                }
+                items(items = logs) { workLog ->
+                    WorkLogListItem(
+                        workLog = workLog,
+                        onItemClicked = { onItemClicked(workLog) }
+                    )
+                }
+            }
         }
+//        SharedList(modifier = Modifier.padding(horizontal = 8.dp), state = state) { workLog ->
+//        Spacer(
+//            Modifier
+//                .fillMaxWidth()
+//                .padding(4.dp)
+//        )
+//        WorkLogListItem(
+//            workLog = workLog as WorkLog,
+//            onItemClicked = { onItemClicked(workLog) }
+//        )
+//        Spacer(
+//            Modifier
+//                .fillMaxWidth()
+//                .padding(4.dp)
+//        )
+//        }
     }
 }
 
+@ExperimentalFoundationApi
 @Preview(name = "Light mode", uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 @Preview(name = "Dark mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable

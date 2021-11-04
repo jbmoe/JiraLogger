@@ -1,68 +1,84 @@
 package com.example.jiralogger.presentation.work_log_list.components
 
 import android.content.res.Configuration
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ListItem
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.BrushPainter
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import com.example.jiralogger.R
 import com.example.jiralogger.domain.model.WorkLog
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 import com.example.jiralogger.presentation.util.preview_paramater.WorkLogDetailPreviewParameterProvider
 import com.example.jiralogger.presentation.work_log_detail.WorkLogDetailState
-import java.text.SimpleDateFormat
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun WorkLogListItem(workLog: WorkLog, onItemClicked: (WorkLog) -> Unit) {
     Surface(
         shape = RoundedCornerShape(8.dp),
-        tonalElevation = 8.dp,
-        shadowElevation = 8.dp
+        tonalElevation = 4.dp,
+        shadowElevation = 4.dp
     ) {
-        Column(modifier = Modifier
-            .clickable { onItemClicked(workLog) }
-            .padding(8.dp)
-            .fillMaxWidth()
-        ) {
-            Text(
-                text = workLog.issueId,
-                color = MaterialTheme.colorScheme.primary,
-                style = MaterialTheme.typography.titleMedium
-            )
-
-            Text(
-                text = workLog.timeSpent,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onBackground,
-            )
-
-            val simpleDateTime = SimpleDateFormat("dd MMM yy")
-            val dateString = simpleDateTime.format(workLog.dateWorked)
-
-            Text(
-                text = dateString,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onBackground,
-            )
-
-            Text(
-                text = workLog.comment,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onBackground,
-            )
-        }
+        ListItem(
+            modifier = Modifier
+                .clickable { onItemClicked(workLog) },
+            text = {
+                Text(
+                    text = workLog.comment,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1
+                )
+            },
+            secondaryText = {
+                Row(
+                    modifier = Modifier.padding(vertical = 8.dp),
+                    verticalAlignment = Alignment.Top,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_baseline_check_box_24),
+                        contentDescription = "",
+                        tint = Color(1, 160, 100),
+                        modifier = Modifier
+                            .size(20.dp)
+                            .align(Alignment.Top)
+                    )
+                    Spacer(Modifier.padding(4.dp))
+                    Text(
+                        text = workLog.issueId,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier
+                            .alpha(.8f)
+                    )
+                    Spacer(modifier = Modifier.weight(1f))
+                    Text(
+                        text = workLog.timeSpent,
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.align(Alignment.Bottom)
+                    )
+                }
+            }
+        )
     }
 }
 

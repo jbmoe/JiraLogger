@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -20,10 +21,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.jiralogger.R
+import com.example.jiralogger.common.constant.Constants
 import com.example.jiralogger.domain.model.Issue
 import com.example.jiralogger.presentation.components.SharedScaffold
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 import com.example.jiralogger.presentation.util.ImageFromUrl
+import com.example.jiralogger.presentation.util.Screen
 import com.example.jiralogger.presentation.util.preview_paramater.IssueDetailPreviewParameterProvider
 
 @Composable
@@ -36,13 +39,18 @@ fun IssueDetailScreen(
         state = state,
         onBack = {
             navController.popBackStack()
+        },
+        onLogTime = {
+            val route =
+                Screen.WorkLogDetail.route + "?${Constants.PARAM_ISSUE_KEY}=${state.item?.key}&${Constants.PARAM_IS_EDITING}=${true}"
+            navController.navigate(route)
         }
     )
 }
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun Content(state: IssueDetailState, onBack: () -> Unit) {
+fun Content(state: IssueDetailState, onBack: () -> Unit, onLogTime: (String?) -> Unit) {
     SharedScaffold(
         title = { Text("${state.item?.key}") },
         navigationIcon = {
@@ -51,12 +59,12 @@ fun Content(state: IssueDetailState, onBack: () -> Unit) {
             }
         }
     ) {
-        DetailBody(state = state)
+        DetailBody(state = state, onLogTime = { onLogTime(it) })
     }
 }
 
 @Composable
-private fun DetailBody(state: IssueDetailState) {
+private fun DetailBody(state: IssueDetailState, onLogTime: (String?) -> Unit) {
     Box(modifier = Modifier.fillMaxSize()) {
         state.item?.let { issue ->
             LazyColumn(
@@ -72,6 +80,18 @@ private fun DetailBody(state: IssueDetailState) {
                 }
             }
         }
+        ExtendedFloatingActionButton(
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(24.dp),
+            icon = {
+                Icon(painter = painterResource(id = R.drawable.ic_baseline_more_time_24), "")
+            },
+            text = {
+                Text(text = "Log your time")
+            },
+            onClick = { onLogTime(state.item?.key) }
+        )
         if (state.error.isNotBlank()) {
             ErrorText(state, Modifier.align(Alignment.Center))
         }
@@ -151,6 +171,6 @@ private fun Description(issue: Issue) {
 @Composable
 fun Preview(@PreviewParameter(IssueDetailPreviewParameterProvider::class) state: IssueDetailState) {
     JiraLoggerTheme {
-        Content(state = state) {}
+        Content(state = state, {}) {}
     }
 }

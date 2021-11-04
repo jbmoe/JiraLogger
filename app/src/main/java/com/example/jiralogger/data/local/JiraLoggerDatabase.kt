@@ -6,7 +6,7 @@ import com.example.jiralogger.domain.model.WorkLog
 
 @Database(
     entities = [WorkLog::class],
-    version = 2
+    version = 3
 )
 abstract class JiraLoggerDatabase : RoomDatabase() {
     abstract val jiraLoggerDao: JiraLoggerDao

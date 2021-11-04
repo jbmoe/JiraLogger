@@ -3,8 +3,8 @@ package com.example.jiralogger.presentation.issue_list
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -67,9 +67,14 @@ private fun Content(
                     contentDescription = "Refresh"
                 )
             }
-            IconButton(onClick = { }) {
+            IconButton(onClick = { onEvent(IssuesEvent.ToggleFilterVisibility) }) {
                 Icon(
-                    painter = painterResource(R.drawable.ic_baseline_filter_alt_24),
+                    painter = painterResource(
+                        if (state.filterIsVisible)
+                            R.drawable.ic_baseline_filter_alt_24
+                        else
+                            R.drawable.ic_outline_filter_alt_24
+                    ),
                     contentDescription = "Filter"
                 )
             }
@@ -88,17 +93,13 @@ private fun Content(
         }
     ) {
         Column {
-            TabSection(onFilterChange = { onEvent(IssuesEvent.Filter(it)) })
+            if (state.filterIsVisible) {
+                TabSection(onFilterChange = { onEvent(IssuesEvent.Filter(it)) })
+            }
             SharedList(modifier = Modifier.padding(horizontal = 8.dp), state = state) { issue ->
-                Spacer(Modifier.padding(4.dp))
                 IssueListItem(
                     issue = issue as Issue,
                     onItemClicked = { onItemClicked(issue) }
-                )
-                Spacer(
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(4.dp)
                 )
             }
         }
@@ -114,4 +115,3 @@ fun Preview(@PreviewParameter(IssueListPreviewParameterProvider::class) state: I
         Content(state = state, navController = rememberNavController())
     }
 }
-

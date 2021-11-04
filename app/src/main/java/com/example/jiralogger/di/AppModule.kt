@@ -53,7 +53,9 @@ object AppModule {
             app,
             JiraLoggerDatabase::class.java,
             JiraLoggerDatabase.DATABASE_NAME
-        ).allowMainThreadQueries()
+        )
+            .allowMainThreadQueries()
+            .fallbackToDestructiveMigration()
             .build()
     }
 

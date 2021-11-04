@@ -34,6 +34,11 @@ class IssueListViewModel @Inject constructor(
                 getFilteredIssues(event.filter)
             }
             is IssuesEvent.Refresh -> refresh()
+            is IssuesEvent.ToggleFilterVisibility -> {
+                _state.value = _state.value.copy(
+                    filterIsVisible = !_state.value.filterIsVisible
+                )
+            }
         }
     }
 
@@ -47,18 +52,24 @@ class IssueListViewModel @Inject constructor(
                 is Resource.Success -> {
                     _state.value = IssueListState(
                         items = result.data ?: emptyList(),
-                        issueFilter = issueFilter
+                        issueFilter = issueFilter,
+                        filterIsVisible = _state.value.filterIsVisible
                     )
                 }
                 is Resource.Error -> {
                     _state.value =
                         IssueListState(
                             error = result.message ?: "An unexpected error occurred",
-                            issueFilter = issueFilter
+                            issueFilter = issueFilter,
+                            filterIsVisible = _state.value.filterIsVisible
                         )
                 }
                 is Resource.Loading -> {
-                    _state.value = IssueListState(isLoading = true, issueFilter = issueFilter)
+                    _state.value = IssueListState(
+                        isLoading = true,
+                        issueFilter = issueFilter,
+                        filterIsVisible = _state.value.filterIsVisible
+                    )
                 }
             }
         }.launchIn(viewModelScope)
