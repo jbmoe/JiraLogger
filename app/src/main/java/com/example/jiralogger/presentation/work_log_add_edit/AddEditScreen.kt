@@ -32,7 +32,6 @@ import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 import com.example.jiralogger.presentation.util.preview_paramater.WorkLogDetailPreviewParameterProvider
 import kotlinx.coroutines.flow.collectLatest
 import java.text.SimpleDateFormat
-import java.util.*
 
 @ExperimentalAnimationApi
 @ExperimentalMaterial3Api
@@ -82,7 +81,7 @@ fun AddEditScreen(
 fun Content(
     issueId: InputFieldState<String>,
     description: InputFieldState<String>,
-    date: InputFieldState<Date>,
+    date: InputFieldState<Long>,
     worked: InputFieldState<String>,
     scaffoldState: ScaffoldState,
     onBack: () -> Unit,
@@ -121,7 +120,7 @@ fun Content(
 fun DetailBody(
     issueId: InputFieldState<String>,
     description: InputFieldState<String>,
-    date: InputFieldState<Date>,
+    date: InputFieldState<Long>,
     worked: InputFieldState<String>,
     onEvent: (AddEditWorkLogEvent) -> Unit
 ) {
@@ -228,7 +227,7 @@ fun DetailBody(
 @SuppressLint("SimpleDateFormat")
 @Composable
 private fun DateRow(
-    date: InputFieldState<Date>,
+    date: InputFieldState<Long>,
     onEvent: (AddEditWorkLogEvent) -> Unit
 ) {
     Row(
@@ -246,7 +245,7 @@ private fun DateRow(
         val displayDate = formatter.format(date.value)
 
         DatePickerView(modifier = Modifier.weight(.7f), datePicked = displayDate, updatedDate = {
-            onEvent(AddEditWorkLogEvent.DateChosen(Date(it!!)))
+            onEvent(AddEditWorkLogEvent.DateChosen(it!!))
         })
     }
 }
@@ -293,7 +292,7 @@ fun Preview(@PreviewParameter(WorkLogDetailPreviewParameterProvider::class) stat
         Content(
             issueId = InputFieldState(value = "DAL-656"),
             description = InputFieldState(value = "Working on issue DAL-656"),
-            date = InputFieldState(Date(System.nanoTime())),
+            date = InputFieldState(value = System.nanoTime()),
             worked = InputFieldState("2h 45m"),
             scaffoldState = rememberScaffoldState(),
             {},

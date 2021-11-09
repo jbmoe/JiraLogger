@@ -14,8 +14,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
-import java.time.Instant
-import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -42,11 +40,11 @@ class AddEditLogViewModel @Inject constructor(
 
     private val _date = mutableStateOf(
         InputFieldState(
-            value = Date.from(Instant.now()),
+            value = System.nanoTime(),
             hint = "The date you've been working"
         )
     )
-    val date: State<InputFieldState<Date>> = _date
+    val date: State<InputFieldState<Long>> = _date
 
     private val _timeSpent = mutableStateOf(
         InputFieldState(
@@ -107,11 +105,10 @@ class AddEditLogViewModel @Inject constructor(
                 )
             }
             is AddEditWorkLogEvent.DateChosen -> {
-                val instance = event.value.toInstant()
-                val date = Date(instance.toEpochMilli())
+//                val date = Date(event.value)
 
                 _date.value = _date.value.copy(
-                    value = date
+                    value = event.value
                 )
             }
             is AddEditWorkLogEvent.ChangedDateFocus -> {
@@ -153,7 +150,7 @@ class AddEditLogViewModel @Inject constructor(
                         id = currentLogId,
                         issueId = _issueId.value.value,
                         comment = if (_description.value.value.isNotBlank()) _description.value.value else "Working on issue ${_issueId.value.value}",
-                        dateWorked = _date.value.value.time,
+                        dateWorked = _date.value.value,
                         timeSpent = _timeSpent.value.value,
                         timeSpentSeconds = _timeSpentSec.value.value,
                         userId = "JEM"
@@ -183,7 +180,7 @@ class AddEditLogViewModel @Inject constructor(
                     isHintVisible = false
                 )
                 _date.value = _date.value.copy(
-                    value = Date(log.dateWorked),
+                    value = log.dateWorked,
                     isHintVisible = false
                 )
                 _timeSpent.value = _timeSpent.value.copy(

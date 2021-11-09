@@ -30,11 +30,11 @@ import com.example.jiralogger.presentation.components.SharedList
 import com.example.jiralogger.presentation.components.SharedScaffold
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 import com.example.jiralogger.presentation.util.Screen
-import com.example.jiralogger.presentation.util.convertLongToTime
 import com.example.jiralogger.presentation.util.preview_paramater.WorkLogListPreviewParameterProvider
 import com.example.jiralogger.presentation.work_log_list.components.WorkLogListItem
 import kotlinx.coroutines.launch
 
+@ExperimentalAnimationApi
 @ExperimentalFoundationApi
 @Composable
 fun WorkLogListScreen(
@@ -51,8 +51,8 @@ fun WorkLogListScreen(
     )
 }
 
+@ExperimentalAnimationApi
 @ExperimentalFoundationApi
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun Content(
     state: WorkLogListState,
@@ -90,7 +90,7 @@ fun Content(
             state.itemMap.forEach { (date, logs) ->
                 item(date) {
                     Text(
-                        text = convertLongToTime(date as Long, "E d. MMMM yy"),
+                        text = date as String,
                         modifier = Modifier.padding(4.dp, top = 12.dp),
                         color = MaterialTheme.colorScheme.onBackground
                     )
@@ -121,6 +121,7 @@ fun Content(
     }
 }
 
+@ExperimentalAnimationApi
 @ExperimentalFoundationApi
 @Preview(name = "Light mode", uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 @Preview(name = "Dark mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)

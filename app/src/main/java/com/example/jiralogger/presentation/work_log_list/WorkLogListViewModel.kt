@@ -14,6 +14,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import javax.inject.Inject
 
 @HiltViewModel
@@ -93,7 +94,8 @@ class WorkLogListViewModel @Inject constructor(
             _state.value = _state.value.copy(
                 items = result,
                 itemMap = result.groupBy {
-                    it.dateWorked
+                    val sdf = SimpleDateFormat("E d. MMMM yy")
+                    sdf.format(it.dateWorked)
                 },
                 logOrder = order
             )

@@ -1,7 +1,6 @@
 package com.example.jiralogger.presentation.work_log_add_edit
 
 import androidx.compose.ui.focus.FocusState
-import java.util.*
 
 sealed class AddEditWorkLogEvent {
     data class IssueChosen(val issueId: String) : AddEditWorkLogEvent()
@@ -10,7 +9,7 @@ sealed class AddEditWorkLogEvent {
     data class EnteredDescription(val value: String) : AddEditWorkLogEvent()
     data class ChangedDescriptionFocus(val focusState: FocusState) : AddEditWorkLogEvent()
 
-    data class DateChosen(val value: Date) : AddEditWorkLogEvent()
+    data class DateChosen(val value: Long) : AddEditWorkLogEvent()
     data class ChangedDateFocus(val focusState: FocusState) : AddEditWorkLogEvent()
 
     data class EnteredTimeSpent(val value: String) : AddEditWorkLogEvent()
