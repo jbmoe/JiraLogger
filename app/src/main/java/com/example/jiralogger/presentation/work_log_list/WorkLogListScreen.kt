@@ -6,6 +6,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.SnackbarResult
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.rememberScaffoldState
@@ -14,6 +15,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -31,6 +33,7 @@ import com.example.jiralogger.presentation.util.Screen
 import com.example.jiralogger.presentation.util.convertLongToTime
 import com.example.jiralogger.presentation.util.preview_paramater.WorkLogListPreviewParameterProvider
 import com.example.jiralogger.presentation.work_log_list.components.WorkLogListItem
+import kotlinx.coroutines.launch
 
 @ExperimentalFoundationApi
 @Composable
@@ -58,6 +61,7 @@ fun Content(
     navController: NavController
 ) {
     val scaffoldState = rememberScaffoldState()
+    val scope = rememberCoroutineScope()
     SharedScaffold(
         state = scaffoldState,
         title = { Text("Work Logs") },
@@ -94,7 +98,19 @@ fun Content(
                 items(items = logs) { workLog ->
                     WorkLogListItem(
                         workLog = workLog as WorkLog,
-                        onItemClicked = { onItemClicked(workLog) }
+                        onItemClicked = { onItemClicked(workLog) },
+                        onDelete = {
+                            onEvent(WorkLogsEvent.DeleteLog(workLog))
+                            scope.launch {
+                                val result = scaffoldState.snackbarHostState.showSnackbar(
+                                    message = "Log deleted",
+                                    actionLabel = "Undo"
+                                )
+                                if (result == SnackbarResult.ActionPerformed) {
+                                    onEvent(WorkLogsEvent.RestoreLog)
+                                }
+                            }
+                        }
                     )
                 }
             }

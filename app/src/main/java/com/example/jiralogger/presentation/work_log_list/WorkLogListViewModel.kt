@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.jiralogger.common.test_data.TestData
+import com.example.jiralogger.domain.model.WorkLog
 import com.example.jiralogger.domain.use_case.work_log.WorkLogUseCases
 import com.example.jiralogger.domain.util.OrderType
 import com.example.jiralogger.domain.util.WorkLogOrder
@@ -21,6 +22,8 @@ class WorkLogListViewModel @Inject constructor(
 ) : ViewModel() {
     private val _state = mutableStateOf(WorkLogListState())
     val state: State<WorkLogListState> = _state
+
+    private var recentlyDeletedLog: WorkLog? = null
 
     private var getLogsJob: Job? = null
 
@@ -46,6 +49,37 @@ class WorkLogListViewModel @Inject constructor(
             is WorkLogsEvent.Refresh -> {
                 refresh()
             }
+            is WorkLogsEvent.DeleteLog -> {
+                deleteLog(event)
+            }
+            is WorkLogsEvent.RestoreLog -> {
+                restoreLog()
+            }
+            is WorkLogsEvent.Order -> {
+                if (state.value.logOrder::class == event.order::class &&
+                    state.value.logOrder.orderType == event.order.orderType
+                ) {
+                    return
+                }
+                getWorkLogs(event.order)
+            }
+            is WorkLogsEvent.ToggleOrderSelection -> {
+
+            }
+        }
+    }
+
+    private fun restoreLog() {
+        viewModelScope.launch {
+            useCases.insertWorkLog(recentlyDeletedLog ?: return@launch)
+            recentlyDeletedLog = null
+        }
+    }
+
+    private fun deleteLog(event: WorkLogsEvent.DeleteLog) {
+        viewModelScope.launch {
+            useCases.deleteWorkLog(event.log)
+            recentlyDeletedLog = event.log
         }
     }
 

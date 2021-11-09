@@ -6,10 +6,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ListItem
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,7 +28,7 @@ import com.example.jiralogger.presentation.work_log_add_edit.WorkLogDetailState
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun WorkLogListItem(workLog: WorkLog, onItemClicked: (WorkLog) -> Unit) {
+fun WorkLogListItem(workLog: WorkLog, onItemClicked: (WorkLog) -> Unit, onDelete: () -> Unit) {
     Surface(
         shape = RoundedCornerShape(8.dp),
         tonalElevation = 4.dp,
@@ -39,13 +38,21 @@ fun WorkLogListItem(workLog: WorkLog, onItemClicked: (WorkLog) -> Unit) {
             modifier = Modifier
                 .clickable { onItemClicked(workLog) },
             text = {
-                Text(
-                    text = workLog.comment,
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold,
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 1
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = workLog.comment,
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.SemiBold,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1
+                    )
+                    IconButton(modifier = Modifier.size(18.dp), onClick = onDelete) {
+                        Icon(Icons.Default.Delete, "Delete")
+                    }
+                }
             },
             secondaryText = {
                 Row(
@@ -87,6 +94,6 @@ fun WorkLogListItem(workLog: WorkLog, onItemClicked: (WorkLog) -> Unit) {
 @Composable
 fun Preview(@PreviewParameter(WorkLogDetailPreviewParameterProvider::class) state: WorkLogDetailState) {
     JiraLoggerTheme {
-        WorkLogListItem(workLog = state.item as WorkLog, onItemClicked = {})
+        WorkLogListItem(workLog = state.item as WorkLog, onItemClicked = {},{})
     }
 }
