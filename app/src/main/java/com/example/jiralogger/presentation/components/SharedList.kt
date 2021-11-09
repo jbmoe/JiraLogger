@@ -18,12 +18,12 @@ import com.example.jiralogger.presentation.util.UiListState
 
 @Composable
 fun SharedList(
-    modifier: Modifier = Modifier,
     state: UiListState,
     listContent: LazyListScope.() -> Unit
 ) {
-    Box(modifier = modifier) {
+    Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn(
+            contentPadding = PaddingValues(horizontal = 8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             listContent()

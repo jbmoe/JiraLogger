@@ -109,12 +109,7 @@ private fun Content(
                     filters = filters,
                     onFilterChange = { onEvent(IssuesEvent.Filter(it)) })
             }
-            SharedList(
-                modifier = Modifier
-                    .padding(horizontal = 8.dp)
-                    .fillMaxSize(),
-                state = state
-            ) {
+            SharedList(state = state) {
                 item {
                     Spacer(Modifier.padding(4.dp))
                 }

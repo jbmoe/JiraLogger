@@ -81,7 +81,7 @@ fun Content(
             )
         }
     ) {
-        SharedList(modifier = Modifier.padding(horizontal = 8.dp), state = state) {
+        SharedList(state = state) {
             state.itemMap.forEach { (date, logs) ->
                 item(date) {
                     Text(
