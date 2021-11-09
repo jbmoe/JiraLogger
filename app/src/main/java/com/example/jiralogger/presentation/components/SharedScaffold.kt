@@ -41,6 +41,7 @@ fun SharedScaffold(
 //    val scaffoldState = rememberScaffoldState()
     Scaffold(
         scaffoldState = state,
+        backgroundColor = MaterialTheme.colorScheme.background,
         topBar = { SharedTopAppBar(title, navigationIcon, actions) },
         bottomBar = bottomBar,
         floatingActionButton = { FAB() }
