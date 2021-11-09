@@ -39,7 +39,7 @@ fun IssueListItem(issue: Issue, onItemClicked: (Issue) -> Unit) {
     Surface(
         shape = RoundedCornerShape(8.dp),
         tonalElevation = 8.dp,
-        shadowElevation = 8.dp
+        shadowElevation = 2.dp,
     ) {
         ListItem(
             modifier = Modifier

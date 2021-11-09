@@ -6,8 +6,9 @@ import com.example.jiralogger.presentation.util.UiListState
 
 data class IssueListState(
     override val isLoading: Boolean = false,
-    override val items: List<Issue?> = emptyList(),
+    override val items: List<Issue> = emptyList(),
+    override val itemMap: Map<Any, List<Any>> = emptyMap(),
     override val error: String = "",
     val filterIsVisible: Boolean = false,
     val issueFilter: IssueFilter = IssueFilter.A_Assigned
-) : UiListState
+): UiListState

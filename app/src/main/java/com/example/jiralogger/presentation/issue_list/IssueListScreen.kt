@@ -2,11 +2,16 @@ package com.example.jiralogger.presentation.issue_list
 
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -22,6 +27,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.jiralogger.R
 import com.example.jiralogger.domain.model.Issue
+import com.example.jiralogger.domain.util.IssueFilter
 import com.example.jiralogger.presentation.components.BottomNavigationBar
 import com.example.jiralogger.presentation.components.SharedList
 import com.example.jiralogger.presentation.components.SharedScaffold
@@ -39,6 +45,7 @@ fun IssueListScreen(
 ) {
     Content(
         state = viewModel.state.value,
+        filters = viewModel.filters,
         onItemClicked = { issue ->
             navController.navigate(Screen.IssueDetailScreen.route + "/${issue.key}")
         },
@@ -54,11 +61,14 @@ fun IssueListScreen(
 @Composable
 private fun Content(
     state: IssueListState,
+    filters: List<IssueFilter>,
     onItemClicked: (Issue) -> Unit = {},
     onEvent: (IssuesEvent) -> Unit = {},
     navController: NavController
 ) {
+    val scaffoldState = rememberScaffoldState()
     SharedScaffold(
+        state = scaffoldState,
         title = { Text(text = "Issues") },
         actions = {
             IconButton(onClick = { onEvent(IssuesEvent.Refresh) }) {
@@ -93,14 +103,29 @@ private fun Content(
         }
     ) {
         Column {
-            if (state.filterIsVisible) {
-                TabSection(onFilterChange = { onEvent(IssuesEvent.Filter(it)) })
+            AnimatedVisibility(visible = state.filterIsVisible) {
+                TabSection(
+                    currentFilter = state.issueFilter,
+                    filters = filters,
+                    onFilterChange = { onEvent(IssuesEvent.Filter(it)) })
             }
-            SharedList(modifier = Modifier.padding(horizontal = 8.dp), state = state) { issue ->
-                IssueListItem(
-                    issue = issue as Issue,
-                    onItemClicked = { onItemClicked(issue) }
-                )
+            SharedList(
+                modifier = Modifier
+                    .padding(horizontal = 8.dp)
+                    .fillMaxSize(),
+                state = state
+            ) {
+                item {
+                    Spacer(Modifier.padding(4.dp))
+                }
+                items(state.items) { issue ->
+                    IssueListItem(issue = issue, onItemClicked = {
+                        onItemClicked(it)
+                    })
+                }
+                item {
+                    Spacer(Modifier.padding(4.dp))
+                }
             }
         }
     }
@@ -112,6 +137,6 @@ private fun Content(
 @Composable
 fun Preview(@PreviewParameter(IssueListPreviewParameterProvider::class) state: IssueListState) {
     JiraLoggerTheme {
-        Content(state = state, navController = rememberNavController())
+        Content(state = state, navController = rememberNavController(), filters = emptyList())
     }
 }

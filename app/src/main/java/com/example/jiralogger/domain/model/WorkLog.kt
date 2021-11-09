@@ -11,6 +11,8 @@ data class WorkLog(
     @ColumnInfo(name = "user_id") val userId: String,
     @ColumnInfo(name = "time_spent") val timeSpent: String,
     @ColumnInfo(name = "time_spent_seconds") val timeSpentSeconds: Int,
-    @ColumnInfo(name = "date_worked") val dateWorked: Long? = null,
+    @ColumnInfo(name = "date_worked") val dateWorked: Long,
     @ColumnInfo(name = "comment") val comment: String
 )
+
+class InvalidLogException(message: String) : Exception(message)

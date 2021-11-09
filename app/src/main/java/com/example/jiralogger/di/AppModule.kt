@@ -9,6 +9,7 @@ import com.example.jiralogger.data.repository.ApiRepositoryImpl
 import com.example.jiralogger.data.repository.DbRepositoryImpl
 import com.example.jiralogger.domain.repository.ApiRepository
 import com.example.jiralogger.domain.repository.DbRepository
+import com.example.jiralogger.domain.use_case.work_log.*
 import com.example.jiralogger.domain.util.BasicAuthInterceptor
 import dagger.Module
 import dagger.Provides
@@ -27,6 +28,17 @@ object AppModule {
         .addInterceptor(BasicAuthInterceptor(Constants.USERNAME, Constants.PASSWORD))
         .build()
     val client: OkHttpClient = _client
+
+    @Provides
+    @Singleton
+    fun provideWorkLogUseCases(repository: DbRepository): WorkLogUseCases {
+        return WorkLogUseCases(
+            getWorkLog = GetWorkLog(repository),
+            getWorkLogs = GetWorkLogs(repository),
+            insertWorkLog = InsertWorkLog(repository),
+            deleteWorkLog = DeleteWorkLog(repository)
+        )
+    }
 
     @Provides
     @Singleton

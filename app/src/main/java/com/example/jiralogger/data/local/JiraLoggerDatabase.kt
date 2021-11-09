@@ -6,7 +6,7 @@ import com.example.jiralogger.domain.model.WorkLog
 
 @Database(
     entities = [WorkLog::class],
-    version = 3
+    version = 5
 )
 abstract class JiraLoggerDatabase : RoomDatabase() {
     abstract val jiraLoggerDao: JiraLoggerDao
@@ -14,5 +14,4 @@ abstract class JiraLoggerDatabase : RoomDatabase() {
     companion object {
         const val DATABASE_NAME = "jiralogger_db"
     }
-
 }

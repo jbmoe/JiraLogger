@@ -6,5 +6,10 @@ import com.example.jiralogger.presentation.issue_list.IssueListState
 
 class IssueListPreviewParameterProvider : PreviewParameterProvider<IssueListState> {
     override val values: Sequence<IssueListState>
-        get() = sequenceOf(IssueListState(items = TestData.API_RESULT_TEST_OBJECT.toIssuesList().shuffled()))
+        get() = sequenceOf(
+            IssueListState(
+                itemMap = TestData.API_RESULT_TEST_OBJECT.toIssuesList().groupBy {
+                    it.status.name == "Closed"
+                })
+        )
 }

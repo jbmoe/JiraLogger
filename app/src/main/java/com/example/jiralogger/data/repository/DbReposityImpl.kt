@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 class DbRepositoryImpl(
     private val dao: JiraLoggerDao
 ) : DbRepository {
-    override fun getWorkLogs(): List<WorkLog> {
+    override fun getWorkLogs(): Flow<List<WorkLog>> {
         return dao.getWorkLogs()
     }
 

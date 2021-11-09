@@ -1,4 +1,4 @@
-package com.example.jiralogger.presentation.work_log_detail
+package com.example.jiralogger.presentation.work_log_add_edit
 
 import com.example.jiralogger.domain.model.WorkLog
 

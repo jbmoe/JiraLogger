@@ -25,7 +25,7 @@ import com.example.jiralogger.R
 import com.example.jiralogger.domain.model.WorkLog
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 import com.example.jiralogger.presentation.util.preview_paramater.WorkLogDetailPreviewParameterProvider
-import com.example.jiralogger.presentation.work_log_detail.WorkLogDetailState
+import com.example.jiralogger.presentation.work_log_add_edit.WorkLogDetailState
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable

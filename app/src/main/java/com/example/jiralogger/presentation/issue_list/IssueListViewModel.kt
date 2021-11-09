@@ -21,10 +21,22 @@ class IssueListViewModel @Inject constructor(
     private val _state = mutableStateOf(IssueListState())
     val state: State<IssueListState> = _state
 
+    lateinit var filters: List<IssueFilter>
+
     private var _refreshAction: (() -> Unit)? = null
 
     init {
+        initFilters()
         getFilteredIssues(IssueFilter.A_Assigned)
+    }
+
+    private fun initFilters() {
+        filters = listOf(
+            IssueFilter.A_Assigned,
+            IssueFilter.B_Seen,
+            IssueFilter.C_WATCHING,
+            IssueFilter.D_EV
+        )
     }
 
     fun onEvent(event: IssuesEvent) {
@@ -51,7 +63,7 @@ class IssueListViewModel @Inject constructor(
             when (result) {
                 is Resource.Success -> {
                     _state.value = IssueListState(
-                        items = result.data ?: emptyList(),
+                        items = result.data?.sortedBy { it.status.name } ?: emptyList(),
                         issueFilter = issueFilter,
                         filterIsVisible = _state.value.filterIsVisible
                     )
@@ -81,7 +93,7 @@ class IssueListViewModel @Inject constructor(
             when (result) {
                 is Resource.Success -> {
                     _state.value = IssueListState(
-                        items = listOf(result.data)
+                        items = if (result.data != null) listOf(result.data) else emptyList()
                     )
                 }
                 is Resource.Error -> {

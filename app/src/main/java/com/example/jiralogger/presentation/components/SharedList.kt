@@ -1,8 +1,11 @@
 package com.example.jiralogger.presentation.components
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -17,20 +20,13 @@ import com.example.jiralogger.presentation.util.UiListState
 fun SharedList(
     modifier: Modifier = Modifier,
     state: UiListState,
-    listItem: @Composable (Any?) -> Unit
+    listContent: LazyListScope.() -> Unit
 ) {
-    Box(modifier = modifier.fillMaxSize()) {
+    Box(modifier = modifier) {
         LazyColumn(
-            modifier = Modifier
-                .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            item {
-                Spacer(Modifier.padding(4.dp))
-            }
-            items(state.items) { item ->
-                listItem(item)
-            }
+            listContent()
         }
         if (state.error.isNotBlank()) {
             ErrorText(state, Modifier.align(Alignment.Center))

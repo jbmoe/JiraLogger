@@ -51,20 +51,33 @@ fun IssueDetailScreen(
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun Content(state: IssueDetailState, onBack: () -> Unit, onLogTime: (String?) -> Unit) {
+    val scaffoldState = androidx.compose.material.rememberScaffoldState()
     SharedScaffold(
+        state = scaffoldState,
         title = { Text("${state.item?.key}") },
         navigationIcon = {
             IconButton(onClick = onBack) {
                 Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
             }
+        },
+        FAB = {
+            ExtendedFloatingActionButton(
+                icon = {
+                    Icon(painter = painterResource(id = R.drawable.ic_baseline_more_time_24), "")
+                },
+                text = {
+                    Text(text = "Log your time")
+                },
+                onClick = { onLogTime(state.item?.key) }
+            )
         }
     ) {
-        DetailBody(state = state, onLogTime = { onLogTime(it) })
+        DetailBody(state = state)
     }
 }
 
 @Composable
-private fun DetailBody(state: IssueDetailState, onLogTime: (String?) -> Unit) {
+private fun DetailBody(state: IssueDetailState) {
     Box(modifier = Modifier.fillMaxSize()) {
         state.item?.let { issue ->
             LazyColumn(
@@ -80,18 +93,6 @@ private fun DetailBody(state: IssueDetailState, onLogTime: (String?) -> Unit) {
                 }
             }
         }
-        ExtendedFloatingActionButton(
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(24.dp),
-            icon = {
-                Icon(painter = painterResource(id = R.drawable.ic_baseline_more_time_24), "")
-            },
-            text = {
-                Text(text = "Log your time")
-            },
-            onClick = { onLogTime(state.item?.key) }
-        )
         if (state.error.isNotBlank()) {
             ErrorText(state, Modifier.align(Alignment.Center))
         }

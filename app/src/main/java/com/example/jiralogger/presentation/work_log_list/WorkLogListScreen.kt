@@ -3,13 +3,12 @@ package com.example.jiralogger.presentation.work_log_list
 import android.content.res.Configuration
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -24,6 +23,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.jiralogger.common.constant.Constants
 import com.example.jiralogger.domain.model.WorkLog
 import com.example.jiralogger.presentation.components.BottomNavigationBar
+import com.example.jiralogger.presentation.components.SharedList
 import com.example.jiralogger.presentation.components.SharedScaffold
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 import com.example.jiralogger.presentation.util.Screen
@@ -56,7 +56,9 @@ fun Content(
     onEvent: (WorkLogsEvent) -> Unit = {},
     navController: NavController
 ) {
+    val scaffoldState = rememberScaffoldState()
     SharedScaffold(
+        state = scaffoldState,
         title = { Text("Work Logs") },
         actions = {
             IconButton(onClick = { onEvent(WorkLogsEvent.Refresh) }) {
@@ -79,43 +81,25 @@ fun Content(
             )
         }
     ) {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(8.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            state.items.forEach { (date, logs) ->
+        SharedList(modifier = Modifier.padding(horizontal = 8.dp), state = state) {
+            state.itemMap.forEach { (date, logs) ->
                 item(date) {
                     Text(
-                        text = convertLongToTime(date, "E MMMM yy"),
+                        text = convertLongToTime(date as Long, "E d. MMMM yy"),
                         modifier = Modifier.padding(4.dp, top = 12.dp)
                     )
                 }
                 items(items = logs) { workLog ->
                     WorkLogListItem(
-                        workLog = workLog,
+                        workLog = workLog as WorkLog,
                         onItemClicked = { onItemClicked(workLog) }
                     )
                 }
             }
+            item {
+                Spacer(modifier = Modifier.padding(4.dp))
+            }
         }
-//        SharedList(modifier = Modifier.padding(horizontal = 8.dp), state = state) { workLog ->
-//        Spacer(
-//            Modifier
-//                .fillMaxWidth()
-//                .padding(4.dp)
-//        )
-//        WorkLogListItem(
-//            workLog = workLog as WorkLog,
-//            onItemClicked = { onItemClicked(workLog) }
-//        )
-//        Spacer(
-//            Modifier
-//                .fillMaxWidth()
-//                .padding(4.dp)
-//        )
-//        }
     }
 }
 

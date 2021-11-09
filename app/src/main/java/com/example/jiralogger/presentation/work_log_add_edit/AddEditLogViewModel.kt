@@ -1,4 +1,4 @@
-package com.example.jiralogger.presentation.work_log_detail
+package com.example.jiralogger.presentation.work_log_add_edit
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -6,6 +6,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.jiralogger.common.constant.Constants
+import com.example.jiralogger.domain.model.InvalidLogException
 import com.example.jiralogger.domain.model.WorkLog
 import com.example.jiralogger.domain.use_case.work_log.GetWorkLog
 import com.example.jiralogger.domain.use_case.work_log.InsertWorkLog
@@ -13,6 +14,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import java.time.Instant
 import java.util.*
 import javax.inject.Inject
 
@@ -23,35 +25,40 @@ class AddEditLogViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private val _issueId = mutableStateOf(
-        InputFieldState<String>(
+        InputFieldState(
+            value = "",
             hint = "Issue ID"
         )
     )
     val issueId: State<InputFieldState<String>> = _issueId
 
     private val _description = mutableStateOf(
-        InputFieldState<String>(
+        InputFieldState(
+            value = "",
             hint = "Describe the work you've been doing"
         )
     )
     val description: State<InputFieldState<String>> = _description
 
     private val _date = mutableStateOf(
-        InputFieldState<Date>(
+        InputFieldState(
+            value = Date.from(Instant.now()),
             hint = "The date you've been working"
         )
     )
     val date: State<InputFieldState<Date>> = _date
 
     private val _timeSpent = mutableStateOf(
-        InputFieldState<String>(
+        InputFieldState(
+            value = "",
             hint = "How much time you've spent"
         )
     )
     val timeSpent: State<InputFieldState<String>> = _timeSpent
 
     private val _timeSpentSec = mutableStateOf(
-        InputFieldState<Int>(
+        InputFieldState(
+            value = 0,
             hint = "How much time you've spent"
         )
     )
@@ -86,7 +93,7 @@ class AddEditLogViewModel @Inject constructor(
             }
             is AddEditWorkLogEvent.ChangeIssueFocus -> {
                 _issueId.value = _issueId.value.copy(
-                    isHintVisible = !event.focusState.isFocused && _issueId.value.value.isNullOrBlank()
+                    isHintVisible = !event.focusState.isFocused && _issueId.value.value.isBlank()
                 )
             }
             is AddEditWorkLogEvent.EnteredDescription -> {
@@ -96,17 +103,20 @@ class AddEditLogViewModel @Inject constructor(
             }
             is AddEditWorkLogEvent.ChangedDescriptionFocus -> {
                 _description.value = _description.value.copy(
-                    isHintVisible = !event.focusState.isFocused && _description.value.value.isNullOrBlank()
+                    isHintVisible = !event.focusState.isFocused && _description.value.value.isBlank()
                 )
             }
             is AddEditWorkLogEvent.DateChosen -> {
+                val instance = event.value.toInstant()
+                val date = Date(instance.toEpochMilli())
+
                 _date.value = _date.value.copy(
-                    value = event.value
+                    value = date
                 )
             }
             is AddEditWorkLogEvent.ChangedDateFocus -> {
                 _date.value = _date.value.copy(
-                    isHintVisible = !event.focusState.isFocused && _date.value.value == null
+                    isHintVisible = false
                 )
             }
             is AddEditWorkLogEvent.EnteredTimeSpent -> {
@@ -116,7 +126,7 @@ class AddEditLogViewModel @Inject constructor(
             }
             is AddEditWorkLogEvent.ChangedTimeSpentFocus -> {
                 _timeSpent.value = _timeSpent.value.copy(
-                    isHintVisible = !event.focusState.isFocused && _timeSpent.value.value.isNullOrBlank()
+                    isHintVisible = !event.focusState.isFocused && _timeSpent.value.value.isBlank()
                 )
             }
             is AddEditWorkLogEvent.EnteredTimeSpentSec -> {
@@ -126,7 +136,7 @@ class AddEditLogViewModel @Inject constructor(
             }
             is AddEditWorkLogEvent.ChangedTimeSpentSecFocus -> {
                 _timeSpentSec.value = _timeSpentSec.value.copy(
-                    isHintVisible = !event.focusState.isFocused && _timeSpentSec.value.value == null
+                    isHintVisible = !event.focusState.isFocused && _timeSpentSec.value.value == 0
                 )
             }
             is AddEditWorkLogEvent.Save -> {
@@ -140,16 +150,17 @@ class AddEditLogViewModel @Inject constructor(
             try {
                 insertWorkLogUseCase(
                     WorkLog(
-                        issueId = _issueId.value.value!!,
-                        comment = _description.value.value!!,
-                        dateWorked = _date.value.value!!.time,
-                        timeSpent = _timeSpent.value.value!!,
-                        timeSpentSeconds = _timeSpentSec.value.value!!,
+                        id = currentLogId,
+                        issueId = _issueId.value.value,
+                        comment = if (_description.value.value.isNotBlank()) _description.value.value else "Working on issue ${_issueId.value.value}",
+                        dateWorked = _date.value.value.time,
+                        timeSpent = _timeSpent.value.value,
+                        timeSpentSeconds = _timeSpentSec.value.value,
                         userId = "JEM"
                     )
                 )
                 _eventFlow.emit(UiEvent.SaveLog)
-            } catch (e: Exception) {
+            } catch (e: InvalidLogException) {
                 _eventFlow.emit(
                     UiEvent.ShowSnackbar(
                         message = e.message ?: "Couldn't save log"
@@ -172,7 +183,7 @@ class AddEditLogViewModel @Inject constructor(
                     isHintVisible = false
                 )
                 _date.value = _date.value.copy(
-                    value = log.dateWorked?.let { Date(it) },
+                    value = Date(log.dateWorked),
                     isHintVisible = false
                 )
                 _timeSpent.value = _timeSpent.value.copy(
