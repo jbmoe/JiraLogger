@@ -19,7 +19,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -132,22 +131,56 @@ fun DetailBody(
             contentPadding = PaddingValues(20.dp)
         ) {
             item {
-                OLTextField(
+                OutlinedTextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .onFocusChanged { onEvent(AddEditWorkLogEvent.ChangeIssueFocus(it)) },
                     value = issueId.value,
                     onValueChange = { onEvent(AddEditWorkLogEvent.IssueChosen(it)) },
-                    onFocusChanged = { onEvent(AddEditWorkLogEvent.ChangeIssueFocus(it)) },
-                    placeholder = { Text(issueId.hint) }
+                    placeholder = {
+                        Text(
+                            issueId.hint,
+                            color = MaterialTheme.colorScheme.onBackground
+                        )
+                    },
+                    label = {
+                        Text(
+                            "Issue ID",
+                            color = MaterialTheme.colorScheme.onBackground
+                        )
+                    },
+                    readOnly = true,
+                    colors = TextFieldDefaults.textFieldColors(
+                        backgroundColor = MaterialTheme.colorScheme.background,
+                        textColor = MaterialTheme.colorScheme.onBackground
+                    )
                 )
 
                 Spacer(Modifier.padding(8.dp))
 
-                OLTextField(
+                OutlinedTextField(
                     modifier = Modifier
-                        .height(124.dp),
+                        .fillMaxWidth()
+                        .height(124.dp)
+                        .onFocusChanged { onEvent(AddEditWorkLogEvent.ChangedDescriptionFocus(it)) },
                     value = description.value,
                     onValueChange = { onEvent(AddEditWorkLogEvent.EnteredDescription(it)) },
-                    onFocusChanged = { onEvent(AddEditWorkLogEvent.ChangedDescriptionFocus(it)) },
-                    placeholder = { Text(description.hint) }
+                    placeholder = {
+                        Text(
+                            description.hint,
+                            color = MaterialTheme.colorScheme.onBackground
+                        )
+                    },
+                    label = {
+                        Text(
+                            "Comment",
+                            color = MaterialTheme.colorScheme.onBackground
+                        )
+                    },
+                    colors = TextFieldDefaults.textFieldColors(
+                        backgroundColor = MaterialTheme.colorScheme.background,
+                        textColor = MaterialTheme.colorScheme.onBackground
+                    )
                 )
 
                 Spacer(Modifier.padding(8.dp))
@@ -163,15 +196,28 @@ fun DetailBody(
                 ) {
                     Text(
                         "Worked",
-                        Modifier.weight(.3f)
+                        Modifier.weight(.3f),
+                        color = MaterialTheme.colorScheme.onBackground
                     )
 
-                    OLTextField(
-                        modifier = Modifier.weight(.7f),
+                    OutlinedTextField(
+                        modifier = Modifier
+                            .weight(.7f)
+                            .onFocusChanged {
+                                onEvent(AddEditWorkLogEvent.ChangedTimeSpentFocus(it))
+                            },
                         value = worked.value,
                         onValueChange = { onEvent(AddEditWorkLogEvent.EnteredTimeSpent(it)) },
-                        onFocusChanged = { onEvent(AddEditWorkLogEvent.ChangedTimeSpentFocus(it)) },
-                        placeholder = { Text(worked.hint) }
+                        placeholder = {
+                            Text(
+                                worked.hint,
+                                color = MaterialTheme.colorScheme.onBackground
+                            )
+                        },
+                        colors = TextFieldDefaults.textFieldColors(
+                            backgroundColor = MaterialTheme.colorScheme.background,
+                            textColor = MaterialTheme.colorScheme.onBackground
+                        )
                     )
                 }
             }
@@ -192,7 +238,8 @@ private fun DateRow(
     ) {
         Text(
             "Date",
-            Modifier.weight(.3f)
+            Modifier.weight(.3f),
+            color = MaterialTheme.colorScheme.onBackground
         )
 
         val formatter = SimpleDateFormat("dd. MMM yy")
@@ -230,7 +277,8 @@ fun OLTextField(
         singleLine = singleLine,
         maxLines = maxLines,
         colors = TextFieldDefaults.textFieldColors(
-            backgroundColor = Color.Gray
+            backgroundColor = MaterialTheme.colorScheme.background,
+            textColor = MaterialTheme.colorScheme.onBackground
         )
     )
 }

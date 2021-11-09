@@ -11,6 +11,7 @@ import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -86,7 +87,8 @@ fun Content(
                 item(date) {
                     Text(
                         text = convertLongToTime(date as Long, "E d. MMMM yy"),
-                        modifier = Modifier.padding(4.dp, top = 12.dp)
+                        modifier = Modifier.padding(4.dp, top = 12.dp),
+                        color = MaterialTheme.colorScheme.onBackground
                     )
                 }
                 items(items = logs) { workLog ->
