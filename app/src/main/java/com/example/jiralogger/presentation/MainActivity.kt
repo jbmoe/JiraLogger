@@ -12,8 +12,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.jiralogger.common.constant.Constants
 import com.example.jiralogger.presentation.issue_detail.IssueDetailScreen
 import com.example.jiralogger.presentation.issue_list.IssueListScreen
