@@ -17,7 +17,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,12 +25,11 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.jiralogger.R
-import com.example.jiralogger.presentation.components.DatePickerView
+import com.example.jiralogger.presentation.components.DatePicker
 import com.example.jiralogger.presentation.components.SharedScaffold
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 import com.example.jiralogger.presentation.util.preview_paramater.WorkLogDetailPreviewParameterProvider
 import kotlinx.coroutines.flow.collectLatest
-import java.text.SimpleDateFormat
 
 @ExperimentalAnimationApi
 @ExperimentalMaterial3Api
@@ -240,46 +238,10 @@ private fun DateRow(
             Modifier.weight(.3f),
             color = MaterialTheme.colorScheme.onBackground
         )
-
-        val formatter = SimpleDateFormat("dd. MMM yy")
-        val displayDate = formatter.format(date.value)
-
-        DatePickerView(modifier = Modifier.weight(.7f), datePicked = displayDate, updatedDate = {
-            onEvent(AddEditWorkLogEvent.DateChosen(it!!))
-        })
+        DatePicker(modifier = Modifier.weight(.7f), selectedDate = date.value) {
+            onEvent(AddEditWorkLogEvent.DateChosen(it))
+        }
     }
-}
-
-@Composable
-fun OLTextField(
-    modifier: Modifier = Modifier,
-    value: String,
-    onValueChange: (String) -> Unit,
-    onFocusChanged: (FocusState) -> Unit,
-    readOnly: Boolean = false,
-    label: (@Composable () -> Unit)? = null,
-    placeholder: (@Composable () -> Unit)? = null,
-    singleLine: Boolean = false,
-    maxLines: Int = Int.MAX_VALUE
-) {
-    OutlinedTextField(
-        modifier = modifier
-            .fillMaxWidth()
-            .onFocusChanged {
-                onFocusChanged(it)
-            },
-        value = value,
-        onValueChange = { onValueChange(it) },
-        readOnly = readOnly,
-        label = label,
-        placeholder = placeholder,
-        singleLine = singleLine,
-        maxLines = maxLines,
-        colors = TextFieldDefaults.textFieldColors(
-            backgroundColor = MaterialTheme.colorScheme.background,
-            textColor = MaterialTheme.colorScheme.onBackground
-        )
-    )
 }
 
 @ExperimentalAnimationApi

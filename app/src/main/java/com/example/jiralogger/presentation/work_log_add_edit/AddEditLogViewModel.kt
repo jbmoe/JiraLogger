@@ -105,8 +105,6 @@ class AddEditLogViewModel @Inject constructor(
                 )
             }
             is AddEditWorkLogEvent.DateChosen -> {
-//                val date = Date(event.value)
-
                 _date.value = _date.value.copy(
                     value = event.value
                 )

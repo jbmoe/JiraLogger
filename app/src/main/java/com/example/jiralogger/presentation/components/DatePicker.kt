@@ -1,107 +1,87 @@
 package com.example.jiralogger.presentation.components
 
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.Dimension
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import com.example.jiralogger.presentation.issue_list.IssueListState
+import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
+import com.example.jiralogger.presentation.util.preview_paramater.IssueListPreviewParameterProvider
 import com.google.android.material.datepicker.MaterialDatePicker
 import java.text.SimpleDateFormat
 import java.util.*
 
-
 @Composable
-fun DatePickerView(
-    datePicked: String,
-    updatedDate: (date: Long?) -> Unit,
-    modifier: Modifier = Modifier
+fun DatePicker(
+    modifier: Modifier = Modifier,
+    selectedDate: Long,
+    activity: AppCompatActivity = LocalContext.current as AppCompatActivity,
+    dateFormat: String = "E d. MMM yy",
+    datePicked: (Long) -> Unit
 ) {
-    val activity = LocalContext.current as AppCompatActivity
+    val sdf = SimpleDateFormat(dateFormat)
+    val display = sdf.format(Date(selectedDate))
+    OutlinedTextField(
+        modifier = modifier,
+        value = display,
+        onValueChange = {
 
-    Box(
-        modifier = modifier
-            .fillMaxSize()
-            .wrapContentSize(Alignment.TopStart)
-            .padding(top = 10.dp)
-            .border(0.5.dp, MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f))
-            .clickable {
-                showDatePicker(activity, updatedDate)
+        },
+        trailingIcon = {
+            IconButton(onClick = {
+                showDatePicker(activity = activity, selectedDate = selectedDate) {
+                    datePicked(it)
+                }
+            }) {
+                Icon(
+                    imageVector = Icons.Default.DateRange,
+                    contentDescription = "Calendar",
+                    tint = MaterialTheme.colorScheme.onBackground
+                )
             }
-    ) {
-        ConstraintLayout(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-        ) {
-            val (label, iconView) = createRefs()
-
-            Text(
-                text = datePicked,
-                color = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .constrainAs(label) {
-                        top.linkTo(parent.top)
-                        bottom.linkTo(parent.bottom)
-                        start.linkTo(parent.start)
-                        end.linkTo(iconView.start)
-                        width = Dimension.fillToConstraints
-                    }
-            )
-
-            Icon(
-                imageVector = Icons.Default.DateRange,
-                contentDescription = null,
-                modifier = Modifier
-                    .size(20.dp, 20.dp)
-                    .constrainAs(iconView) {
-                        end.linkTo(parent.end)
-                        top.linkTo(parent.top)
-                        bottom.linkTo(parent.bottom)
-                    },
-                tint = MaterialTheme.colorScheme.onSurface
-            )
-        }
-    }
+        },
+        colors = TextFieldDefaults.textFieldColors(
+            backgroundColor = MaterialTheme.colorScheme.background,
+            textColor = MaterialTheme.colorScheme.onBackground
+        ),
+        readOnly = true,
+    )
 }
 
 private fun showDatePicker(
+    selectedDate: Long,
     activity: AppCompatActivity,
-    updatedDate: (Long?) -> Unit
+    datePicked: (Long) -> Unit
 ) {
-    val picker = MaterialDatePicker.Builder.datePicker().build()
-    picker.show(activity.supportFragmentManager, picker.toString())
-    picker.addOnPositiveButtonClickListener {
-        updatedDate(it)
+    val datePicker = MaterialDatePicker.Builder.datePicker()
+        .setTitleText("Select date")
+        .setSelection(selectedDate)
+        .build()
+
+    datePicker.addOnPositiveButtonClickListener {
+        datePicked(it)
     }
+
+    datePicker.show(activity.supportFragmentManager, datePicker.toString())
 }
 
-fun dateFormatter(milliseconds: Long?): String? {
-    milliseconds?.let {
-        val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.US)
-        val calendar: Calendar = Calendar.getInstance()
-        calendar.timeInMillis = it
-        return formatter.format(calendar.time)
-    }
-    return null
-}
-
-@ExperimentalMaterial3Api
-@Preview
+@OptIn(ExperimentalAnimationApi::class)
+@Preview(name = "Light mode", uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
+@Preview(name = "Dark mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
-private fun Preview1() {
+fun Preview(@PreviewParameter(IssueListPreviewParameterProvider::class) state: IssueListState) {
+    JiraLoggerTheme {
 
+    }
 }
