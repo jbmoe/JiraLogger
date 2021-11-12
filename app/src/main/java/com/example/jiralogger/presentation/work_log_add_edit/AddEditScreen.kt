@@ -1,6 +1,5 @@
 package com.example.jiralogger.presentation.work_log_add_edit
 
-import android.annotation.SuppressLint
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -26,6 +25,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.jiralogger.R
 import com.example.jiralogger.presentation.components.DatePicker
+import com.example.jiralogger.presentation.components.NumberPickz
 import com.example.jiralogger.presentation.components.SharedScaffold
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 import com.example.jiralogger.presentation.util.preview_paramater.WorkLogDetailPreviewParameterProvider
@@ -188,41 +188,57 @@ fun DetailBody(
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End,
+                    horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
                         "Worked",
-                        Modifier.weight(.3f),
                         color = MaterialTheme.colorScheme.onBackground
                     )
 
-                    OutlinedTextField(
-                        modifier = Modifier
-                            .weight(.7f)
-                            .onFocusChanged {
-                                onEvent(AddEditWorkLogEvent.ChangedTimeSpentFocus(it))
-                            },
-                        value = worked.value,
-                        onValueChange = { onEvent(AddEditWorkLogEvent.EnteredTimeSpent(it)) },
-                        placeholder = {
-                            Text(
-                                worked.hint,
-                                color = MaterialTheme.colorScheme.onBackground
-                            )
-                        },
-                        colors = TextFieldDefaults.textFieldColors(
-                            backgroundColor = MaterialTheme.colorScheme.background,
-                            textColor = MaterialTheme.colorScheme.onBackground
-                        )
-                    )
+                    val hours = (0..99).toList()
+                    val minutes = listOf(0, 15, 30, 45)
+
+                    NumberPickz(numbers = hours, suffix = "h", onChange = {})
+                    NumberPickz(numbers = minutes, suffix = "m", onChange = {})
+
+//                    NumberPicker(
+//                        state = remember { mutableStateOf(0) },
+//                        range = hours,
+//                        labelSuffix = "h"
+//                    )
+//                    NumberPicker(
+//                        state = remember { mutableStateOf(0) },
+//                        range = minutes,
+//                        labelSuffix = "m"
+//                    )
+
+
+//                    OutlinedTextField(
+//                        modifier = Modifier
+//                            .weight(.7f)
+//                            .onFocusChanged {
+//                                onEvent(AddEditWorkLogEvent.ChangedTimeSpentFocus(it))
+//                            },
+//                        value = worked.value,
+//                        onValueChange = { onEvent(AddEditWorkLogEvent.EnteredTimeSpent(it)) },
+//                        placeholder = {
+//                            Text(
+//                                worked.hint,
+//                                color = MaterialTheme.colorScheme.onBackground
+//                            )
+//                        },
+//                        colors = TextFieldDefaults.textFieldColors(
+//                            backgroundColor = MaterialTheme.colorScheme.background,
+//                            textColor = MaterialTheme.colorScheme.onBackground
+//                        )
+//                    )
                 }
             }
         }
     }
 }
 
-@SuppressLint("SimpleDateFormat")
 @Composable
 private fun DateRow(
     date: InputFieldState<Long>,

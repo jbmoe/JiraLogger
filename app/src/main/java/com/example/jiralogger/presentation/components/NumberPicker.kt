@@ -1,14 +1,12 @@
 package com.example.jiralogger.presentation.components
 
+import android.content.res.Configuration
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.ContentAlpha
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -16,19 +14,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import com.example.jiralogger.R
+import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 import kotlinx.coroutines.launch
-import java.lang.Math.abs
+import kotlin.math.abs
 import kotlin.math.roundToInt
 
 @Composable
 fun NumberPicker(
     state: MutableState<Int>,
     modifier: Modifier = Modifier,
-    range: IntRange? = null,
+    range: List<Int>? = null,
+    labelSuffix: String = "",
     textStyle: TextStyle = LocalTextStyle.current,
     onStateChanged: (Int) -> Unit = {},
 ) {
@@ -45,8 +47,8 @@ fun NumberPicker(
         if (range != null) {
             val offsetRange = remember(state.value, range) {
                 val value = state.value
-                val first = -(range.last - value) * halvedNumbersColumnHeightPx
-                val last = -(range.first - value) * halvedNumbersColumnHeightPx
+                val first = -(range.last() - value) * halvedNumbersColumnHeightPx
+                val last = -(range.first() - value) * halvedNumbersColumnHeightPx
                 first..last
             }
             updateBounds(offsetRange.start, offsetRange.endInclusive)
@@ -94,10 +96,10 @@ fun NumberPicker(
     ) {
         val spacing = 4.dp
 
-        val arrowColor = MaterialTheme.colorScheme.onSecondary.copy(alpha = ContentAlpha.disabled)
-
-        Icon(Icons.Default.ArrowDropDown, contentDescription = "")
-//        Arrow(direction = ArrowDirection.UP, tint = arrowColor)
+        Icon(
+            painterResource(id = R.drawable.ic_baseline_arrow_drop_up_24), "",
+            tint = MaterialTheme.colorScheme.onBackground
+        )
 
         Spacer(modifier = Modifier.height(spacing))
 
@@ -109,18 +111,18 @@ fun NumberPicker(
             val baseLabelModifier = Modifier.align(Alignment.Center)
             ProvideTextStyle(textStyle) {
                 Label(
-                    text = (animatedStateValue - 1).toString(),
+                    text = (animatedStateValue - 1).toString() + labelSuffix,
                     modifier = baseLabelModifier
                         .offset(y = -halvedNumbersColumnHeight)
                         .alpha(coercedAnimatedOffset / halvedNumbersColumnHeightPx)
                 )
                 Label(
-                    text = animatedStateValue.toString(),
+                    text = animatedStateValue.toString() + labelSuffix,
                     modifier = baseLabelModifier
                         .alpha(1 - abs(coercedAnimatedOffset) / halvedNumbersColumnHeightPx)
                 )
                 Label(
-                    text = (animatedStateValue + 1).toString(),
+                    text = (animatedStateValue + 1).toString() + labelSuffix,
                     modifier = baseLabelModifier
                         .offset(y = halvedNumbersColumnHeight)
                         .alpha(-coercedAnimatedOffset / halvedNumbersColumnHeightPx)
@@ -130,8 +132,11 @@ fun NumberPicker(
 
         Spacer(modifier = Modifier.height(spacing))
 
-        Icon(Icons.Default.ArrowDropDown, contentDescription = "")
-//        Arrow(direction = ArrowDirection.DOWN, tint = arrowColor)
+        Icon(
+            painterResource(id = R.drawable.ic_baseline_arrow_drop_down_24),
+            "",
+            tint = MaterialTheme.colorScheme.onBackground
+        )
     }
 }
 
@@ -141,9 +146,10 @@ private fun Label(text: String, modifier: Modifier) {
         text = text,
         modifier = modifier.pointerInput(Unit) {
             detectTapGestures(onLongPress = {
-                // FIXME: Empty to disable text selection
+                // Empty to disable text selection
             })
-        }
+        },
+        color = MaterialTheme.colorScheme.onBackground
     )
 }
 
@@ -171,14 +177,66 @@ private suspend fun Animatable<Float, AnimationVector1D>.fling(
     }
 }
 
-@Preview
+@Composable
+fun NumberPickz(numbers: List<Int>, suffix: String = "", onChange: (Int) -> Unit) {
+    var index by remember { mutableStateOf(0) }
+    Column(
+        modifier = Modifier,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        val color = MaterialTheme.colorScheme.onBackground
+        IconButton(
+            onClick = {
+                if (numbers.size > index + 1)
+                    index++
+                else
+                    index = 0
+                onChange(numbers[index])
+            }
+        ) {
+            Icon(
+                modifier = Modifier.size(32.dp),
+                painter = painterResource(id = R.drawable.ic_baseline_arrow_drop_up_24),
+                tint = color,
+                contentDescription = "Increase"
+            )
+        }
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            val textStyle = MaterialTheme.typography.bodyLarge
+
+            Text(text = "${numbers[index]}", style = textStyle, color = color)
+            Text(text = suffix, style = textStyle, color = color)
+        }
+
+        IconButton(modifier = Modifier, onClick = {
+            if (index > 0)
+                index--
+            else
+                index = numbers.size - 1
+            onChange(numbers[index])
+        }) {
+            Icon(
+                modifier = Modifier.size(32.dp),
+                painter = painterResource(id = R.drawable.ic_baseline_arrow_drop_down_24),
+                tint = color,
+                contentDescription = "Decrease"
+            )
+        }
+    }
+}
+
+@Preview(name = "Light mode", uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
+@Preview(name = "Dark mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
 fun PreviewNumberPicker() {
-    Box(modifier = Modifier.fillMaxSize()) {
-        NumberPicker(
-            state = remember { mutableStateOf(9) },
-            range = 0..10,
-            modifier = Modifier.align(Alignment.Center)
-        )
+    JiraLoggerTheme {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            val hours = (0..99).toList()
+            NumberPickz(numbers = hours, suffix = "", onChange = {})
+        }
     }
 }
