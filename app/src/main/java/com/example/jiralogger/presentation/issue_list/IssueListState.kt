@@ -10,5 +10,6 @@ data class IssueListState(
     override val itemMap: Map<Any, List<Any>> = emptyMap(),
     override val error: String = "",
     val filterIsVisible: Boolean = false,
-    val issueFilter: IssueFilter = IssueFilter.A_Assigned
+    val searchIsVisible: Boolean = false,
+    val issueFilter: IssueFilter = IssueFilter.Assigned
 ): UiListState

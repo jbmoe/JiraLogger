@@ -48,11 +48,11 @@ fun TabSection(
 fun Preview() {
     JiraLoggerTheme {
         TabSection(
-            currentFilter = IssueFilter.A_Assigned, filters = listOf(
-                IssueFilter.A_Assigned,
-                IssueFilter.B_Seen,
-                IssueFilter.C_WATCHING,
-                IssueFilter.D_EV
+            currentFilter = IssueFilter.Assigned, filters = listOf(
+                IssueFilter.Assigned,
+                IssueFilter.Seen,
+                IssueFilter.WATCHING,
+                IssueFilter.EV
             )
         )
     }

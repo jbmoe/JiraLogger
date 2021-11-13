@@ -19,7 +19,7 @@ class GetFilteredIssues @Inject constructor(
             val issues = repository.getIssuesByFilter(issueFilter.value)
             emit(Resource.Success(issues))
         } catch (e: HttpException) {
-            emit(Resource.Error(e.localizedMessage ?: "An unexpeted error occurred"))
+            emit(Resource.Error(e.localizedMessage ?: "An unexpected error occurred"))
         } catch (e: IOException) {
             emit(Resource.Error("Couldn't reach server. Check your internet connection"))
         }

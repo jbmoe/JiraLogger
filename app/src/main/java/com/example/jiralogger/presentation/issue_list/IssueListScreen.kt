@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -31,6 +32,7 @@ import com.example.jiralogger.presentation.components.BottomNavigationBar
 import com.example.jiralogger.presentation.components.SharedList
 import com.example.jiralogger.presentation.components.SharedScaffold
 import com.example.jiralogger.presentation.issue_list.components.IssueListItem
+import com.example.jiralogger.presentation.issue_list.components.Searchbar
 import com.example.jiralogger.presentation.issue_list.components.TabSection
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 import com.example.jiralogger.presentation.util.Screen
@@ -70,11 +72,8 @@ private fun Content(
         state = scaffoldState,
         title = { Text(text = "Issues") },
         actions = {
-            IconButton(onClick = { onEvent(IssuesEvent.Refresh) }) {
-                Icon(
-                    imageVector = Icons.Filled.Refresh,
-                    contentDescription = "Refresh"
-                )
+            IconButton(onClick = { onEvent(IssuesEvent.ToggleSearchVisibility) }) {
+                Icon(Icons.Default.Search, "Search")
             }
             IconButton(onClick = { onEvent(IssuesEvent.ToggleFilterVisibility) }) {
                 Icon(
@@ -85,6 +84,12 @@ private fun Content(
                             R.drawable.ic_outline_filter_alt_24
                     ),
                     contentDescription = "Filter"
+                )
+            }
+            IconButton(onClick = { onEvent(IssuesEvent.Refresh) }) {
+                Icon(
+                    imageVector = Icons.Filled.Refresh,
+                    contentDescription = "Refresh"
                 )
             }
         },
@@ -107,6 +112,11 @@ private fun Content(
                     currentFilter = state.issueFilter,
                     filters = filters,
                     onFilterChange = { onEvent(IssuesEvent.Filter(it)) })
+            }
+            AnimatedVisibility(visible = state.searchIsVisible) {
+                Searchbar {
+                    onEvent(IssuesEvent.Search(IssueFilter.SEARCH(it)))
+                }
             }
             SharedList(state = state) {
                 item {

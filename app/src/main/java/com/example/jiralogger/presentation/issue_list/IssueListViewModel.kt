@@ -27,15 +27,15 @@ class IssueListViewModel @Inject constructor(
 
     init {
         initFilters()
-        getFilteredIssues(IssueFilter.A_Assigned)
+        getFilteredIssues(IssueFilter.Assigned)
     }
 
     private fun initFilters() {
         filters = listOf(
-            IssueFilter.A_Assigned,
-            IssueFilter.B_Seen,
-            IssueFilter.C_WATCHING,
-            IssueFilter.D_EV
+            IssueFilter.Assigned,
+            IssueFilter.Seen,
+            IssueFilter.WATCHING,
+            IssueFilter.EV
         )
     }
 
@@ -45,10 +45,22 @@ class IssueListViewModel @Inject constructor(
                 if (state.value.issueFilter::class == event.filter::class) return
                 getFilteredIssues(event.filter)
             }
+            is IssuesEvent.Search -> {
+                getFilteredIssues(event.filter)
+            }
             is IssuesEvent.Refresh -> refresh()
             is IssuesEvent.ToggleFilterVisibility -> {
                 _state.value = _state.value.copy(
-                    filterIsVisible = !_state.value.filterIsVisible
+                    filterIsVisible = !_state.value.filterIsVisible,
+                    searchIsVisible = false
+                )
+                if (_state.value.filterIsVisible)
+                    getFilteredIssues(_state.value.issueFilter)
+            }
+            is IssuesEvent.ToggleSearchVisibility -> {
+                _state.value = _state.value.copy(
+                    filterIsVisible = false,
+                    searchIsVisible = !_state.value.searchIsVisible
                 )
             }
         }
@@ -60,27 +72,32 @@ class IssueListViewModel @Inject constructor(
 
     private fun getFilteredIssues(issueFilter: IssueFilter) {
         getIssuesByFilter(issueFilter).onEach { result ->
+            val filter =
+                if (issueFilter !is IssueFilter.SEARCH) issueFilter else IssueFilter.Assigned
             when (result) {
                 is Resource.Success -> {
                     _state.value = IssueListState(
                         items = result.data?.sortedBy { it.status.name } ?: emptyList(),
-                        issueFilter = issueFilter,
-                        filterIsVisible = _state.value.filterIsVisible
+                        issueFilter = filter,
+                        filterIsVisible = _state.value.filterIsVisible,
+                        searchIsVisible = _state.value.searchIsVisible
                     )
                 }
                 is Resource.Error -> {
                     _state.value =
                         IssueListState(
                             error = result.message ?: "An unexpected error occurred",
-                            issueFilter = issueFilter,
-                            filterIsVisible = _state.value.filterIsVisible
+                            issueFilter = filter,
+                            filterIsVisible = _state.value.filterIsVisible,
+                            searchIsVisible = _state.value.searchIsVisible
                         )
                 }
                 is Resource.Loading -> {
                     _state.value = IssueListState(
                         isLoading = true,
-                        issueFilter = issueFilter,
-                        filterIsVisible = _state.value.filterIsVisible
+                        issueFilter = filter,
+                        filterIsVisible = _state.value.filterIsVisible,
+                        searchIsVisible = _state.value.searchIsVisible
                     )
                 }
             }
