@@ -25,7 +25,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.jiralogger.R
 import com.example.jiralogger.presentation.components.DatePicker
-import com.example.jiralogger.presentation.components.NumberPickz
+import com.example.jiralogger.presentation.components.NumberPicker
 import com.example.jiralogger.presentation.components.SharedScaffold
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 import com.example.jiralogger.presentation.util.preview_paramater.WorkLogDetailPreviewParameterProvider
@@ -41,7 +41,8 @@ fun AddEditScreen(
     val issueId = viewModel.issueId.value
     val description = viewModel.description.value
     val date = viewModel.date.value
-    val timeSpent = viewModel.timeSpent.value
+    val hoursSpent = viewModel.hoursSpent.value
+    val minutesSpent = viewModel.minutesSpent.value
 
     val scaffoldState = rememberScaffoldState()
 
@@ -64,7 +65,8 @@ fun AddEditScreen(
         issueId = issueId,
         description = description,
         date = date,
-        worked = timeSpent,
+        hoursSpent = hoursSpent,
+        minutesSpent = minutesSpent,
         scaffoldState = scaffoldState,
         onBack = { navController.popBackStack() },
         onEvent = {
@@ -79,8 +81,9 @@ fun AddEditScreen(
 fun Content(
     issueId: InputFieldState<String>,
     description: InputFieldState<String>,
-    date: InputFieldState<Long>,
-    worked: InputFieldState<String>,
+    date: Long,
+    hoursSpent: Int,
+    minutesSpent: Int,
     scaffoldState: ScaffoldState,
     onBack: () -> Unit,
     onEvent: (AddEditWorkLogEvent) -> Unit
@@ -108,7 +111,8 @@ fun Content(
             issueId = issueId,
             description = description,
             date = date,
-            worked = worked,
+            hoursSpent = hoursSpent,
+            minutesSpent = minutesSpent,
             onEvent = onEvent
         )
     }
@@ -118,8 +122,9 @@ fun Content(
 fun DetailBody(
     issueId: InputFieldState<String>,
     description: InputFieldState<String>,
-    date: InputFieldState<Long>,
-    worked: InputFieldState<String>,
+    date: Long,
+    hoursSpent: Int,
+    minutesSpent: Int,
     onEvent: (AddEditWorkLogEvent) -> Unit
 ) {
     Box(modifier = Modifier.fillMaxWidth()) {
@@ -161,7 +166,9 @@ fun DetailBody(
                         .height(124.dp)
                         .onFocusChanged { onEvent(AddEditWorkLogEvent.ChangedDescriptionFocus(it)) },
                     value = description.value,
-                    onValueChange = { onEvent(AddEditWorkLogEvent.EnteredDescription(it)) },
+                    onValueChange = {
+                        onEvent(AddEditWorkLogEvent.EnteredDescription(it))
+                    },
                     placeholder = {
                         Text(
                             description.hint,
@@ -196,43 +203,21 @@ fun DetailBody(
                         color = MaterialTheme.colorScheme.onBackground
                     )
 
-                    val hours = (0..99).toList()
-                    val minutes = listOf(0, 15, 30, 45)
+                    NumberPicker(
+                        value = hoursSpent,
+                        suffix = "h",
+                        onChange = {
+                            onEvent(AddEditWorkLogEvent.HoursChanged(it))
+                        }
+                    )
 
-                    NumberPickz(numbers = hours, suffix = "h", onChange = {})
-                    NumberPickz(numbers = minutes, suffix = "m", onChange = {})
-
-//                    NumberPicker(
-//                        state = remember { mutableStateOf(0) },
-//                        range = hours,
-//                        labelSuffix = "h"
-//                    )
-//                    NumberPicker(
-//                        state = remember { mutableStateOf(0) },
-//                        range = minutes,
-//                        labelSuffix = "m"
-//                    )
-
-
-//                    OutlinedTextField(
-//                        modifier = Modifier
-//                            .weight(.7f)
-//                            .onFocusChanged {
-//                                onEvent(AddEditWorkLogEvent.ChangedTimeSpentFocus(it))
-//                            },
-//                        value = worked.value,
-//                        onValueChange = { onEvent(AddEditWorkLogEvent.EnteredTimeSpent(it)) },
-//                        placeholder = {
-//                            Text(
-//                                worked.hint,
-//                                color = MaterialTheme.colorScheme.onBackground
-//                            )
-//                        },
-//                        colors = TextFieldDefaults.textFieldColors(
-//                            backgroundColor = MaterialTheme.colorScheme.background,
-//                            textColor = MaterialTheme.colorScheme.onBackground
-//                        )
-//                    )
+                    NumberPicker(
+                        value = minutesSpent,
+                        suffix = "m",
+                        onChange = {
+                            onEvent(AddEditWorkLogEvent.MinutesChanged(it))
+                        }
+                    )
                 }
             }
         }
@@ -241,7 +226,7 @@ fun DetailBody(
 
 @Composable
 private fun DateRow(
-    date: InputFieldState<Long>,
+    date: Long,
     onEvent: (AddEditWorkLogEvent) -> Unit
 ) {
     Row(
@@ -254,7 +239,7 @@ private fun DateRow(
             Modifier.weight(.3f),
             color = MaterialTheme.colorScheme.onBackground
         )
-        DatePicker(modifier = Modifier.weight(.7f), selectedDate = date.value) {
+        DatePicker(modifier = Modifier.weight(.7f), selectedDate = date) {
             onEvent(AddEditWorkLogEvent.DateChosen(it))
         }
     }
@@ -270,8 +255,9 @@ fun Preview(@PreviewParameter(WorkLogDetailPreviewParameterProvider::class) stat
         Content(
             issueId = InputFieldState(value = "DAL-656"),
             description = InputFieldState(value = "Working on issue DAL-656"),
-            date = InputFieldState(value = System.nanoTime()),
-            worked = InputFieldState("2h 45m"),
+            date = System.nanoTime(),
+            hoursSpent = 0,
+            minutesSpent = 0,
             scaffoldState = rememberScaffoldState(),
             {},
             {}

@@ -24,6 +24,7 @@ fun TabSection(
     TabRow(
         selectedTabIndex = filters.indexOf(currentFilter),
         backgroundColor = MaterialTheme.colorScheme.primaryContainer,
+        contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
         modifier = modifier
             .height(40.dp)
             .shadow(6.dp)
@@ -34,7 +35,7 @@ fun TabSection(
                 onClick = {
                     onFilterChange(filter)
                 }) {
-                Text(filter.name)
+                Text(filter.name, color = MaterialTheme.colorScheme.onPrimaryContainer)
             }
         }
     }

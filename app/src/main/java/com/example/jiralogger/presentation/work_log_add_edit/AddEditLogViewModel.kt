@@ -10,6 +10,7 @@ import com.example.jiralogger.domain.model.InvalidLogException
 import com.example.jiralogger.domain.model.WorkLog
 import com.example.jiralogger.domain.use_case.work_log.GetWorkLog
 import com.example.jiralogger.domain.use_case.work_log.InsertWorkLog
+import com.example.jiralogger.presentation.components.NumberPickerEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -38,34 +39,24 @@ class AddEditLogViewModel @Inject constructor(
     )
     val description: State<InputFieldState<String>> = _description
 
-    private val _date = mutableStateOf(
-        InputFieldState(
-            value = System.nanoTime(),
-            hint = "The date you've been working"
-        )
-    )
-    val date: State<InputFieldState<Long>> = _date
+    private val _date = mutableStateOf(System.currentTimeMillis())
+    val date: State<Long> = _date
 
-    private val _timeSpent = mutableStateOf(
-        InputFieldState(
-            value = "",
-            hint = "How much time you've spent"
-        )
-    )
-    val timeSpent: State<InputFieldState<String>> = _timeSpent
+    private val _timeSpentSec = mutableStateOf(0)
+    private val _hoursSpent = mutableStateOf(0)
+    val hoursSpent: State<Int> = _hoursSpent
 
-    private val _timeSpentSec = mutableStateOf(
-        InputFieldState(
-            value = 0,
-            hint = "How much time you've spent"
-        )
-    )
-    val timeSpentSec: State<InputFieldState<Int>> = _timeSpentSec
+    private val _minutesSpent = mutableStateOf(0)
+    val minutesSpent: State<Int> = _minutesSpent
 
     private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
     private var currentLogId: Int? = null
+
+    private val hours = (0..99).toList()
+    private val minutes = listOf(0, 15, 30, 45)
+
 
     init {
         savedStateHandle.get<Int>(Constants.PARAM_WORK_LOG_ID)?.let { logId ->
@@ -105,39 +96,50 @@ class AddEditLogViewModel @Inject constructor(
                 )
             }
             is AddEditWorkLogEvent.DateChosen -> {
-                _date.value = _date.value.copy(
-                    value = event.value
-                )
+                _date.value = event.value
             }
-            is AddEditWorkLogEvent.ChangedDateFocus -> {
-                _date.value = _date.value.copy(
-                    isHintVisible = false
-                )
+            is AddEditWorkLogEvent.HoursChanged -> {
+                handleHoursEvent(event.event)
             }
-            is AddEditWorkLogEvent.EnteredTimeSpent -> {
-                _timeSpent.value = _timeSpent.value.copy(
-                    value = event.value
-                )
-            }
-            is AddEditWorkLogEvent.ChangedTimeSpentFocus -> {
-                _timeSpent.value = _timeSpent.value.copy(
-                    isHintVisible = !event.focusState.isFocused && _timeSpent.value.value.isBlank()
-                )
-            }
-            is AddEditWorkLogEvent.EnteredTimeSpentSec -> {
-                _timeSpentSec.value = _timeSpentSec.value.copy(
-                    value = event.value
-                )
-            }
-            is AddEditWorkLogEvent.ChangedTimeSpentSecFocus -> {
-                _timeSpentSec.value = _timeSpentSec.value.copy(
-                    isHintVisible = !event.focusState.isFocused && _timeSpentSec.value.value == 0
-                )
+            is AddEditWorkLogEvent.MinutesChanged -> {
+                handleMinutesEvent(event.event)
             }
             is AddEditWorkLogEvent.Save -> {
                 save()
             }
         }
+    }
+
+    private fun handleHoursEvent(event: NumberPickerEvent) {
+        if (event == NumberPickerEvent.Increase)
+            if (_hoursSpent.value == hours.last())
+                _hoursSpent.value = hours.first()
+            else
+                _hoursSpent.value++
+        else
+            if (_hoursSpent.value == hours.first())
+                _hoursSpent.value = hours.last()
+            else
+                _hoursSpent.value--
+        updateTimeSpentSeconds()
+    }
+
+    private fun handleMinutesEvent(event: NumberPickerEvent) {
+        if (event == NumberPickerEvent.Increase)
+            if (_minutesSpent.value == minutes.last())
+                _minutesSpent.value = minutes.first()
+            else
+                _minutesSpent.value = minutes[minutes.indexOf(_minutesSpent.value) + 1]
+        else
+            if (_minutesSpent.value == minutes.first())
+                _minutesSpent.value = minutes.last()
+            else
+                _minutesSpent.value = minutes[minutes.indexOf(_minutesSpent.value) - 1]
+        updateTimeSpentSeconds()
+    }
+
+    private fun updateTimeSpentSeconds() {
+        _timeSpentSec.value = (_hoursSpent.value * 60 * 60) + (_minutesSpent.value * 60)
     }
 
     private fun save() {
@@ -148,9 +150,9 @@ class AddEditLogViewModel @Inject constructor(
                         id = currentLogId,
                         issueId = _issueId.value.value,
                         comment = if (_description.value.value.isNotBlank()) _description.value.value else "Working on issue ${_issueId.value.value}",
-                        dateWorked = _date.value.value,
-                        timeSpent = _timeSpent.value.value,
-                        timeSpentSeconds = _timeSpentSec.value.value,
+                        dateWorked = _date.value,
+                        timeSpent = getTimeSpent(),
+                        timeSpentSeconds = _timeSpentSec.value,
                         userId = "JEM"
                     )
                 )
@@ -165,6 +167,21 @@ class AddEditLogViewModel @Inject constructor(
         }
     }
 
+    private fun getTimeSpent(): String {
+        var toReturn = ""
+        val hours = _hoursSpent.value
+        val minutes = _minutesSpent.value
+
+        if (hours != 0) {
+            toReturn += "${hours}h "
+        }
+        if (minutes != 0) {
+            toReturn += "${minutes}m"
+        }
+
+        return toReturn
+    }
+
     private fun getWorkLog(logId: Int) {
         viewModelScope.launch {
             getWorkLogUseCase(logId)?.also { log ->
@@ -177,18 +194,12 @@ class AddEditLogViewModel @Inject constructor(
                     value = log.comment,
                     isHintVisible = false
                 )
-                _date.value = _date.value.copy(
-                    value = log.dateWorked,
-                    isHintVisible = false
-                )
-                _timeSpent.value = _timeSpent.value.copy(
-                    value = log.timeSpent,
-                    isHintVisible = false
-                )
-                _timeSpentSec.value = _timeSpentSec.value.copy(
-                    value = log.timeSpentSeconds,
-                    isHintVisible = false
-                )
+                _date.value = log.dateWorked
+                _timeSpentSec.value = log.timeSpentSeconds
+                val hours = _timeSpentSec.value / 3600
+                val minutes = _timeSpentSec.value.mod(3600) / 60
+                _hoursSpent.value = hours
+                _minutesSpent.value = minutes
             }
         }
     }
