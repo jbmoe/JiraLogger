@@ -35,7 +35,11 @@ fun TabSection(
                 onClick = {
                     onFilterChange(filter)
                 }) {
-                Text(filter.name, color = MaterialTheme.colorScheme.onPrimaryContainer)
+                Text(
+                    filter.name,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    style = MaterialTheme.typography.bodyMedium
+                )
             }
         }
     }

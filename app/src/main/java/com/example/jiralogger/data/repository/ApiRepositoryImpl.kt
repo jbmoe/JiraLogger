@@ -10,7 +10,16 @@ class
 ApiRepositoryImpl @Inject constructor(
     private val api: JiraApi
 ) : ApiRepository {
-    override suspend fun getIssuesByFilter(filter: String?): List<Issue> {
+    private val cache: MutableMap<String, List<Issue>> = mutableMapOf()
+
+    override suspend fun getIssuesByFilter(filter: String, ignoreCache: Boolean): List<Issue> {
+        if (!cache.containsKey(filter) || ignoreCache)
+            cache[filter] = api.getIssuesByFilter(filter).toIssuesList()
+
+        return cache[filter]!!
+    }
+
+    override suspend fun getIssuesByFilter(filter: String): List<Issue> {
         return api.getIssuesByFilter(filter).toIssuesList()
     }
 

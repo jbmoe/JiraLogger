@@ -70,8 +70,8 @@ class IssueListViewModel @Inject constructor(
         _refreshAction?.invoke()
     }
 
-    private fun getFilteredIssues(issueFilter: IssueFilter) {
-        getIssuesByFilter(issueFilter).onEach { result ->
+    private fun getFilteredIssues(issueFilter: IssueFilter, ignoreCache: Boolean = false) {
+        getIssuesByFilter(issueFilter, ignoreCache).onEach { result ->
             val filter =
                 if (issueFilter !is IssueFilter.SEARCH) issueFilter else IssueFilter.Assigned
             when (result) {
@@ -102,26 +102,6 @@ class IssueListViewModel @Inject constructor(
                 }
             }
         }.launchIn(viewModelScope)
-        _refreshAction = { getFilteredIssues(issueFilter) }
-    }
-
-    private fun getIssueByKey(issueKey: String) {
-        getIssue(issueKey).onEach { result ->
-            when (result) {
-                is Resource.Success -> {
-                    _state.value = IssueListState(
-                        items = if (result.data != null) listOf(result.data) else emptyList()
-                    )
-                }
-                is Resource.Error -> {
-                    _state.value =
-                        IssueListState(error = result.message ?: "An unexpected error occurred")
-                }
-                is Resource.Loading -> {
-                    _state.value = IssueListState(isLoading = true)
-                }
-            }
-        }.launchIn(viewModelScope)
-        _refreshAction = { getIssueByKey(issueKey) }
+        _refreshAction = { getFilteredIssues(issueFilter, true) }
     }
 }

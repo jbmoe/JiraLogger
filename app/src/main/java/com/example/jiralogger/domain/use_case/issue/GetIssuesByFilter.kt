@@ -13,10 +13,13 @@ import javax.inject.Inject
 class GetFilteredIssues @Inject constructor(
     private val repository: ApiRepository
 ) {
-    operator fun invoke(issueFilter: IssueFilter): Flow<Resource<List<Issue>>> = flow {
+    operator fun invoke(
+        issueFilter: IssueFilter,
+        ignoreCache: Boolean = false
+    ): Flow<Resource<List<Issue>>> = flow {
         try {
             emit(Resource.Loading())
-            val issues = repository.getIssuesByFilter(issueFilter.value)
+            val issues = repository.getIssuesByFilter(issueFilter.value, ignoreCache)
             emit(Resource.Success(issues))
         } catch (e: HttpException) {
             emit(Resource.Error(e.localizedMessage ?: "An unexpected error occurred"))

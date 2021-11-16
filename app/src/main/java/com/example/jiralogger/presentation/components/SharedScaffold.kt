@@ -78,7 +78,7 @@ fun BottomNavigationBar(
     onItemClick: (Screen) -> Unit
 ) {
     val backStackEntry = navController.currentBackStackEntryAsState()
-    NavigationBar(modifier = modifier.height(74.dp), tonalElevation = 0.dp) {
+    NavigationBar(modifier = modifier.height(52.dp), tonalElevation = 0.dp) {
         items.forEach { item ->
             val selected = item.route == backStackEntry.value?.destination?.route
             NavigationBarItem(
@@ -89,11 +89,6 @@ fun BottomNavigationBar(
                         painter = painterResource(id = item.drawableId!!),
                         contentDescription = item.name
                     )
-                },
-                label = {
-                    AnimatedVisibility(visible = selected) {
-                        Text(item.name!!)
-                    }
                 },
                 alwaysShowLabel = false
             )

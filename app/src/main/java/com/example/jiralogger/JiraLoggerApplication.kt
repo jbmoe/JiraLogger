@@ -12,6 +12,11 @@ import okhttp3.OkHttpClient
 
 @HiltAndroidApp
 class JiraLoggerApplication : Application(), ImageLoaderFactory {
+    override fun onCreate() {
+        super.onCreate()
+        instance = this
+    }
+
     override fun newImageLoader(): ImageLoader {
         val context = applicationContext
         return ImageLoader.Builder(context)
@@ -21,5 +26,10 @@ class JiraLoggerApplication : Application(), ImageLoaderFactory {
             }
             .okHttpClient(AppModule.client)
             .build()
+    }
+
+    companion object {
+        lateinit var instance: JiraLoggerApplication
+            private set
     }
 }

@@ -8,8 +8,12 @@ import com.example.jiralogger.domain.model.UserCredentials
 class ApiRepositoryTestImpl : ApiRepository {
     private val data = TestData.API_RESULT_TEST_OBJECT.toIssuesList()
 
-    override suspend fun getIssuesByFilter(filter: String?): List<Issue> {
+    override suspend fun getIssuesByFilter(filter: String): List<Issue> {
         return data.shuffled()
+    }
+
+    override suspend fun getIssuesByFilter(filter: String, ignoreCache: Boolean): List<Issue> {
+        return getIssuesByFilter(filter)
     }
 
     override suspend fun getIssueByKey(issueKey: String): Issue? {

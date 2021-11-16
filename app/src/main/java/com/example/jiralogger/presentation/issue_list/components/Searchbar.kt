@@ -2,49 +2,97 @@ package com.example.jiralogger.presentation.issue_list.components
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.Icon
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.jiralogger.presentation.issue_list.IssueListState
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 import com.example.jiralogger.presentation.util.preview_paramater.IssueListPreviewParameterProvider
 
 @Composable
 fun Searchbar(onValueChange: (String) -> Unit) {
-    var value by remember { mutableStateOf("") }
-    Row(
-        Modifier
-            .background(MaterialTheme.colorScheme.primaryContainer)
-    ) {
-        OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(4.dp),
-            value = value,
-            onValueChange = {
-                value = it
-                onValueChange(value)
-            },
-            trailingIcon = {
-                Icon(Icons.Default.Search, contentDescription = "")
-            },
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = MaterialTheme.colorScheme.background,
-                textColor = MaterialTheme.colorScheme.onBackground
+    CustomTextField(
+        leadingIcon = {
+            Icon(
+                Icons.Filled.Search,
+                null,
+                tint = LocalContentColor.current.copy(alpha = 0.3f)
             )
-        )
+        },
+        trailingIcon = null,
+        modifier = Modifier
+            .background(MaterialTheme.colorScheme.primaryContainer)
+            .padding(horizontal = 4.dp)
+            .height(40.dp),
+        placeholderText = "Search"
+    ) {
+        onValueChange(it)
     }
+}
+
+@Composable
+private fun CustomTextField(
+    modifier: Modifier = Modifier,
+    leadingIcon: (@Composable () -> Unit)? = null,
+    trailingIcon: (@Composable () -> Unit)? = null,
+    placeholderText: String = "Placeholder",
+    fontSize: TextUnit = MaterialTheme.typography.bodyMedium.fontSize,
+    onValueChange: (String) -> Unit,
+) {
+    var text by rememberSaveable { mutableStateOf("") }
+    BasicTextField(modifier = modifier
+        .background(MaterialTheme.colorScheme.surface)
+        .fillMaxWidth(),
+        value = text,
+        onValueChange = {
+            text = it
+            onValueChange(text)
+        },
+        singleLine = true,
+        cursorBrush = SolidColor(MaterialTheme.colorScheme.onSurface),
+        textStyle = LocalTextStyle.current.copy(
+            color = MaterialTheme.colorScheme.onSurface,
+            fontSize = fontSize
+        ),
+        decorationBox = { innerTextField ->
+            Row(
+                modifier,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                if (leadingIcon != null) leadingIcon()
+                Box(Modifier.weight(1f)) {
+                    if (text.isEmpty()) Text(
+                        placeholderText,
+                        style = LocalTextStyle.current.copy(
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),
+                            fontSize = fontSize
+                        )
+                    )
+                    innerTextField()
+                }
+                if (trailingIcon != null) trailingIcon()
+            }
+        }
+    )
 }
 
 @Preview(name = "Light mode", uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)

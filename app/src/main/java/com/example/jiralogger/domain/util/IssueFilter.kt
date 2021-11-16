@@ -13,9 +13,4 @@ sealed class IssueFilter(val value: String, val name: String) {
     object WATCHING : IssueFilter(Filters.WATCHING, "Watching")
     object EV : IssueFilter(Filters.EV, "EV")
     data class SEARCH(val search: String) : IssueFilter(Filters.SEARCH_PREFIX + "$search", "Search")
-//
-//    val values = listOf(Assigned, Seen, EV)
-//    fun forEach(callback: (IssueFilter) -> Unit) {
-//        values.forEach { callback(it) }
-//    }
 }
