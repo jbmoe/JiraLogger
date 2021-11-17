@@ -7,6 +7,7 @@ sealed class Screen(
     val drawableId: Int? = null,
     val route: String
 ) {
+    object LoginScreen : Screen(route = "login")
     object IssueListScreen :
         Screen(
             name = "Issues",
