@@ -5,7 +5,6 @@ import com.example.jiralogger.data.remote.dto.Priority
 import com.example.jiralogger.data.remote.dto.Project
 import com.example.jiralogger.data.remote.dto.Status
 
-
 data class Issue(
     val id: String,
     val key: String,
