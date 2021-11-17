@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -23,9 +24,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.jiralogger.R
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 import com.example.jiralogger.presentation.ui.theme.outlinedTextFieldColors
 import com.example.jiralogger.presentation.util.InputFieldState
+import com.example.jiralogger.presentation.util.Screen
 
 @Composable
 fun LoginScreen(
@@ -37,7 +40,11 @@ fun LoginScreen(
     Content(
         usernameState = usernameState,
         passwordState = passwordState,
-        onEvent = { viewModel.onEvent(it) })
+        onEvent = { viewModel.onEvent(it) },
+        login = {
+            navController.navigate(Screen.IssueListScreen.route)
+        }
+    )
 }
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -45,6 +52,7 @@ fun LoginScreen(
 fun Content(
     usernameState: InputFieldState<String>,
     passwordState: InputFieldState<String>,
+    login: () -> Unit,
     onEvent: (LoginEvent) -> Unit
 ) {
     Column(
@@ -54,6 +62,11 @@ fun Content(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        Text(
+            text = stringResource(id = R.string.app_name),
+            style = MaterialTheme.typography.displayLarge,
+            modifier = Modifier.padding(bottom = 128.dp)
+        )
         TextField(
             inputState = usernameState,
             onValueChange = {
@@ -75,7 +88,7 @@ fun Content(
             }
         )
         Spacer(modifier = Modifier.padding(8.dp))
-        FilledTonalButton(onClick = { /*TODO*/ }) {
+        FilledTonalButton(onClick = login) {
             Text(text = "Login")
         }
     }
@@ -126,7 +139,8 @@ fun Preview() {
         Content(
             usernameState = usernameState,
             passwordState = passwordState,
-            onEvent = {}
+            onEvent = {},
+            login = {}
         )
     }
 }
