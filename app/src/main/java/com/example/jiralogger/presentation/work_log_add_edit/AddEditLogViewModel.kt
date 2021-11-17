@@ -11,6 +11,7 @@ import com.example.jiralogger.domain.model.WorkLog
 import com.example.jiralogger.domain.use_case.work_log.GetWorkLog
 import com.example.jiralogger.domain.use_case.work_log.InsertWorkLog
 import com.example.jiralogger.presentation.components.NumberPickerEvent
+import com.example.jiralogger.presentation.util.InputFieldState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow

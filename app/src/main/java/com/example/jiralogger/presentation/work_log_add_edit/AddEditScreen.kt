@@ -28,6 +28,7 @@ import com.example.jiralogger.presentation.components.DatePicker
 import com.example.jiralogger.presentation.components.NumberPicker
 import com.example.jiralogger.presentation.components.SharedScaffold
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
+import com.example.jiralogger.presentation.util.InputFieldState
 import com.example.jiralogger.presentation.util.preview_paramater.WorkLogDetailPreviewParameterProvider
 import kotlinx.coroutines.flow.collectLatest
 
