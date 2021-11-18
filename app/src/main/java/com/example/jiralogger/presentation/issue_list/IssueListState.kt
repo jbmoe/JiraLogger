@@ -9,7 +9,7 @@ data class IssueListState(
     override val items: List<Issue> = emptyList(),
     override val itemMap: Map<Any, List<Any>> = emptyMap(),
     override val error: String = "",
-    val filterIsVisible: Boolean = false,
+    val filterIsVisible: Boolean = true,
     val searchIsVisible: Boolean = false,
     val issueFilter: IssueFilter = IssueFilter.Assigned
 ): UiListState

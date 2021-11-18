@@ -15,7 +15,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class IssueListViewModel @Inject constructor(
-    private val getIssue: GetIssue,
     private val getIssuesByFilter: GetFilteredIssues
 ) : ViewModel() {
     private val _state = mutableStateOf(IssueListState())
