@@ -14,7 +14,8 @@ class LoginViewModel @Inject constructor(
     private val _username = mutableStateOf(
         InputFieldState(
             value = "",
-            hint = "Username"
+            label = "Username",
+            placeholder = "Your Jira username"
         )
     )
     val username: State<InputFieldState<String>> = _username
@@ -22,7 +23,8 @@ class LoginViewModel @Inject constructor(
     private val _password = mutableStateOf(
         InputFieldState(
             value = "",
-            hint = "Password"
+            label = "Password",
+            placeholder = "Your Jira password"
         )
     )
     val password: State<InputFieldState<String>> = _password

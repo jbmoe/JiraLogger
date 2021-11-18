@@ -27,7 +27,8 @@ class AddEditLogViewModel @Inject constructor(
     private val _issueId = mutableStateOf(
         InputFieldState(
             value = "",
-            hint = "Issue ID"
+            label = "Issue ID",
+            placeholder = "The Issue you've been working on"
         )
     )
     val issueId: State<InputFieldState<String>> = _issueId
@@ -35,7 +36,8 @@ class AddEditLogViewModel @Inject constructor(
     private val _description = mutableStateOf(
         InputFieldState(
             value = "",
-            hint = "Describe the work you've been doing"
+            label = "Comment",
+            placeholder = "Describe the work you've been doing"
         )
     )
     val description: State<InputFieldState<String>> = _description
@@ -66,8 +68,7 @@ class AddEditLogViewModel @Inject constructor(
             } else {
                 savedStateHandle.get<String>(Constants.PARAM_ISSUE_KEY)?.let { issueId ->
                     _issueId.value = _issueId.value.copy(
-                        value = issueId,
-                        isHintVisible = false
+                        value = issueId
                     )
                 }
             }
@@ -81,19 +82,9 @@ class AddEditLogViewModel @Inject constructor(
                     value = event.issueId
                 )
             }
-            is AddEditWorkLogEvent.ChangeIssueFocus -> {
-                _issueId.value = _issueId.value.copy(
-                    isHintVisible = !event.focusState.isFocused && _issueId.value.value.isBlank()
-                )
-            }
             is AddEditWorkLogEvent.EnteredDescription -> {
                 _description.value = _description.value.copy(
                     value = event.value
-                )
-            }
-            is AddEditWorkLogEvent.ChangedDescriptionFocus -> {
-                _description.value = _description.value.copy(
-                    isHintVisible = !event.focusState.isFocused && _description.value.value.isBlank()
                 )
             }
             is AddEditWorkLogEvent.DateChosen -> {
@@ -188,12 +179,10 @@ class AddEditLogViewModel @Inject constructor(
             getWorkLogUseCase(logId)?.also { log ->
                 currentLogId = log.id
                 _issueId.value = _issueId.value.copy(
-                    value = log.issueId,
-                    isHintVisible = false
+                    value = log.issueId
                 )
                 _description.value = _description.value.copy(
-                    value = log.comment,
-                    isHintVisible = false
+                    value = log.comment
                 )
                 _date.value = log.dateWorked
                 _timeSpentSec.value = log.timeSpentSeconds
