@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.Icon
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.TextFieldDefaults
@@ -17,8 +18,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.TextUnit
@@ -49,6 +52,7 @@ fun Searchbar(onValueChange: (String) -> Unit) {
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun CustomTextField(
     modifier: Modifier = Modifier,
@@ -58,6 +62,7 @@ private fun CustomTextField(
     fontSize: TextUnit = MaterialTheme.typography.bodyMedium.fontSize,
     onValueChange: (String) -> Unit,
 ) {
+    val keyboardController = LocalSoftwareKeyboardController.current
     var text by rememberSaveable { mutableStateOf("") }
     BasicTextField(modifier = modifier
         .background(MaterialTheme.colorScheme.surface)
@@ -91,7 +96,10 @@ private fun CustomTextField(
                 }
                 if (trailingIcon != null) trailingIcon()
             }
-        }
+        },
+        keyboardActions = KeyboardActions(onDone = {
+            keyboardController?.hide()
+        })
     )
 }
 
