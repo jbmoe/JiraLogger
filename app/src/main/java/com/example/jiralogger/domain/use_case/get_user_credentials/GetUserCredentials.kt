@@ -1,7 +1,7 @@
 package com.example.jiralogger.domain.use_case.get_user_credentials
 
 import com.example.jiralogger.common.Resource
-import com.example.jiralogger.domain.model.UserCredentials
+import com.example.jiralogger.domain.model.UserCredential
 import com.example.jiralogger.domain.repository.ApiRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -12,7 +12,7 @@ import javax.inject.Inject
 class GetUserCredentials @Inject constructor(
     private val repository: ApiRepository
 ) {
-    operator fun invoke(username: String): Flow<Resource<UserCredentials>> = flow {
+    operator fun invoke(username: String): Flow<Resource<UserCredential>> = flow {
         try {
             emit(Resource.Loading())
             val userCredentials = repository.getUserCredentials(username)

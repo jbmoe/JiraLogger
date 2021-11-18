@@ -9,6 +9,10 @@ import com.example.jiralogger.data.repository.ApiRepositoryImpl
 import com.example.jiralogger.data.repository.DbRepositoryImpl
 import com.example.jiralogger.domain.repository.ApiRepository
 import com.example.jiralogger.domain.repository.DbRepository
+import com.example.jiralogger.domain.use_case.user_credential.DeleteUserCredential
+import com.example.jiralogger.domain.use_case.user_credential.GetUserCredential
+import com.example.jiralogger.domain.use_case.user_credential.InsertUserCredential
+import com.example.jiralogger.domain.use_case.user_credential.UserCredentialUseCases
 import com.example.jiralogger.domain.use_case.work_log.*
 import com.example.jiralogger.domain.util.BasicAuthInterceptor
 import dagger.Module
@@ -41,6 +45,16 @@ object AppModule {
             getWorkLogs = GetWorkLogs(repository),
             insertWorkLog = InsertWorkLog(repository),
             deleteWorkLog = DeleteWorkLog(repository)
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun providesUserCredentialUseCases(repository: DbRepository): UserCredentialUseCases {
+        return UserCredentialUseCases(
+            getUserCredential = GetUserCredential(repository),
+            insertUserCredential = InsertUserCredential(repository),
+            deleteUserCredential = DeleteUserCredential(repository)
         )
     }
 
