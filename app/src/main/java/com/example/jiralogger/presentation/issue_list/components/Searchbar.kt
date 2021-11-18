@@ -3,31 +3,30 @@ package com.example.jiralogger.presentation.issue_list.components
 import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.material3.Text
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import com.example.jiralogger.presentation.components.Text
+import androidx.compose.ui.unit.sp
 import com.example.jiralogger.presentation.issue_list.IssueListState
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 import com.example.jiralogger.presentation.util.preview_paramater.IssueListPreviewParameterProvider
@@ -44,7 +43,7 @@ fun Searchbar(onValueChange: (String) -> Unit) {
         },
         trailingIcon = null,
         modifier = Modifier
-            .background(MaterialTheme.colorScheme.background)
+            .background(MaterialTheme.colorScheme.primaryContainer)
             .padding(horizontal = 4.dp)
             .height(40.dp),
         placeholderText = "Search"
@@ -61,18 +60,22 @@ private fun CustomTextField(
     trailingIcon: (@Composable () -> Unit)? = null,
     placeholderText: String = "Placeholder",
     fontSize: TextUnit = MaterialTheme.typography.bodyMedium.fontSize,
-    onEnter: (String) -> Unit,
+    onValueChange: (String) -> Unit,
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     var text by rememberSaveable { mutableStateOf("") }
-    BasicTextField(
-        modifier = modifier.fillMaxWidth(),
+    BasicTextField(modifier = modifier
+        .background(MaterialTheme.colorScheme.surface)
+        .fillMaxWidth(),
         value = text,
-        onValueChange = { text = it },
+        onValueChange = {
+            text = it
+            onValueChange(text)
+        },
         singleLine = true,
-        cursorBrush = SolidColor(MaterialTheme.colorScheme.onBackground),
+        cursorBrush = SolidColor(MaterialTheme.colorScheme.onSurface),
         textStyle = LocalTextStyle.current.copy(
-            color = MaterialTheme.colorScheme.onBackground,
+            color = MaterialTheme.colorScheme.onSurface,
             fontSize = fontSize
         ),
         decorationBox = { innerTextField ->
@@ -82,21 +85,20 @@ private fun CustomTextField(
             ) {
                 if (leadingIcon != null) leadingIcon()
                 Box(Modifier.weight(1f)) {
-                    if (text.isEmpty())
-                        Text(
-                            placeholderText,
-                            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.3f),
+                    if (text.isEmpty()) Text(
+                        placeholderText,
+                        style = LocalTextStyle.current.copy(
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),
                             fontSize = fontSize
                         )
+                    )
                     innerTextField()
                 }
                 if (trailingIcon != null) trailingIcon()
             }
         },
-        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-        keyboardActions = KeyboardActions(onSearch = {
+        keyboardActions = KeyboardActions(onDone = {
             keyboardController?.hide()
-            if (text.isNotBlank()) onEnter(text)
         })
     )
 }
