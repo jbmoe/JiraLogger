@@ -5,7 +5,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.jiralogger.common.test_data.TestData
+import com.example.jiralogger.domain.model.UserCredential
 import com.example.jiralogger.domain.model.WorkLog
+import com.example.jiralogger.domain.use_case.user_credential.UserCredentialUseCases
 import com.example.jiralogger.domain.use_case.work_log.WorkLogUseCases
 import com.example.jiralogger.domain.util.OrderType
 import com.example.jiralogger.domain.util.WorkLogOrder
@@ -33,6 +35,7 @@ class WorkLogListViewModel @Inject constructor(
     init {
         getWorkLogs()
         initDB()
+
     }
 
     private fun initDB() {

@@ -1,6 +1,7 @@
 package com.example.jiralogger.data.repository
 
 import com.example.jiralogger.data.local.JiraLoggerDao
+import com.example.jiralogger.domain.model.UserCredential
 import com.example.jiralogger.domain.model.WorkLog
 import com.example.jiralogger.domain.repository.DbRepository
 import kotlinx.coroutines.flow.Flow
@@ -22,5 +23,21 @@ class DbRepositoryImpl(
 
     override suspend fun deleteWorkLog(workLog: WorkLog) {
         return dao.deleteWorkLog(workLog)
+    }
+
+    override suspend fun getUserCredential(name: String): UserCredential {
+        return dao.getUserCredential(name)
+    }
+
+    override suspend fun insertUserCredentials(userCredential: UserCredential) {
+        return dao.insertUserCredentials(userCredential)
+    }
+
+    override suspend fun deleteUserCredentials(userCredential: UserCredential) {
+        return dao.deleteUserCredentials(userCredential)
+    }
+
+    override suspend fun getUserCredential(username: String, password: String): UserCredential {
+        return dao.getUserCredential(username, password)
     }
 }

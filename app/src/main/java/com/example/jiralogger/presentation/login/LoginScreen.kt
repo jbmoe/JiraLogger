@@ -37,7 +37,8 @@ fun LoginScreen(
         passwordState = passwordState,
         onEvent = { viewModel.onEvent(it) },
         login = {
-            navController.navigate(Screen.IssueListScreen.route)
+            if (viewModel.onEvent(LoginEvent.Login))
+                navController.navigate(Screen.IssueListScreen.route)
         }
     )
 }

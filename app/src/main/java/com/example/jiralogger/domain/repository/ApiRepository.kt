@@ -1,7 +1,7 @@
 package com.example.jiralogger.domain.repository
 
 import com.example.jiralogger.domain.model.Issue
-import com.example.jiralogger.domain.model.UserCredentials
+import com.example.jiralogger.domain.model.UserCredential
 
 interface ApiRepository {
     suspend fun getIssuesByFilter(filter: String): List<Issue>
@@ -10,5 +10,5 @@ interface ApiRepository {
 
     suspend fun getIssueByKey(issueKey: String): Issue?
 
-    suspend fun getUserCredentials(username: String): UserCredentials
+    suspend fun getUserCredentials(username: String): UserCredential
 }

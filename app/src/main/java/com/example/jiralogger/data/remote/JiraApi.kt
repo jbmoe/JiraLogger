@@ -2,7 +2,7 @@ package com.example.jiralogger.data.remote
 
 import com.example.jiralogger.data.remote.dto.ApiResponse
 import com.example.jiralogger.data.remote.dto.IssueDto
-import com.example.jiralogger.domain.model.UserCredentials
+import com.example.jiralogger.domain.model.UserCredential
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -18,5 +18,5 @@ interface JiraApi {
     suspend fun getIssueByKey(@Path("issueKey") issueKey: String): IssueDto
 
     @GET("rest/api/2/user")
-    suspend fun getUserCredentials(@Query("username") username: String): UserCredentials
+    suspend fun getUserCredentials(@Query("username") username: String): UserCredential
 }

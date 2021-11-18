@@ -1,7 +1,7 @@
 package com.example.jiralogger.data.repository
 
 import com.example.jiralogger.data.remote.JiraApi
-import com.example.jiralogger.domain.model.UserCredentials
+import com.example.jiralogger.domain.model.UserCredential
 import com.example.jiralogger.domain.model.Issue
 import com.example.jiralogger.domain.repository.ApiRepository
 import javax.inject.Inject
@@ -27,7 +27,7 @@ ApiRepositoryImpl @Inject constructor(
         return api.getIssueByKey(issueKey).toIssue()
     }
 
-    override suspend fun getUserCredentials(username: String): UserCredentials {
+    override suspend fun getUserCredentials(username: String): UserCredential {
         return api.getUserCredentials(username)
     }
 }
