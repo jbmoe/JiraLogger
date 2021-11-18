@@ -2,11 +2,12 @@ package com.example.jiralogger.data.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import com.example.jiralogger.domain.model.UserCredential
 import com.example.jiralogger.domain.model.WorkLog
 
 @Database(
-    entities = [WorkLog::class],
-    version = 8
+    entities = [WorkLog::class, UserCredential::class],
+    version = 7
 )
 abstract class JiraLoggerDatabase : RoomDatabase() {
     abstract val jiraLoggerDao: JiraLoggerDao

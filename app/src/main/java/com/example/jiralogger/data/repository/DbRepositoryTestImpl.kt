@@ -1,6 +1,7 @@
 package com.example.jiralogger.data.repository
 
 import com.example.jiralogger.common.test_data.TestData
+import com.example.jiralogger.domain.model.UserCredential
 import com.example.jiralogger.domain.model.WorkLog
 import com.example.jiralogger.domain.repository.DbRepository
 import kotlinx.coroutines.flow.Flow
@@ -22,5 +23,21 @@ class DbRepositoryTestImpl : DbRepository {
 
     override suspend fun deleteWorkLog(workLog: WorkLog) {
         TestData.WORK_LOG_TEST_DATA.remove(workLog)
+    }
+
+    override suspend fun getUserCredential(name: String): UserCredential {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun insertUserCredentials(userCredential: UserCredential) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun deleteUserCredentials(userCredential: UserCredential) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getUserCredential(username: String, password: String): UserCredential? {
+        TODO("Not yet implemented")
     }
 }
