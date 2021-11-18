@@ -1,14 +1,12 @@
 package com.example.jiralogger
 
 import android.app.Application
-import androidx.compose.ui.platform.LocalContext
 import coil.ImageLoader
 import coil.ImageLoaderFactory
 import coil.decode.SvgDecoder
-import coil.util.CoilUtils
+import com.example.jiralogger.common.constant.Constants
 import com.example.jiralogger.di.AppModule
 import dagger.hilt.android.HiltAndroidApp
-import okhttp3.OkHttpClient
 
 @HiltAndroidApp
 class JiraLoggerApplication : Application(), ImageLoaderFactory {
@@ -24,7 +22,7 @@ class JiraLoggerApplication : Application(), ImageLoaderFactory {
             .componentRegistry {
                 add(SvgDecoder(context))
             }
-            .okHttpClient(AppModule.client)
+            .okHttpClient(AppModule.client(Constants.USERNAME, Constants.PASSWORD))
             .build()
     }
 
