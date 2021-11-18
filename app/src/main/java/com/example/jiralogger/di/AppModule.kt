@@ -24,10 +24,14 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
-    private val _client = OkHttpClient.Builder()
-        .addInterceptor(BasicAuthInterceptor(Constants.USERNAME, Constants.PASSWORD))
-        .build()
-    val client: OkHttpClient = _client
+    private val _client: (username: String, password: String) -> OkHttpClient =
+        { username, password ->
+            OkHttpClient.Builder()
+                .addInterceptor(BasicAuthInterceptor(username, password))
+                .build()
+        }
+    val client: (username: String, password: String) -> OkHttpClient =
+        { username, password -> _client(username, password) }
 
     @Provides
     @Singleton
@@ -42,10 +46,10 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideJiraApi(): JiraApi {
+    fun provideJiraApi(UsernamePassword: UsernamePassword): JiraApi {
         return Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
-            .client(client)
+            .client(client(UsernamePassword.username, UsernamePassword.password))
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(JiraApi::class.java)
@@ -77,4 +81,12 @@ object AppModule {
 //        return DbRepositoryTestImpl()
         return DbRepositoryImpl(db.jiraLoggerDao)
     }
+
+    @Provides
+    @Singleton
+    fun provideUsernamePassword(): UsernamePassword {
+        return UsernamePassword(Constants.USERNAME, Constants.PASSWORD)
+    }
 }
+
+data class UsernamePassword(val username: String, val password: String)
