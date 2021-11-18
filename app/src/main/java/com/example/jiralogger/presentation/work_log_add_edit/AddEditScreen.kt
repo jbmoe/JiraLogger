@@ -5,9 +5,7 @@ import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.ScaffoldState
-import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.rememberScaffoldState
@@ -15,8 +13,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -26,8 +24,10 @@ import androidx.navigation.NavController
 import com.example.jiralogger.R
 import com.example.jiralogger.presentation.components.DatePicker
 import com.example.jiralogger.presentation.components.NumberPicker
+import com.example.jiralogger.presentation.components.OutlinedTextField
 import com.example.jiralogger.presentation.components.SharedScaffold
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
+import com.example.jiralogger.presentation.ui.theme.outlinedTextFieldColors
 import com.example.jiralogger.presentation.util.InputFieldState
 import com.example.jiralogger.presentation.util.preview_paramater.WorkLogDetailPreviewParameterProvider
 import kotlinx.coroutines.flow.collectLatest
@@ -119,6 +119,7 @@ fun Content(
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun DetailBody(
     issueId: InputFieldState<String>,
@@ -136,27 +137,12 @@ fun DetailBody(
             item {
                 OutlinedTextField(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .onFocusChanged { onEvent(AddEditWorkLogEvent.ChangeIssueFocus(it)) },
+                        .fillMaxWidth(),
                     value = issueId.value,
                     onValueChange = { onEvent(AddEditWorkLogEvent.IssueChosen(it)) },
-                    placeholder = {
-                        Text(
-                            issueId.hint,
-                            color = MaterialTheme.colorScheme.onBackground
-                        )
-                    },
-                    label = {
-                        Text(
-                            "Issue ID",
-                            color = MaterialTheme.colorScheme.onBackground
-                        )
-                    },
-                    readOnly = true,
-                    colors = TextFieldDefaults.textFieldColors(
-                        backgroundColor = MaterialTheme.colorScheme.background,
-                        textColor = MaterialTheme.colorScheme.onBackground
-                    )
+                    placeholderText = issueId.placeholder,
+                    labelText = issueId.label,
+                    readOnly = true
                 )
 
                 Spacer(Modifier.padding(8.dp))
@@ -164,28 +150,13 @@ fun DetailBody(
                 OutlinedTextField(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(124.dp)
-                        .onFocusChanged { onEvent(AddEditWorkLogEvent.ChangedDescriptionFocus(it)) },
+                        .height(124.dp),
                     value = description.value,
                     onValueChange = {
                         onEvent(AddEditWorkLogEvent.EnteredDescription(it))
                     },
-                    placeholder = {
-                        Text(
-                            description.hint,
-                            color = MaterialTheme.colorScheme.onBackground
-                        )
-                    },
-                    label = {
-                        Text(
-                            "Comment",
-                            color = MaterialTheme.colorScheme.onBackground
-                        )
-                    },
-                    colors = TextFieldDefaults.textFieldColors(
-                        backgroundColor = MaterialTheme.colorScheme.background,
-                        textColor = MaterialTheme.colorScheme.onBackground
-                    )
+                    placeholderText = description.placeholder,
+                    labelText = description.label
                 )
 
                 Spacer(Modifier.padding(8.dp))

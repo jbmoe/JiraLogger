@@ -3,25 +3,26 @@ package com.example.jiralogger.presentation.components
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.example.jiralogger.presentation.issue_list.IssueListState
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
+import com.example.jiralogger.presentation.ui.theme.outlinedTextFieldColors
 import com.example.jiralogger.presentation.util.preview_paramater.IssueListPreviewParameterProvider
 import com.google.android.material.datepicker.MaterialDatePicker
 import java.text.SimpleDateFormat
 import java.util.*
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun DatePicker(
     modifier: Modifier = Modifier,
@@ -32,6 +33,7 @@ fun DatePicker(
 ) {
     val sdf = SimpleDateFormat(dateFormat)
     val display = sdf.format(Date(selectedDate))
+
     OutlinedTextField(
         modifier = modifier,
         value = display,
@@ -51,10 +53,6 @@ fun DatePicker(
                 )
             }
         },
-        colors = TextFieldDefaults.textFieldColors(
-            backgroundColor = MaterialTheme.colorScheme.background,
-            textColor = MaterialTheme.colorScheme.onBackground
-        ),
         readOnly = true,
     )
 }

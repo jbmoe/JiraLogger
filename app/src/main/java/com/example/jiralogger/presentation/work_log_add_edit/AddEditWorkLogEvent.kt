@@ -5,10 +5,8 @@ import com.example.jiralogger.presentation.components.NumberPickerEvent
 
 sealed class AddEditWorkLogEvent {
     data class IssueChosen(val issueId: String) : AddEditWorkLogEvent()
-    data class ChangeIssueFocus(val focusState: FocusState) : AddEditWorkLogEvent()
 
     data class EnteredDescription(val value: String) : AddEditWorkLogEvent()
-    data class ChangedDescriptionFocus(val focusState: FocusState) : AddEditWorkLogEvent()
 
     data class DateChosen(val value: Long) : AddEditWorkLogEvent()
 
