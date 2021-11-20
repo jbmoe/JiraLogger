@@ -12,7 +12,6 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -25,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import com.example.jiralogger.presentation.components.Text
 import com.example.jiralogger.presentation.issue_list.IssueListState
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 import com.example.jiralogger.presentation.util.preview_paramater.IssueListPreviewParameterProvider
@@ -84,13 +84,12 @@ private fun CustomTextField(
             ) {
                 if (leadingIcon != null) leadingIcon()
                 Box(Modifier.weight(1f)) {
-                    if (text.isEmpty()) Text(
-                        placeholderText,
-                        style = LocalTextStyle.current.copy(
+                    if (text.isEmpty())
+                        Text(
+                            placeholderText,
                             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),
                             fontSize = fontSize
                         )
-                    )
                     innerTextField()
                 }
                 if (trailingIcon != null) trailingIcon()

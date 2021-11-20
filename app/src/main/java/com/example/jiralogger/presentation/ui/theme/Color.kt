@@ -6,10 +6,10 @@ import androidx.compose.material.ContentAlpha
 import androidx.compose.material.TextFieldColors
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.jiralogger.presentation.components.Text
 
 @Composable
 fun outlinedTextFieldColors(
@@ -69,77 +69,62 @@ fun Preview() {
         Column {
             Text(
                 text = "displayLarge",
-                color = MaterialTheme.colorScheme.onBackground,
                 style = MaterialTheme.typography.displayLarge
             )
             Text(
                 text = "displayMedium",
-                color = MaterialTheme.colorScheme.onBackground,
                 style = MaterialTheme.typography.displayMedium
             )
             Text(
                 text = "displaySmall",
-                color = MaterialTheme.colorScheme.onBackground,
                 style = MaterialTheme.typography.displaySmall
             )
             Text(
                 text = "headlineLarge",
-                color = MaterialTheme.colorScheme.onBackground,
                 style = MaterialTheme.typography.headlineLarge
             )
             Text(
                 text = "headlineMedium",
-                color = MaterialTheme.colorScheme.onBackground,
                 style = MaterialTheme.typography.headlineMedium
             )
             Text(
                 text = "headlineSmall",
-                color = MaterialTheme.colorScheme.onBackground,
                 style = MaterialTheme.typography.headlineSmall
             )
             Text(
                 text = "titleLarge",
-                color = MaterialTheme.colorScheme.onBackground,
                 style = MaterialTheme.typography.titleLarge
             )
             Text(
                 text = "titleMedium",
-                color = MaterialTheme.colorScheme.onBackground,
                 style = MaterialTheme.typography.titleMedium
             )
             Text(
                 text = "titleSmall",
-                color = MaterialTheme.colorScheme.onBackground,
                 style = MaterialTheme.typography.titleSmall
             )
             Text(
                 text = "bodyLarge",
-                color = MaterialTheme.colorScheme.onBackground,
                 style = MaterialTheme.typography.bodyLarge
             )
             Text(
                 text = "bodyMedium",
-                color = MaterialTheme.colorScheme.onBackground,
                 style = MaterialTheme.typography.bodyMedium
             )
             Text(
                 text = "bodySmall",
-                color = MaterialTheme.colorScheme.onBackground,
                 style = MaterialTheme.typography.bodySmall
             )
             Text(
                 text = "labelLarge",
-                color = MaterialTheme.colorScheme.onBackground,
                 style = MaterialTheme.typography.labelLarge
             )
             Text(
                 text = "labelMedium",
-                color = MaterialTheme.colorScheme.onBackground,
                 style = MaterialTheme.typography.labelMedium
             )
             Text(
                 text = "labelSmall",
-                color = MaterialTheme.colorScheme.onBackground,
                 style = MaterialTheme.typography.labelSmall
             )
         }

@@ -15,7 +15,6 @@ import androidx.compose.material.ListItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,6 +27,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.example.jiralogger.R
 import com.example.jiralogger.domain.model.Issue
+import com.example.jiralogger.presentation.components.Text
 import com.example.jiralogger.presentation.issue_detail.IssueDetailState
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 import com.example.jiralogger.presentation.util.ImageFromUrl
@@ -79,7 +79,6 @@ fun IssueListItem(issue: Issue, onItemClicked: (Issue) -> Unit) {
                     text = issue.summary,
                     maxLines = 1,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onBackground,
                     overflow = TextOverflow.Ellipsis
                 )
             },

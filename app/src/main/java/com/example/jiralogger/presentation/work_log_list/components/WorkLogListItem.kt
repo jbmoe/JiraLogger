@@ -8,7 +8,10 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ListItem
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material3.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,6 +25,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.example.jiralogger.R
 import com.example.jiralogger.domain.model.WorkLog
+import com.example.jiralogger.presentation.components.Text
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 import com.example.jiralogger.presentation.util.preview_paramater.WorkLogDetailPreviewParameterProvider
 import com.example.jiralogger.presentation.work_log_add_edit.WorkLogDetailState

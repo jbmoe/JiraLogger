@@ -2,7 +2,6 @@ package com.example.jiralogger.presentation.components
 
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
-import android.webkit.WebChromeClient
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,11 +9,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -109,7 +106,7 @@ fun OutlinedTextField(
 @Composable
 private fun textOrNull(text: String): @Composable (() -> Unit)? {
     return if (text.isNotBlank()) {
-        { Text(text = text, color = MaterialTheme.colorScheme.onBackground) }
+        { Text(text = text) }
     } else {
         null
     }
