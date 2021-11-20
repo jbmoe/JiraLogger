@@ -20,7 +20,7 @@ class IssueListViewModel @Inject constructor(
     private val _state = mutableStateOf(IssueListState())
     val state: State<IssueListState> = _state
 
-    var filters: List<IssueFilter> = listOf(
+    val filters: List<IssueFilter> = listOf(
         IssueFilter.Assigned,
         IssueFilter.Seen,
         IssueFilter.WATCHING,

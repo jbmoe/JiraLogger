@@ -7,7 +7,7 @@ import com.example.jiralogger.common.constant.Filters
  * (IssueFilter::class.nestedSubClasses.forEach())
  * will sort them alphabetically
  */
-sealed class IssueFilter(val value: String, val name: String) {
+sealed class IssueFilter(val value: String, override val name: String) : HasName {
     object Assigned : IssueFilter(Filters.ASSIGNED_TO_ME, "Assigned")
     object Seen : IssueFilter(Filters.LAST_SEEN, "Seen")
     object WATCHING : IssueFilter(Filters.WATCHING, "Watching")
