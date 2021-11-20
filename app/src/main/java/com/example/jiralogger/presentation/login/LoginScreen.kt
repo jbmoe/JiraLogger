@@ -8,8 +8,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material3.*
+import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -21,25 +25,31 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.jiralogger.R
 import com.example.jiralogger.presentation.components.OutlinedTextField
+import com.example.jiralogger.presentation.components.Text
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 import com.example.jiralogger.presentation.util.InputFieldState
 import com.example.jiralogger.presentation.util.Screen
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun LoginScreen(
     navController: NavController,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
+    LaunchedEffect(key1 = true) {
+        viewModel.eventFlow.collectLatest { event ->
+            if (event == LoginViewModel.UiEvent.LoginSuccess) {
+                navController.navigate(Screen.IssueListScreen.route)
+            }
+        }
+    }
+
     val usernameState = viewModel.username.value
     val passwordState = viewModel.password.value
     Content(
         usernameState = usernameState,
         passwordState = passwordState,
-        onEvent = { viewModel.onEvent(it) },
-        login = {
-            if (viewModel.onEvent(LoginEvent.Login))
-                navController.navigate(Screen.IssueListScreen.route)
-        }
+        onEvent = { viewModel.onEvent(it) }
     )
 }
 
@@ -48,7 +58,6 @@ fun LoginScreen(
 fun Content(
     usernameState: InputFieldState<String>,
     passwordState: InputFieldState<String>,
-    login: () -> Unit,
     onEvent: (LoginEvent) -> Unit
 ) {
     Column(
@@ -85,7 +94,7 @@ fun Content(
             }
         )
         Spacer(modifier = Modifier.padding(8.dp))
-        FilledTonalButton(onClick = login) {
+        FilledTonalButton(onClick = { onEvent(LoginEvent.Login) }) {
             Text(text = "Login")
         }
         Spacer(modifier = Modifier.padding(bottom = 128.dp))
@@ -118,8 +127,7 @@ fun Preview() {
         Content(
             usernameState = usernameState,
             passwordState = passwordState,
-            onEvent = {},
-            login = {}
+            onEvent = {}
         )
     }
 }
