@@ -86,17 +86,17 @@ fun Content(
             )
         }
     ) {
-        SharedList(state = state) {
+        SharedList {
             state.itemMap.forEach { (date, logs) ->
                 item(date) {
                     Text(
-                        text = date as String,
+                        text = date,
                         modifier = Modifier.padding(4.dp, top = 12.dp)
                     )
                 }
                 items(items = logs) { workLog ->
                     WorkLogListItem(
-                        workLog = workLog as WorkLog,
+                        workLog = workLog,
                         onItemClicked = { onItemClicked(workLog) },
                         onDelete = {
                             onEvent(WorkLogsEvent.DeleteLog(workLog))
