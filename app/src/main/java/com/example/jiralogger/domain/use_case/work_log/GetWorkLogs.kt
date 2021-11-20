@@ -3,27 +3,45 @@ package com.example.jiralogger.domain.use_case.work_log
 import com.example.jiralogger.domain.model.WorkLog
 import com.example.jiralogger.domain.repository.DbRepository
 import com.example.jiralogger.domain.util.OrderType
-import com.example.jiralogger.domain.util.WorkLogOrder
+import com.example.jiralogger.domain.util.WorkLogGroupBy
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import java.text.SimpleDateFormat
 import javax.inject.Inject
 
 class GetWorkLogs @Inject constructor(
     private val repository: DbRepository
 ) {
-    operator fun invoke(order: WorkLogOrder): Flow<List<WorkLog>> {
+    private val date: (WorkLog) -> String = {
+        val sdf = SimpleDateFormat("E d. MMMM yy")
+        sdf.format(it.dateWorked)
+    }
+
+    private val issue: (WorkLog) -> String = {
+        it.issueId
+    }
+
+    operator fun invoke(groupBy: WorkLogGroupBy): Flow<Map<String, List<WorkLog>>> {
         return repository.getWorkLogs().map { logs ->
-            when (order.orderType) {
-                is OrderType.Ascending -> {
-                    when (order) {
-                        is WorkLogOrder.Date -> logs.sortedBy { it.dateWorked }
-                        is WorkLogOrder.Issue -> logs.sortedBy { it.issueId }
+            when (groupBy) {
+                is WorkLogGroupBy.Date -> {
+                    when (groupBy.orderType) {
+                        is OrderType.Ascending -> {
+                            logs.groupBy(date)
+                        }
+                        is OrderType.Descending -> {
+                            logs.groupBy(date)
+                        }
                     }
                 }
-                is OrderType.Descending -> {
-                    when (order) {
-                        is WorkLogOrder.Date -> logs.sortedByDescending { it.dateWorked }
-                        is WorkLogOrder.Issue -> logs.sortedByDescending { it.issueId }
+                is WorkLogGroupBy.Issue -> {
+                    when (groupBy.orderType) {
+                        is OrderType.Ascending -> {
+                            logs.groupBy(issue)
+                        }
+                        is OrderType.Descending -> {
+                            logs.groupBy(issue)
+                        }
                     }
                 }
             }

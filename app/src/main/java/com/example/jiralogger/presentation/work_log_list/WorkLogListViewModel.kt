@@ -5,12 +5,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.jiralogger.common.test_data.TestData
-import com.example.jiralogger.domain.model.UserCredential
 import com.example.jiralogger.domain.model.WorkLog
-import com.example.jiralogger.domain.use_case.user_credential.UserCredentialUseCases
 import com.example.jiralogger.domain.use_case.work_log.WorkLogUseCases
 import com.example.jiralogger.domain.util.OrderType
-import com.example.jiralogger.domain.util.WorkLogOrder
+import com.example.jiralogger.domain.util.WorkLogGroupBy
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
@@ -32,14 +30,18 @@ class WorkLogListViewModel @Inject constructor(
 
     private var _refreshAction: (() -> Unit)? = null
 
+    var groupBys = listOf(
+        WorkLogGroupBy.Date,
+        WorkLogGroupBy.Issue
+    )
+
     init {
         getWorkLogs()
         initDB()
-
     }
 
     private fun initDB() {
-        if (state.value.items.isEmpty()) {
+        if (state.value.itemMap.isEmpty()) {
             viewModelScope.launch {
                 TestData.WORK_LOG_TEST_DATA.forEach {
                     useCases.insertWorkLog(it)
@@ -60,12 +62,12 @@ class WorkLogListViewModel @Inject constructor(
                 restoreLog()
             }
             is WorkLogsEvent.Order -> {
-                if (state.value.logOrder::class == event.order::class &&
-                    state.value.logOrder.orderType == event.order.orderType
+                if (state.value.groupBy::class == event.groupBy::class &&
+                    state.value.groupBy.orderType == event.groupBy.orderType
                 ) {
                     return
                 }
-                getWorkLogs(event.order)
+                getWorkLogs(event.groupBy)
             }
             is WorkLogsEvent.ToggleOrderSelection -> {
 
@@ -91,16 +93,12 @@ class WorkLogListViewModel @Inject constructor(
         _refreshAction?.invoke()
     }
 
-    private fun getWorkLogs(order: WorkLogOrder = WorkLogOrder.Date(OrderType.Descending)) {
+    private fun getWorkLogs(groupBy: WorkLogGroupBy = WorkLogGroupBy.Issue) {
         getLogsJob?.cancel()
-        getLogsJob = useCases.getWorkLogs(order).onEach { result ->
+        getLogsJob = useCases.getWorkLogs(groupBy).onEach { result ->
             _state.value = _state.value.copy(
-                items = result,
-                itemMap = result.groupBy {
-                    val sdf = SimpleDateFormat("E d. MMMM yy")
-                    sdf.format(it.dateWorked)
-                },
-                logOrder = order
+                itemMap = result,
+                groupBy = groupBy
             )
         }.launchIn(viewModelScope)
         _refreshAction = { getWorkLogs() }
