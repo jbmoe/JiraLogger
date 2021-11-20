@@ -20,24 +20,19 @@ class IssueListViewModel @Inject constructor(
     private val _state = mutableStateOf(IssueListState())
     val state: State<IssueListState> = _state
 
-    lateinit var filters: List<IssueFilter>
+    var filters: List<IssueFilter> = listOf(
+        IssueFilter.Assigned,
+        IssueFilter.Seen,
+        IssueFilter.WATCHING,
+        IssueFilter.EV
+    )
 
     private var _refreshAction: (() -> Unit)? = null
 
     init {
-        initFilters()
         getFilteredIssues(IssueFilter.Assigned)
     }
-
-    private fun initFilters() {
-        filters = listOf(
-            IssueFilter.Assigned,
-            IssueFilter.Seen,
-            IssueFilter.WATCHING,
-            IssueFilter.EV
-        )
-    }
-
+    
     fun onEvent(event: IssuesEvent) {
         when (event) {
             is IssuesEvent.Filter -> {

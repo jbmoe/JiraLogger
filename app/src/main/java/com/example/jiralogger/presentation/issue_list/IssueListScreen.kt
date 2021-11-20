@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
@@ -16,6 +17,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,10 +30,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.jiralogger.R
 import com.example.jiralogger.domain.model.Issue
 import com.example.jiralogger.domain.util.IssueFilter
-import com.example.jiralogger.presentation.components.BottomNavigationBar
-import com.example.jiralogger.presentation.components.SharedList
-import com.example.jiralogger.presentation.components.SharedScaffold
-import com.example.jiralogger.presentation.components.Text
+import com.example.jiralogger.presentation.components.*
 import com.example.jiralogger.presentation.issue_list.components.IssueListItem
 import com.example.jiralogger.presentation.issue_list.components.Searchbar
 import com.example.jiralogger.presentation.issue_list.components.TabSection
@@ -118,7 +118,11 @@ private fun Content(
                     onEvent(IssuesEvent.Search(IssueFilter.SEARCH(it)))
                 }
             }
-            SharedList(state = state) {
+            SharedList(
+                isError = state.error.isNotBlank(),
+                errorText = state.error,
+                isLoading = state.isLoading
+            ) {
                 item {
                     Spacer(Modifier.padding(2.dp))
                 }
@@ -130,6 +134,7 @@ private fun Content(
                 item {
                     Spacer(Modifier.padding(2.dp))
                 }
+
             }
         }
     }
