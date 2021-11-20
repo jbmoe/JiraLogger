@@ -1,6 +1,7 @@
 package com.example.jiralogger.presentation.issue_list.components
 
 import android.content.res.Configuration
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.Tab
@@ -9,37 +10,39 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.jiralogger.domain.util.HasName
 import com.example.jiralogger.domain.util.IssueFilter
+import com.example.jiralogger.domain.util.WorkLogGroupBy
 import com.example.jiralogger.presentation.components.Text
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 
 @Composable
 fun <T : HasName> TabSection(
     modifier: Modifier = Modifier,
-    tabs: List<T>,
-    currentTab: T,
-    onTabChange: (T) -> Unit = {}
+    filters: List<T>,
+    currentFilter: T,
+    onFilterChange: (T) -> Unit = {}
 ) {
     TabRow(
-        selectedTabIndex = tabs.indexOf(currentTab),
-        backgroundColor = MaterialTheme.colorScheme.background,
-        contentColor = MaterialTheme.colorScheme.onBackground,
+        selectedTabIndex = filters.indexOf(currentFilter),
+        backgroundColor = MaterialTheme.colorScheme.primaryContainer,
+        contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
         modifier = modifier
             .height(40.dp)
             .shadow(6.dp)
     ) {
-        tabs.forEach { filter ->
+        filters.forEach { filter ->
             Tab(
-                modifier = Modifier.clickable { onTabChange(filter) },
-                selected = currentTab == filter,
-                onClick = { onTabChange(filter) }
+                modifier = Modifier.clickable { onFilterChange(filter) },
+                selected = currentFilter == filter,
+                onClick = { onFilterChange(filter) }
             ) {
                 Text(
                     filter.name,
-                    color = MaterialTheme.colorScheme.onBackground,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
@@ -54,10 +57,10 @@ fun <T : HasName> TabSection(
 fun Preview() {
     JiraLoggerTheme {
         TabSection(
-            currentTab = IssueFilter.Assigned, tabs = listOf(
+            currentFilter = IssueFilter.Assigned, filters = listOf(
                 IssueFilter.Assigned,
                 IssueFilter.Seen,
-                IssueFilter.Watching,
+                IssueFilter.WATCHING,
                 IssueFilter.EV
             )
         )
