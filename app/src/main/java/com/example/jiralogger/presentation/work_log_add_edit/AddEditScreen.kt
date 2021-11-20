@@ -161,7 +161,9 @@ fun DetailBody(
 
                 Spacer(Modifier.padding(8.dp))
 
-                DateRow(date, onEvent)
+                DatePicker(modifier = Modifier.fillMaxWidth(), selectedDate = date) {
+                    onEvent(AddEditWorkLogEvent.DateChosen(it))
+                }
 
                 Spacer(Modifier.padding(8.dp))
 
@@ -196,26 +198,6 @@ fun DetailBody(
     }
 }
 
-@Composable
-private fun DateRow(
-    date: Long,
-    onEvent: (AddEditWorkLogEvent) -> Unit
-) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.End,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            "Date",
-            Modifier.weight(.3f),
-            color = MaterialTheme.colorScheme.onBackground
-        )
-        DatePicker(modifier = Modifier.weight(.7f), selectedDate = date) {
-            onEvent(AddEditWorkLogEvent.DateChosen(it))
-        }
-    }
-}
 
 @ExperimentalAnimationApi
 @ExperimentalMaterial3Api
