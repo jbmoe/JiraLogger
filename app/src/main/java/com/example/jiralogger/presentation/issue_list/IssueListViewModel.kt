@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.jiralogger.common.Resource
 import com.example.jiralogger.domain.use_case.issue.GetFilteredIssues
+import com.example.jiralogger.domain.use_case.issue.GetIssue
 import com.example.jiralogger.domain.util.IssueFilter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
@@ -19,19 +20,19 @@ class IssueListViewModel @Inject constructor(
     private val _state = mutableStateOf(IssueListState())
     val state: State<IssueListState> = _state
 
-    val filters: List<IssueFilter> = listOf(
+    var filters: List<IssueFilter> = listOf(
         IssueFilter.Assigned,
         IssueFilter.Seen,
-        IssueFilter.Watching,
+        IssueFilter.WATCHING,
         IssueFilter.EV
     )
 
     private var _refreshAction: (() -> Unit)? = null
 
     init {
-        getFilteredIssues(_state.value.issueFilter)
+        getFilteredIssues(IssueFilter.Assigned)
     }
-
+    
     fun onEvent(event: IssuesEvent) {
         when (event) {
             is IssuesEvent.Filter -> {
@@ -42,12 +43,19 @@ class IssueListViewModel @Inject constructor(
                 getFilteredIssues(event.filter)
             }
             is IssuesEvent.Refresh -> refresh()
+            is IssuesEvent.ToggleFilterVisibility -> {
+                _state.value = _state.value.copy(
+                    filterIsVisible = !_state.value.filterIsVisible,
+                    searchIsVisible = false
+                )
+                if (_state.value.filterIsVisible)
+                    getFilteredIssues(_state.value.issueFilter)
+            }
             is IssuesEvent.ToggleSearchVisibility -> {
                 _state.value = _state.value.copy(
+                    filterIsVisible = false,
                     searchIsVisible = !_state.value.searchIsVisible
                 )
-                if (!_state.value.searchIsVisible)
-                    getFilteredIssues(_state.value.issueFilter)
             }
         }
     }
@@ -59,12 +67,13 @@ class IssueListViewModel @Inject constructor(
     private fun getFilteredIssues(issueFilter: IssueFilter, ignoreCache: Boolean = false) {
         getIssuesByFilter(issueFilter, ignoreCache).onEach { result ->
             val filter =
-                if (issueFilter is IssueFilter.SEARCH) _state.value.issueFilter else issueFilter
+                if (issueFilter !is IssueFilter.SEARCH) issueFilter else IssueFilter.Assigned
             when (result) {
                 is Resource.Success -> {
                     _state.value = IssueListState(
                         items = result.data?.sortedBy { it.status.name } ?: emptyList(),
                         issueFilter = filter,
+                        filterIsVisible = _state.value.filterIsVisible,
                         searchIsVisible = _state.value.searchIsVisible
                     )
                 }
@@ -73,6 +82,7 @@ class IssueListViewModel @Inject constructor(
                         IssueListState(
                             error = result.message ?: "An unexpected error occurred",
                             issueFilter = filter,
+                            filterIsVisible = _state.value.filterIsVisible,
                             searchIsVisible = _state.value.searchIsVisible
                         )
                 }
@@ -80,6 +90,7 @@ class IssueListViewModel @Inject constructor(
                     _state.value = IssueListState(
                         isLoading = true,
                         issueFilter = filter,
+                        filterIsVisible = _state.value.filterIsVisible,
                         searchIsVisible = _state.value.searchIsVisible
                     )
                 }
