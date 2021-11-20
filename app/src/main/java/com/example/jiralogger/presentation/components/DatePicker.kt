@@ -28,7 +28,7 @@ fun DatePicker(
     modifier: Modifier = Modifier,
     selectedDate: Long,
     activity: AppCompatActivity = LocalContext.current as AppCompatActivity,
-    dateFormat: String = "E d. MMM yy",
+    dateFormat: String = "E dd MMMM yyyy",
     datePicked: (Long) -> Unit
 ) {
     val sdf = SimpleDateFormat(dateFormat)
@@ -37,6 +37,7 @@ fun DatePicker(
     OutlinedTextField(
         modifier = modifier,
         value = display,
+        labelText = "Date",
         onValueChange = {
 
         },
@@ -80,6 +81,6 @@ private fun showDatePicker(
 @Composable
 fun Preview(@PreviewParameter(IssueListPreviewParameterProvider::class) state: IssueListState) {
     JiraLoggerTheme {
-
+        DatePicker(selectedDate = System.currentTimeMillis(), datePicked = {})
     }
 }
