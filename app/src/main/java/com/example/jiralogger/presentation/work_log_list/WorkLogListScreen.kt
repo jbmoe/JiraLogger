@@ -13,7 +13,6 @@ import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -28,6 +27,7 @@ import com.example.jiralogger.domain.model.WorkLog
 import com.example.jiralogger.presentation.components.BottomNavigationBar
 import com.example.jiralogger.presentation.components.SharedList
 import com.example.jiralogger.presentation.components.SharedScaffold
+import com.example.jiralogger.presentation.components.Text
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 import com.example.jiralogger.presentation.util.Screen
 import com.example.jiralogger.presentation.util.preview_paramater.WorkLogListPreviewParameterProvider
@@ -91,8 +91,7 @@ fun Content(
                 item(date) {
                     Text(
                         text = date as String,
-                        modifier = Modifier.padding(4.dp, top = 12.dp),
-                        color = MaterialTheme.colorScheme.onBackground
+                        modifier = Modifier.padding(4.dp, top = 12.dp)
                     )
                 }
                 items(items = logs) { workLog ->

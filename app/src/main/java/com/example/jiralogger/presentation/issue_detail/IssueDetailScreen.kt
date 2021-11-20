@@ -8,7 +8,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.*
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,6 +27,7 @@ import com.example.jiralogger.R
 import com.example.jiralogger.common.constant.Constants
 import com.example.jiralogger.domain.model.Issue
 import com.example.jiralogger.presentation.components.SharedScaffold
+import com.example.jiralogger.presentation.components.Text
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 import com.example.jiralogger.presentation.util.ImageFromUrl
 import com.example.jiralogger.presentation.util.Screen
@@ -146,8 +150,7 @@ private fun TitleContent(issue: Issue) {
 private fun Summary(issue: Issue) {
     Text(
         text = issue.summary,
-        style = MaterialTheme.typography.headlineMedium,
-        color = MaterialTheme.colorScheme.onBackground,
+        style = MaterialTheme.typography.headlineMedium
     )
 }
 
@@ -156,13 +159,11 @@ private fun Description(issue: Issue) {
     if (issue.description != "") {
         Text(
             text = "Description",
-            style = MaterialTheme.typography.headlineSmall,
-            color = MaterialTheme.colorScheme.onBackground
+            style = MaterialTheme.typography.headlineSmall
         )
         Text(
             text = issue.description,
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onBackground
+            style = MaterialTheme.typography.bodySmall
         )
     }
 }

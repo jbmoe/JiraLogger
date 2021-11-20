@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,8 +42,8 @@ fun NumberPicker(
             horizontalArrangement = Arrangement.Center
         ) {
             val textStyle = MaterialTheme.typography.bodyLarge
-            Text(text = "$value", style = textStyle, color = color)
-            Text(text = suffix, style = textStyle, color = color)
+            Text(text = "$value", style = textStyle)
+            Text(text = suffix, style = textStyle)
         }
         IconButton(modifier = Modifier, onClick = {
             onChange(NumberPickerEvent.Decrease)

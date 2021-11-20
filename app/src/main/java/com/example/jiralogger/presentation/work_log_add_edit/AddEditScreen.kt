@@ -22,10 +22,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.jiralogger.R
-import com.example.jiralogger.presentation.components.DatePicker
-import com.example.jiralogger.presentation.components.NumberPicker
-import com.example.jiralogger.presentation.components.OutlinedTextField
-import com.example.jiralogger.presentation.components.SharedScaffold
+import com.example.jiralogger.presentation.components.*
+import com.example.jiralogger.presentation.components.Text
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 import com.example.jiralogger.presentation.ui.theme.outlinedTextFieldColors
 import com.example.jiralogger.presentation.util.InputFieldState
@@ -172,10 +170,7 @@ fun DetailBody(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(
-                        "Worked",
-                        color = MaterialTheme.colorScheme.onBackground
-                    )
+                    Text("Worked")
 
                     NumberPicker(
                         value = hoursSpent,

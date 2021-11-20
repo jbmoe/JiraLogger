@@ -15,7 +15,6 @@ import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -31,6 +30,7 @@ import com.example.jiralogger.domain.util.IssueFilter
 import com.example.jiralogger.presentation.components.BottomNavigationBar
 import com.example.jiralogger.presentation.components.SharedList
 import com.example.jiralogger.presentation.components.SharedScaffold
+import com.example.jiralogger.presentation.components.Text
 import com.example.jiralogger.presentation.issue_list.components.IssueListItem
 import com.example.jiralogger.presentation.issue_list.components.Searchbar
 import com.example.jiralogger.presentation.issue_list.components.TabSection
