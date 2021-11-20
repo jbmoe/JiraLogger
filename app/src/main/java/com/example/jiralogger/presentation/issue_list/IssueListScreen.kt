@@ -120,7 +120,7 @@ private fun Content(
             }
             SharedList(state = state) {
                 item {
-                    Spacer(Modifier.padding(4.dp))
+                    Spacer(Modifier.padding(2.dp))
                 }
                 items(state.items) { issue ->
                     IssueListItem(issue = issue, onItemClicked = {
@@ -128,7 +128,7 @@ private fun Content(
                     })
                 }
                 item {
-                    Spacer(Modifier.padding(4.dp))
+                    Spacer(Modifier.padding(2.dp))
                 }
             }
         }
