@@ -63,18 +63,13 @@ private fun CustomTextField(
     val keyboardController = LocalSoftwareKeyboardController.current
     var text by rememberSaveable { mutableStateOf("") }
     BasicTextField(
-        modifier = modifier
-            .background(MaterialTheme.colorScheme.surface)
-            .fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         value = text,
-        onValueChange = {
-            text = it
-
-        },
+        onValueChange = { text = it },
         singleLine = true,
-        cursorBrush = SolidColor(MaterialTheme.colorScheme.onSurface),
+        cursorBrush = SolidColor(MaterialTheme.colorScheme.onPrimaryContainer),
         textStyle = LocalTextStyle.current.copy(
-            color = MaterialTheme.colorScheme.onSurface,
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
             fontSize = fontSize
         ),
         decorationBox = { innerTextField ->
@@ -87,7 +82,7 @@ private fun CustomTextField(
                     if (text.isEmpty())
                         Text(
                             placeholderText,
-                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),
+                            color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.3f),
                             fontSize = fontSize
                         )
                     innerTextField()
