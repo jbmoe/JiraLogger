@@ -60,8 +60,7 @@ fun Content(
     ) {
         Text(
             text = stringResource(id = R.string.app_name),
-            style = MaterialTheme.typography.displayLarge,
-            color = MaterialTheme.colorScheme.onBackground
+            style = MaterialTheme.typography.displayLarge
         )
         OutlinedTextField(
             inputState = usernameState,
