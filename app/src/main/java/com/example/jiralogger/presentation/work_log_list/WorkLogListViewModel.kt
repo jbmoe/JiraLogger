@@ -7,14 +7,12 @@ import androidx.lifecycle.viewModelScope
 import com.example.jiralogger.common.test_data.TestData
 import com.example.jiralogger.domain.model.WorkLog
 import com.example.jiralogger.domain.use_case.work_log.WorkLogUseCases
-import com.example.jiralogger.domain.util.OrderType
 import com.example.jiralogger.domain.util.WorkLogGroupBy
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
 import javax.inject.Inject
 
 @HiltViewModel
@@ -30,13 +28,13 @@ class WorkLogListViewModel @Inject constructor(
 
     private var _refreshAction: (() -> Unit)? = null
 
-    var groupBys = listOf(
+    val groupBys = listOf(
         WorkLogGroupBy.Date,
         WorkLogGroupBy.Issue
     )
 
     init {
-        getWorkLogs()
+        getWorkLogs(WorkLogGroupBy.Date)
         initDB()
     }
 
@@ -61,7 +59,7 @@ class WorkLogListViewModel @Inject constructor(
             is WorkLogsEvent.RestoreLog -> {
                 restoreLog()
             }
-            is WorkLogsEvent.Order -> {
+            is WorkLogsEvent.GroupBy -> {
                 if (state.value.groupBy::class == event.groupBy::class &&
                     state.value.groupBy.orderType == event.groupBy.orderType
                 ) {
@@ -69,8 +67,10 @@ class WorkLogListViewModel @Inject constructor(
                 }
                 getWorkLogs(event.groupBy)
             }
-            is WorkLogsEvent.ToggleOrderSelection -> {
-
+            is WorkLogsEvent.ToggleGroupBySelection -> {
+                _state.value = _state.value.copy(
+                    groupByIsVisible = !_state.value.groupByIsVisible
+                )
             }
         }
     }
@@ -93,7 +93,7 @@ class WorkLogListViewModel @Inject constructor(
         _refreshAction?.invoke()
     }
 
-    private fun getWorkLogs(groupBy: WorkLogGroupBy = WorkLogGroupBy.Issue) {
+    private fun getWorkLogs(groupBy: WorkLogGroupBy) {
         getLogsJob?.cancel()
         getLogsJob = useCases.getWorkLogs(groupBy).onEach { result ->
             _state.value = _state.value.copy(
@@ -101,6 +101,6 @@ class WorkLogListViewModel @Inject constructor(
                 groupBy = groupBy
             )
         }.launchIn(viewModelScope)
-        _refreshAction = { getWorkLogs() }
+        _refreshAction = { getWorkLogs(groupBy) }
     }
 }

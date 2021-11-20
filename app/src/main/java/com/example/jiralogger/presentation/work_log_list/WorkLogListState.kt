@@ -7,5 +7,6 @@ data class WorkLogListState(
     val itemMap: Map<String, List<WorkLog>> = emptyMap(),
     val isLoading: Boolean = false,
     val error: String = "",
+    val groupByIsVisible: Boolean = true,
     val groupBy: WorkLogGroupBy = WorkLogGroupBy.Date
 )

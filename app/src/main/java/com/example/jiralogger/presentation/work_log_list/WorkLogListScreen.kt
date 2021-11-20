@@ -1,8 +1,10 @@
 package com.example.jiralogger.presentation.work_log_list
 
 import android.content.res.Configuration
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.items
@@ -12,22 +14,26 @@ import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.jiralogger.R
 import com.example.jiralogger.common.constant.Constants
 import com.example.jiralogger.domain.model.WorkLog
+import com.example.jiralogger.domain.util.WorkLogGroupBy
 import com.example.jiralogger.presentation.components.BottomNavigationBar
 import com.example.jiralogger.presentation.components.SharedList
 import com.example.jiralogger.presentation.components.SharedScaffold
 import com.example.jiralogger.presentation.components.Text
+import com.example.jiralogger.presentation.issue_list.IssuesEvent
+import com.example.jiralogger.presentation.issue_list.components.TabSection
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 import com.example.jiralogger.presentation.util.Screen
 import com.example.jiralogger.presentation.util.preview_paramater.WorkLogListPreviewParameterProvider
@@ -43,6 +49,7 @@ fun WorkLogListScreen(
 ) {
     Content(
         state = viewModel.state.value,
+        groupBys = viewModel.groupBys,
         onItemClicked = {
             navController.navigate(Screen.WorkLogDetail.route + "?${Constants.PARAM_WORK_LOG_ID}=${it.id}")
         },
@@ -56,6 +63,7 @@ fun WorkLogListScreen(
 @Composable
 fun Content(
     state: WorkLogListState,
+    groupBys: List<WorkLogGroupBy>,
     onItemClicked: (WorkLog) -> Unit = {},
     onEvent: (WorkLogsEvent) -> Unit = {},
     navController: NavController
@@ -66,6 +74,17 @@ fun Content(
         state = scaffoldState,
         title = { Text("Work Logs") },
         actions = {
+            IconButton(onClick = { onEvent(WorkLogsEvent.ToggleGroupBySelection) }) {
+                Icon(
+                    painter = painterResource(
+                        if (state.groupByIsVisible)
+                            R.drawable.ic_baseline_filter_alt_24
+                        else
+                            R.drawable.ic_outline_filter_alt_24
+                    ),
+                    contentDescription = "Group by"
+                )
+            }
             IconButton(onClick = { onEvent(WorkLogsEvent.Refresh) }) {
                 Icon(
                     imageVector = Icons.Filled.Refresh,
@@ -86,35 +105,43 @@ fun Content(
             )
         }
     ) {
-        SharedList {
-            state.itemMap.forEach { (date, logs) ->
-                item(date) {
-                    Text(
-                        text = date,
-                        modifier = Modifier.padding(4.dp, top = 12.dp)
-                    )
-                }
-                items(items = logs) { workLog ->
-                    WorkLogListItem(
-                        workLog = workLog,
-                        onItemClicked = { onItemClicked(workLog) },
-                        onDelete = {
-                            onEvent(WorkLogsEvent.DeleteLog(workLog))
-                            scope.launch {
-                                val result = scaffoldState.snackbarHostState.showSnackbar(
-                                    message = "Log deleted",
-                                    actionLabel = "Undo"
-                                )
-                                if (result == SnackbarResult.ActionPerformed) {
-                                    onEvent(WorkLogsEvent.RestoreLog)
+        Column {
+            AnimatedVisibility(visible = state.groupByIsVisible) {
+                TabSection(
+                    currentFilter = state.groupBy,
+                    filters = groupBys,
+                    onFilterChange = { onEvent(WorkLogsEvent.GroupBy(it)) })
+            }
+            SharedList {
+                state.itemMap.forEach { (date, logs) ->
+                    item(date) {
+                        Text(
+                            text = date,
+                            modifier = Modifier.padding(4.dp, top = 12.dp)
+                        )
+                    }
+                    items(items = logs) { workLog ->
+                        WorkLogListItem(
+                            workLog = workLog,
+                            onItemClicked = { onItemClicked(workLog) },
+                            onDelete = {
+                                onEvent(WorkLogsEvent.DeleteLog(workLog))
+                                scope.launch {
+                                    val result = scaffoldState.snackbarHostState.showSnackbar(
+                                        message = "Log deleted",
+                                        actionLabel = "Undo"
+                                    )
+                                    if (result == SnackbarResult.ActionPerformed) {
+                                        onEvent(WorkLogsEvent.RestoreLog)
+                                    }
                                 }
                             }
-                        }
-                    )
+                        )
+                    }
                 }
-            }
-            item {
-                Spacer(modifier = Modifier.padding(4.dp))
+                item {
+                    Spacer(modifier = Modifier.padding(4.dp))
+                }
             }
         }
     }
@@ -127,6 +154,6 @@ fun Content(
 @Composable
 fun Preview(@PreviewParameter(WorkLogListPreviewParameterProvider::class) state: WorkLogListState) {
     JiraLoggerTheme {
-        Content(state = state, navController = rememberNavController())
+        Content(state = state, navController = rememberNavController(), groupBys = emptyList())
     }
 }

@@ -1,6 +1,6 @@
 package com.example.jiralogger.domain.util
 
-sealed class WorkLogGroupBy(val orderType: OrderType, val name: String) {
+sealed class WorkLogGroupBy(val orderType: OrderType, override val name: String) : HasName {
     object Issue : WorkLogGroupBy(orderType = OrderType.Ascending, name = "Issue")
     object Date : WorkLogGroupBy(orderType = OrderType.Ascending, name = "Date")
 
