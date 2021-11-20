@@ -8,7 +8,10 @@ import com.example.jiralogger.domain.model.UserCredential
 import com.example.jiralogger.domain.use_case.user_credential.Login
 import com.example.jiralogger.domain.use_case.user_credential.UserCredentialUseCases
 import com.example.jiralogger.presentation.util.InputFieldState
+import com.example.jiralogger.presentation.work_log_add_edit.AddEditLogViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,7 +24,7 @@ class LoginViewModel @Inject constructor(
         InputFieldState(
             value = "",
             label = "Username",
-            placeholder = "Your Jira username"
+            placeholder = "Your Jira username",
         )
     )
     val username: State<InputFieldState<String>> = _username
@@ -35,11 +38,10 @@ class LoginViewModel @Inject constructor(
     )
     val password: State<InputFieldState<String>> = _password
 
-    init {
+    private val _eventFlow = MutableSharedFlow<UiEvent>()
+    val eventFlow = _eventFlow.asSharedFlow()
 
-    }
-
-    fun onEvent(event: LoginEvent): Boolean? {
+    fun onEvent(event: LoginEvent) {
         viewModelScope.launch {
             when (event) {
                 is LoginEvent.UsernameEntered -> _username.value.copy(
@@ -59,11 +61,17 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    private suspend fun login(): Boolean {
+    private suspend fun login() {
         val succes = loginUseCase(username.value.value, password.value.value)
 
-        return if (succes) {
-            true
+        if (succes) {
+            _username.value = _username.value.copy(
+                isError = false
+            )
+            _password.value = _password.value.copy(
+                isError = false
+            )
+            _eventFlow.emit(UiEvent.LoginSuccess)
         } else {
             _username.value = _username.value.copy(
                 isError = true
@@ -71,7 +79,12 @@ class LoginViewModel @Inject constructor(
             _password.value = _password.value.copy(
                 isError = true
             )
-            false
+            _eventFlow.emit(UiEvent.LoginFailed)
         }
+    }
+
+    sealed class UiEvent {
+        object LoginSuccess : UiEvent()
+        object LoginFailed : UiEvent()
     }
 }
