@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
                     val navController = rememberNavController()
                     NavHost(
                         navController = navController,
-                        startDestination = Screen.LoginScreen.route
+                        startDestination = Screen.IssueListScreen.route
                     ) {
                         composable(Screen.LoginScreen.route) {
                             LoginScreen(navController)
