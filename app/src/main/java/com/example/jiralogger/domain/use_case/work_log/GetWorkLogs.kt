@@ -1,6 +1,5 @@
 package com.example.jiralogger.domain.use_case.work_log
 
-import android.util.Log
 import com.example.jiralogger.domain.model.WorkLog
 import com.example.jiralogger.domain.repository.DbRepository
 import com.example.jiralogger.domain.util.OrderType
@@ -23,26 +22,25 @@ class GetWorkLogs @Inject constructor(
     }
 
     operator fun invoke(groupBy: WorkLogGroupBy): Flow<Map<String, List<WorkLog>>> {
-        Log.d("DEBUG", "${groupBy.orderType}")
         return repository.getWorkLogs().map { logs ->
             when (groupBy) {
                 is WorkLogGroupBy.Date -> {
                     when (groupBy.orderType) {
                         is OrderType.Ascending -> {
-                            logs.groupBy(date)
+                            logs.sortedBy { it.dateWorked }.groupBy(date)
                         }
                         is OrderType.Descending -> {
-                            logs.groupBy(date)
+                            logs.sortedByDescending { it.dateWorked }.groupBy(date)
                         }
                     }
                 }
                 is WorkLogGroupBy.Issue -> {
                     when (groupBy.orderType) {
                         is OrderType.Ascending -> {
-                            logs.groupBy(issue)
+                            logs.sortedBy { it.issueId }.groupBy(issue)
                         }
                         is OrderType.Descending -> {
-                            logs.groupBy(issue)
+                            logs.sortedByDescending { it.issueId }.groupBy(issue)
                         }
                     }
                 }
