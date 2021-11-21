@@ -1,6 +1,5 @@
 package com.example.jiralogger.presentation.work_log_list
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -36,7 +35,7 @@ class WorkLogListViewModel @Inject constructor(
     )
 
     init {
-        getWorkLogs(WorkLogGroupBy.Date(OrderType.Ascending))
+        getWorkLogs(state.value.groupBy)
         initDB()
     }
 
@@ -51,7 +50,6 @@ class WorkLogListViewModel @Inject constructor(
     }
 
     fun onEvent(event: WorkLogsEvent) {
-        val q = event.hashCode()
         when (event) {
             is WorkLogsEvent.Refresh -> {
                 refresh()
@@ -63,21 +61,12 @@ class WorkLogListViewModel @Inject constructor(
                 restoreLog()
             }
             is WorkLogsEvent.GroupBy -> {
-                if (state.value.groupBy::class != event.groupBy::class) {
-                    getWorkLogs(event.groupBy)
+                if (state.value.groupBy::class == event.groupBy::class && state.value.groupBy.orderType == event.groupBy.orderType) {
+                    return
                 }
+                getWorkLogs(event.groupBy)
             }
-            is WorkLogsEvent.ToggleOrderType -> {
-                Log.d("DEBUG", "on event ${state.value.groupBy}")
-                val orderType: OrderType =
-                    if (state.value.groupBy.orderType == OrderType.Ascending) {
-                        OrderType.Descending
-                    } else {
-                        OrderType.Ascending
-                    }
-                getWorkLogs(state.value.groupBy.copy(orderType))
-            }
-            is WorkLogsEvent.ToggleGroupBySelection -> {
+            is WorkLogsEvent.ToggleGroupByVisibility -> {
                 _state.value = _state.value.copy(
                     groupByIsVisible = !_state.value.groupByIsVisible
                 )
