@@ -27,7 +27,10 @@ import androidx.navigation.compose.rememberNavController
 import com.example.jiralogger.R
 import com.example.jiralogger.domain.model.Issue
 import com.example.jiralogger.domain.util.IssueFilter
-import com.example.jiralogger.presentation.components.*
+import com.example.jiralogger.presentation.components.BottomNavigationBar
+import com.example.jiralogger.presentation.components.SharedList
+import com.example.jiralogger.presentation.components.SharedScaffold
+import com.example.jiralogger.presentation.components.Text
 import com.example.jiralogger.presentation.issue_list.components.IssueListItem
 import com.example.jiralogger.presentation.issue_list.components.Searchbar
 import com.example.jiralogger.presentation.issue_list.components.TabSection
@@ -104,9 +107,9 @@ private fun Content(
         Column {
             AnimatedVisibility(visible = state.filterIsVisible) {
                 TabSection(
-                    currentFilter = state.issueFilter,
-                    filters = filters,
-                    onFilterChange = { onEvent(IssuesEvent.Filter(it)) })
+                    currentTab = state.issueFilter,
+                    tabs = filters,
+                    onTabChange = { onEvent(IssuesEvent.Filter(it)) })
             }
             AnimatedVisibility(visible = state.searchIsVisible) {
                 Searchbar {

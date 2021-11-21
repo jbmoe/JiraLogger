@@ -17,7 +17,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -33,7 +32,6 @@ import com.example.jiralogger.presentation.components.BottomNavigationBar
 import com.example.jiralogger.presentation.components.SharedList
 import com.example.jiralogger.presentation.components.SharedScaffold
 import com.example.jiralogger.presentation.components.Text
-import com.example.jiralogger.presentation.issue_list.IssuesEvent
 import com.example.jiralogger.presentation.issue_list.components.TabSection
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 import com.example.jiralogger.presentation.util.Screen
@@ -79,7 +77,7 @@ fun Content(
             OrderDropDown { orderType ->
                 onEvent(WorkLogsEvent.GroupBy(state.groupBy.copy(orderType)))
             }
-            IconButton(onClick = { onEvent(WorkLogsEvent.ToggleGroupBySelection) }) {
+            IconButton(onClick = { onEvent(WorkLogsEvent.ToggleGroupByVisibility) }) {
                 Icon(
                     painter = painterResource(
                         if (state.groupByIsVisible)
@@ -113,9 +111,10 @@ fun Content(
         Column {
             AnimatedVisibility(visible = state.groupByIsVisible) {
                 TabSection(
-                    currentFilter = state.groupBy,
-                    filters = groupBys,
-                    onFilterChange = { onEvent(WorkLogsEvent.GroupBy(it)) })
+                    currentTab = state.groupBy,
+                    tabs = groupBys,
+                    onTabChange = { onEvent(WorkLogsEvent.GroupBy(it.copy(state.groupBy.orderType))) }
+                )
             }
             SharedList {
                 state.itemMap.forEach { (date, logs) ->
