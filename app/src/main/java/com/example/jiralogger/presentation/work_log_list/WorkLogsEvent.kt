@@ -4,9 +4,10 @@ import com.example.jiralogger.domain.model.WorkLog
 import com.example.jiralogger.domain.util.WorkLogGroupBy
 
 sealed interface WorkLogsEvent {
-    data class GroupBy(val groupBy: WorkLogGroupBy): WorkLogsEvent
-    data class DeleteLog(val log: WorkLog): WorkLogsEvent
-    object RestoreLog: WorkLogsEvent
-    object ToggleGroupBySelection: WorkLogsEvent
+    data class GroupBy(val groupBy: WorkLogGroupBy) : WorkLogsEvent
+    data class DeleteLog(val log: WorkLog) : WorkLogsEvent
+    object RestoreLog : WorkLogsEvent
+    object ToggleGroupBySelection : WorkLogsEvent
+    object ToggleOrderType : WorkLogsEvent
     object Refresh : WorkLogsEvent
 }
