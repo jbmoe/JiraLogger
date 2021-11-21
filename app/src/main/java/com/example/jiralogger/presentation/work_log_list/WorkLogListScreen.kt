@@ -17,6 +17,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -74,6 +75,15 @@ fun Content(
         state = scaffoldState,
         title = { Text("Work Logs") },
         actions = {
+            IconButton(onClick = {
+                onEvent(WorkLogsEvent.ToggleOrderType)
+            }) {
+                Icon(
+                    modifier = Modifier.rotate(180F),
+                    painter = painterResource(R.drawable.ic_baseline_sort_24),
+                    contentDescription = ""
+                )
+            }
             IconButton(onClick = { onEvent(WorkLogsEvent.ToggleGroupBySelection) }) {
                 Icon(
                     painter = painterResource(

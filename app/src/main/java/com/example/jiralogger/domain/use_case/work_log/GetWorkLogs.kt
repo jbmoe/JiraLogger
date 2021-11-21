@@ -1,5 +1,6 @@
 package com.example.jiralogger.domain.use_case.work_log
 
+import android.util.Log
 import com.example.jiralogger.domain.model.WorkLog
 import com.example.jiralogger.domain.repository.DbRepository
 import com.example.jiralogger.domain.util.OrderType
@@ -22,6 +23,7 @@ class GetWorkLogs @Inject constructor(
     }
 
     operator fun invoke(groupBy: WorkLogGroupBy): Flow<Map<String, List<WorkLog>>> {
+        Log.d("DEBUG", "${groupBy.orderType}")
         return repository.getWorkLogs().map { logs ->
             when (groupBy) {
                 is WorkLogGroupBy.Date -> {

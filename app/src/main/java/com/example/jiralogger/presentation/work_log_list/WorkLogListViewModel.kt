@@ -1,5 +1,6 @@
 package com.example.jiralogger.presentation.work_log_list
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -7,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.jiralogger.common.test_data.TestData
 import com.example.jiralogger.domain.model.WorkLog
 import com.example.jiralogger.domain.use_case.work_log.WorkLogUseCases
+import com.example.jiralogger.domain.util.OrderType
 import com.example.jiralogger.domain.util.WorkLogGroupBy
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -29,12 +31,12 @@ class WorkLogListViewModel @Inject constructor(
     private var _refreshAction: (() -> Unit)? = null
 
     val groupBys = listOf(
-        WorkLogGroupBy.Date,
-        WorkLogGroupBy.Issue
+        WorkLogGroupBy.Date(OrderType.Ascending),
+        WorkLogGroupBy.Issue(OrderType.Ascending)
     )
 
     init {
-        getWorkLogs(WorkLogGroupBy.Date)
+        getWorkLogs(WorkLogGroupBy.Date(OrderType.Ascending))
         initDB()
     }
 
@@ -49,23 +51,31 @@ class WorkLogListViewModel @Inject constructor(
     }
 
     fun onEvent(event: WorkLogsEvent) {
+        val q = event.hashCode()
         when (event) {
             is WorkLogsEvent.Refresh -> {
                 refresh()
             }
             is WorkLogsEvent.DeleteLog -> {
-                deleteLog(event)
+                deleteLog(event.log)
             }
             is WorkLogsEvent.RestoreLog -> {
                 restoreLog()
             }
             is WorkLogsEvent.GroupBy -> {
-                if (state.value.groupBy::class == event.groupBy::class &&
-                    state.value.groupBy.orderType == event.groupBy.orderType
-                ) {
-                    return
+                if (state.value.groupBy::class != event.groupBy::class) {
+                    getWorkLogs(event.groupBy)
                 }
-                getWorkLogs(event.groupBy)
+            }
+            is WorkLogsEvent.ToggleOrderType -> {
+                Log.d("DEBUG", "on event ${state.value.groupBy}")
+                val orderType: OrderType =
+                    if (state.value.groupBy.orderType == OrderType.Ascending) {
+                        OrderType.Descending
+                    } else {
+                        OrderType.Ascending
+                    }
+                getWorkLogs(state.value.groupBy.copy(orderType))
             }
             is WorkLogsEvent.ToggleGroupBySelection -> {
                 _state.value = _state.value.copy(
@@ -82,10 +92,10 @@ class WorkLogListViewModel @Inject constructor(
         }
     }
 
-    private fun deleteLog(event: WorkLogsEvent.DeleteLog) {
+    private fun deleteLog(log: WorkLog) {
         viewModelScope.launch {
-            useCases.deleteWorkLog(event.log)
-            recentlyDeletedLog = event.log
+            useCases.deleteWorkLog(log)
+            recentlyDeletedLog = log
         }
     }
 
