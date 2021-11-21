@@ -38,6 +38,7 @@ import com.example.jiralogger.presentation.issue_list.components.TabSection
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 import com.example.jiralogger.presentation.util.Screen
 import com.example.jiralogger.presentation.util.preview_paramater.WorkLogListPreviewParameterProvider
+import com.example.jiralogger.presentation.work_log_list.components.OrderDropDown
 import com.example.jiralogger.presentation.work_log_list.components.WorkLogListItem
 import kotlinx.coroutines.launch
 
@@ -75,14 +76,8 @@ fun Content(
         state = scaffoldState,
         title = { Text("Work Logs") },
         actions = {
-            IconButton(onClick = {
-                onEvent(WorkLogsEvent.ToggleOrderType)
-            }) {
-                Icon(
-                    modifier = Modifier.rotate(180F),
-                    painter = painterResource(R.drawable.ic_baseline_sort_24),
-                    contentDescription = ""
-                )
+            OrderDropDown { orderType ->
+                onEvent(WorkLogsEvent.GroupBy(state.groupBy.copy(orderType)))
             }
             IconButton(onClick = { onEvent(WorkLogsEvent.ToggleGroupBySelection) }) {
                 Icon(
