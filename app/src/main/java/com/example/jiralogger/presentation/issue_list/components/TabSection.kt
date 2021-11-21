@@ -19,23 +19,23 @@ import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 @Composable
 fun <T : HasName> TabSection(
     modifier: Modifier = Modifier,
-    filters: List<T>,
-    currentFilter: T,
-    onFilterChange: (T) -> Unit = {}
+    tabs: List<T>,
+    currentTab: T,
+    onTabChange: (T) -> Unit = {}
 ) {
     TabRow(
-        selectedTabIndex = filters.indexOf(currentFilter),
+        selectedTabIndex = tabs.indexOf(currentTab),
         backgroundColor = MaterialTheme.colorScheme.primaryContainer,
         contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
         modifier = modifier
             .height(40.dp)
             .shadow(6.dp)
     ) {
-        filters.forEach { filter ->
+        tabs.forEach { filter ->
             Tab(
-                modifier = Modifier.clickable { onFilterChange(filter) },
-                selected = currentFilter == filter,
-                onClick = { onFilterChange(filter) }
+                modifier = Modifier.clickable { onTabChange(filter) },
+                selected = currentTab == filter,
+                onClick = { onTabChange(filter) }
             ) {
                 Text(
                     filter.name,
@@ -54,7 +54,7 @@ fun <T : HasName> TabSection(
 fun Preview() {
     JiraLoggerTheme {
         TabSection(
-            currentFilter = IssueFilter.Assigned, filters = listOf(
+            currentTab = IssueFilter.Assigned, tabs = listOf(
                 IssueFilter.Assigned,
                 IssueFilter.Seen,
                 IssueFilter.WATCHING,
