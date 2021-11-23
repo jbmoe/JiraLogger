@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.jiralogger.common.Resource
 import com.example.jiralogger.domain.use_case.issue.GetFilteredIssues
-import com.example.jiralogger.domain.use_case.issue.GetIssue
 import com.example.jiralogger.domain.util.IssueFilter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
@@ -23,14 +22,14 @@ class IssueListViewModel @Inject constructor(
     val filters: List<IssueFilter> = listOf(
         IssueFilter.Assigned,
         IssueFilter.Seen,
-        IssueFilter.WATCHING,
+        IssueFilter.Watching,
         IssueFilter.EV
     )
 
     private var _refreshAction: (() -> Unit)? = null
 
     init {
-        getFilteredIssues(IssueFilter.Assigned)
+        getFilteredIssues(IssueFilter.Seen)
     }
     
     fun onEvent(event: IssuesEvent) {
