@@ -58,7 +58,7 @@ fun Content(state: IssueDetailState, onBack: () -> Unit, onLogTime: (String?) ->
     val scaffoldState = androidx.compose.material.rememberScaffoldState()
     SharedScaffold(
         state = scaffoldState,
-        title = { Text("${state.item?.key}") },
+        title = { Text("Detail") },
         navigationIcon = {
             IconButton(onClick = onBack) {
                 Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
@@ -69,9 +69,7 @@ fun Content(state: IssueDetailState, onBack: () -> Unit, onLogTime: (String?) ->
                 icon = {
                     Icon(painter = painterResource(id = R.drawable.ic_baseline_more_time_24), "")
                 },
-                text = {
-                    Text(text = "Log your time")
-                },
+                text = { Text(text = "Log your time") },
                 onClick = { onLogTime(state.item?.key) }
             )
         }
