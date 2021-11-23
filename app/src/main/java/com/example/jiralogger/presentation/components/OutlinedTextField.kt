@@ -29,7 +29,7 @@ import com.example.jiralogger.presentation.util.InputFieldState
 @Composable
 fun OutlinedTextField(
     modifier: Modifier = Modifier,
-    value: String,
+    value: String = "",
     isError: Boolean = false,
     errorText: String = "",
     labelText: String = "",

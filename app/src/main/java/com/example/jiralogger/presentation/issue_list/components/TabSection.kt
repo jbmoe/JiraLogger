@@ -25,8 +25,8 @@ fun <T : HasName> TabSection(
 ) {
     TabRow(
         selectedTabIndex = tabs.indexOf(currentTab),
-        backgroundColor = MaterialTheme.colorScheme.primaryContainer,
-        contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        backgroundColor = MaterialTheme.colorScheme.background,
+        contentColor = MaterialTheme.colorScheme.onBackground,
         modifier = modifier
             .height(40.dp)
             .shadow(6.dp)
@@ -39,7 +39,7 @@ fun <T : HasName> TabSection(
             ) {
                 Text(
                     filter.name,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    color = MaterialTheme.colorScheme.onBackground,
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
@@ -57,7 +57,7 @@ fun Preview() {
             currentTab = IssueFilter.Assigned, tabs = listOf(
                 IssueFilter.Assigned,
                 IssueFilter.Seen,
-                IssueFilter.WATCHING,
+                IssueFilter.Watching,
                 IssueFilter.EV
             )
         )

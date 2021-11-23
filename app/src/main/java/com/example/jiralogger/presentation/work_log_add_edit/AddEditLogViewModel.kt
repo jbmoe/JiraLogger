@@ -27,8 +27,8 @@ class AddEditLogViewModel @Inject constructor(
     private val _issueId = mutableStateOf(
         InputFieldState(
             value = "",
-            label = "Issue ID",
-            placeholder = "The Issue you've been working on"
+            label = "Issue",
+            placeholder = "Search issues..."
         )
     )
     val issueId: State<InputFieldState<String>> = _issueId
