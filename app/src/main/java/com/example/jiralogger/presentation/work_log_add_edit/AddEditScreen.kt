@@ -5,11 +5,15 @@ import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.rememberScaffoldState
-import androidx.compose.material3.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -23,11 +27,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.jiralogger.R
 import com.example.jiralogger.presentation.components.*
-import com.example.jiralogger.presentation.components.Text
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
-import com.example.jiralogger.presentation.ui.theme.outlinedTextFieldColors
 import com.example.jiralogger.presentation.util.InputFieldState
 import com.example.jiralogger.presentation.util.preview_paramater.WorkLogDetailPreviewParameterProvider
+import com.example.jiralogger.presentation.work_log_add_edit.component.IssueDropDown
 import kotlinx.coroutines.flow.collectLatest
 
 @ExperimentalAnimationApi
@@ -74,6 +77,7 @@ fun AddEditScreen(
     )
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @ExperimentalAnimationApi
 @ExperimentalMaterial3Api
 @Composable
@@ -117,6 +121,7 @@ fun Content(
     }
 }
 
+@ExperimentalMaterialApi
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun DetailBody(
@@ -133,14 +138,12 @@ fun DetailBody(
             contentPadding = PaddingValues(20.dp)
         ) {
             item {
-                OutlinedTextField(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    value = issueId.value,
-                    onValueChange = { onEvent(AddEditWorkLogEvent.IssueChosen(it)) },
-                    placeholderText = issueId.placeholder,
-                    labelText = issueId.label,
-                    readOnly = true
+                IssueDropDown(
+                    modifier = Modifier.fillMaxWidth(),
+                    currentIssueId = issueId,
+                    issuePicked = {
+                        onEvent(AddEditWorkLogEvent.IssueChosen(it.key))
+                    }
                 )
 
                 Spacer(Modifier.padding(8.dp))
