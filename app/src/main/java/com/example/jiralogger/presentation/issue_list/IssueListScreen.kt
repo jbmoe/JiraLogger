@@ -2,8 +2,7 @@ package com.example.jiralogger.presentation.issue_list
 
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.*
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
@@ -105,16 +104,18 @@ private fun Content(
         }
     ) {
         Column {
-            AnimatedVisibility(visible = state.filterIsVisible) {
+            val fadein = fadeIn() + scaleIn() + expandVertically()
+            val fadeout = fadeOut() + scaleOut() + shrinkVertically()
+            AnimatedVisibility(visible = state.searchIsVisible, enter = fadein, exit = fadeout) {
+                Searchbar {
+                    onEvent(IssuesEvent.Search(IssueFilter.SEARCH(it)))
+                }
+            }
+            AnimatedVisibility(visible = state.filterIsVisible, enter = fadein, exit = fadeout) {
                 TabSection(
                     currentTab = state.issueFilter,
                     tabs = filters,
                     onTabChange = { onEvent(IssuesEvent.Filter(it)) })
-            }
-            AnimatedVisibility(visible = state.searchIsVisible) {
-                Searchbar {
-                    onEvent(IssuesEvent.Search(IssueFilter.SEARCH(it)))
-                }
             }
             SharedList(
                 isError = state.error.isNotBlank(),
