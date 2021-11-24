@@ -69,7 +69,7 @@ private fun ExposedDropdownMenuBoxScope.Menu(
     onDismiss: () -> Unit,
     onSelect: (Issue) -> Unit
 ) {
-    val background = MaterialTheme.colorScheme.background.copy(.95f)
+    val background = MaterialTheme.colorScheme.background.copy(.9f)
     ExposedDropdownMenu(
         modifier = modifier.background(background),
         expanded = expanded,
