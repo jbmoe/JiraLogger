@@ -65,12 +65,13 @@ class AddEditLogViewModel @Inject constructor(
         savedStateHandle.get<Int>(Constants.PARAM_WORK_LOG_ID)?.let { logId ->
             if (logId != -1) {
                 getWorkLog(logId)
-            } else {
-                savedStateHandle.get<String>(Constants.PARAM_ISSUE_KEY)?.let { issueId ->
-                    _issueId.value = _issueId.value.copy(
-                        value = issueId
-                    )
-                }
+            }
+        }
+        savedStateHandle.get<String>(Constants.PARAM_ISSUE_KEY)?.let { issueId ->
+            if (issueId.isNotBlank()) {
+                _issueId.value = _issueId.value.copy(
+                    value = issueId
+                )
             }
         }
     }
@@ -101,11 +102,14 @@ class AddEditLogViewModel @Inject constructor(
     }
 
     private fun changeIssue(issueId: String) {
-        _description.value = _description.value.copy(
-            value = _description.value.value.replace(_issueId.value.value, issueId)
-        )
+        if (_description.value.value.isNotBlank()) {
+            _description.value = _description.value.copy(
+                value = _description.value.value.replace(_issueId.value.value, issueId)
+            )
+        }
         _issueId.value = _issueId.value.copy(
-            value = issueId
+            value = issueId,
+            isError = false
         )
     }
 
@@ -157,6 +161,9 @@ class AddEditLogViewModel @Inject constructor(
                 )
                 _eventFlow.emit(UiEvent.SaveLog)
             } catch (e: InvalidLogException) {
+                _issueId.value = _issueId.value.copy(
+                    isError = true
+                )
                 _eventFlow.emit(
                     UiEvent.ShowSnackbar(
                         message = e.message ?: "Couldn't save log"

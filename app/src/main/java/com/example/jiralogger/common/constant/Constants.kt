@@ -6,5 +6,4 @@ object Constants {
     const val BASE_URL = "https://jira.elbek-vejrup.dk/"
     const val PARAM_ISSUE_KEY = "issueKey"
     const val PARAM_WORK_LOG_ID = "workLogId"
-    const val PARAM_IS_EDITING = "isEditing"
 }

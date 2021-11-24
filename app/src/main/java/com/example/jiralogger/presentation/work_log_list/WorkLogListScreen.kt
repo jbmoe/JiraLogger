@@ -12,6 +12,7 @@ import androidx.compose.material.SnackbarResult
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
@@ -93,6 +94,11 @@ fun Content(
                     imageVector = Icons.Filled.Refresh,
                     contentDescription = "Refresh"
                 )
+            }
+        },
+        FAB = {
+            FloatingActionButton(onClick = { navController.navigate(Screen.WorkLogDetail.route) }) {
+                Icon(painter = painterResource(id = R.drawable.ic_baseline_more_time_24), "")
             }
         },
         bottomBar = {
