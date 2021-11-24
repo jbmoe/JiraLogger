@@ -17,7 +17,6 @@ import androidx.navigation.navArgument
 import com.example.jiralogger.common.constant.Constants
 import com.example.jiralogger.presentation.issue_detail.IssueDetailScreen
 import com.example.jiralogger.presentation.issue_list.IssueListScreen
-import com.example.jiralogger.presentation.login.LoginScreen
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 import com.example.jiralogger.presentation.util.Screen
 import com.example.jiralogger.presentation.work_log_add_edit.AddEditScreen
@@ -41,9 +40,6 @@ class MainActivity : AppCompatActivity() {
                         navController = navController,
                         startDestination = Screen.IssueListScreen.route
                     ) {
-                        composable(Screen.LoginScreen.route) {
-                            LoginScreen(navController)
-                        }
                         composable(Screen.IssueListScreen.route) {
                             IssueListScreen(navController)
                         }
@@ -59,7 +55,7 @@ class MainActivity : AppCompatActivity() {
                             WorkLogListScreen(navController)
                         }
                         composable(
-                            Screen.WorkLogDetail.route +
+                            Screen.WorkLogAddEdit.route +
                                     "?${Constants.PARAM_WORK_LOG_ID}={${Constants.PARAM_WORK_LOG_ID}}" +
                                     "&${Constants.PARAM_ISSUE_KEY}={${Constants.PARAM_ISSUE_KEY}}",
                             arguments = listOf(
