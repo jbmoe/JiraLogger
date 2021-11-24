@@ -78,9 +78,7 @@ class AddEditLogViewModel @Inject constructor(
     fun onEvent(event: AddEditWorkLogEvent) {
         when (event) {
             is AddEditWorkLogEvent.IssueChosen -> {
-                _issueId.value = _issueId.value.copy(
-                    value = event.issueId
-                )
+                changeIssue(event.issueId)
             }
             is AddEditWorkLogEvent.EnteredDescription -> {
                 _description.value = _description.value.copy(
@@ -100,6 +98,15 @@ class AddEditLogViewModel @Inject constructor(
                 save()
             }
         }
+    }
+
+    private fun changeIssue(issueId: String) {
+        _description.value = _description.value.copy(
+            value = _description.value.value.replace(_issueId.value.value, issueId)
+        )
+        _issueId.value = _issueId.value.copy(
+            value = issueId
+        )
     }
 
     private fun handleHoursEvent(event: NumberPickerEvent) {
