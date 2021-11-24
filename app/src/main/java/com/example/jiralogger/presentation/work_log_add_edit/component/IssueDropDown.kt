@@ -46,6 +46,7 @@ fun IssueDropDown(
             modifier = modifier,
             readOnly = true,
             value = currentIssueId.value,
+            isError = currentIssueId.isError,
             onValueChange = { },
             labelText = currentIssueId.label,
             placeholderText = currentIssueId.placeholder,

@@ -10,6 +10,9 @@ class InsertWorkLog @Inject constructor(
 ) {
     @Throws(InvalidLogException::class)
     suspend operator fun invoke(workLog: WorkLog) {
+        if(workLog.issueId.isBlank()) {
+            throw InvalidLogException("You must pick an issue")
+        }
         if (workLog.timeSpent.isBlank()) {
             throw InvalidLogException("You must specify amount of time")
         }
