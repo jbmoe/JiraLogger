@@ -4,99 +4,137 @@ import com.example.jiralogger.data.remote.dto.ApiResponse
 import com.example.jiralogger.data.remote.dto.Fields
 import com.example.jiralogger.data.remote.dto.IssueDto
 import com.example.jiralogger.domain.model.WorkLog
+import java.util.*
 
 object TestData {
     private const val ONEDAY = 86400000L
+    private const val USER = "JIRAUSER25235"
     val WORK_LOG_TEST_DATA = mutableListOf(
         WorkLog(
             id = 1,
-            issueId = "DAL-656",
-            userId = "JIRAUSER25235",
-            timeSpent = "1h 30m",
-            timeSpentSeconds = 5400,
-            dateWorked = System.currentTimeMillis().minus(ONEDAY),
-            comment = "Working on issue DAL-656"
+            issueId = "NO01",
+            userId = USER,
+            timeSpent = "5h",
+            timeSpentSeconds = 18000,
+            dateWorked = Date(121, 10, 22,12,0).time,
+            comment = "Oversættelse af rapporter"
         ),
         WorkLog(
             id = 2,
-            issueId = "ENNOVA-57",
-            userId = "JIRAUSER25235",
-            timeSpent = "1h 30m",
-            timeSpentSeconds = 5400,
-            dateWorked = System.currentTimeMillis().minus(ONEDAY*2),
+            issueId = "EV-21",
+            userId = USER,
+            timeSpent = "1h 45m",
+            timeSpentSeconds = 6300,
+            dateWorked = Date(121, 10, 22,12,0).time,
             comment = "Working on issue ENNOVA-57"
         ),
         WorkLog(
             id = 3,
-            issueId = "ESBJ-237",
-            userId = "JIRAUSER25235",
-            timeSpent = "1h 30m",
-            timeSpentSeconds = 5400,
-            dateWorked = System.currentTimeMillis().minus(ONEDAY*3),
-            comment = "Working on issue ESBJ-237"
+            issueId = "EV-15",
+            userId = USER,
+            timeSpent = "1h 15m",
+            timeSpentSeconds = 4500,
+            dateWorked = Date(121, 10, 19,12,0).time,
+            comment = "Afdelingsmøde"
         ),
         WorkLog(
             id = 4,
-            issueId = "ENNOVA-46",
-            userId = "JIRAUSER25235",
-            timeSpent = "1h 30m",
-            timeSpentSeconds = 5400,
-            dateWorked = System.currentTimeMillis().minus(ONEDAY*4),
-            comment = "Working on issue ENNOVA-46"
+            issueId = "EV-21",
+            userId = USER,
+            timeSpent = "1h",
+            timeSpentSeconds = 3600,
+            dateWorked = Date(121, 10, 19,12,0).time,
+            comment = "Coaching"
         ),
         WorkLog(
             id = 5,
-            issueId = "QQ-10",
-            userId = "JIRAUSER25235",
-            timeSpent = "1h 30m",
-            timeSpentSeconds = 5400,
-            dateWorked = System.currentTimeMillis().minus(ONEDAY*5),
-            comment = "Working on issue QQ-10"
+            issueId = "EV-21",
+            userId = USER,
+            timeSpent = "3h",
+            timeSpentSeconds = 10800,
+            dateWorked = Date(121, 10, 18,12,0).time,
+            comment = "Besøg af EAA"
         ),
         WorkLog(
             id = 6,
-            issueId = "WHT-374",
-            userId = "JIRAUSER25235",
-            timeSpent = "1h 30m",
-            timeSpentSeconds = 5400,
-            dateWorked = System.currentTimeMillis().minus(ONEDAY*6),
-            comment = "Working on issue WHT-374"
+            issueId = "EV-21",
+            userId = USER,
+            timeSpent = "30m",
+            timeSpentSeconds = 1800,
+            dateWorked = Date(121, 10, 17,12,0).time,
+            comment = "Forberedelse til besøg af EAA"
         ),
         WorkLog(
             id = 7,
-            issueId = "ESBJ-248",
-            userId = "JIRAUSER25235",
-            timeSpent = "1h 30m",
-            timeSpentSeconds = 5400,
-            dateWorked = System.currentTimeMillis().minus(ONEDAY*7),
-            comment = "Working on issue ESBJ-248"
+            issueId = "TOP-449",
+            userId = USER,
+            timeSpent = "30m",
+            timeSpentSeconds = 1800,
+            dateWorked = Date(121, 10, 16,12,0).time,
+            comment = "Working on issue TOP-449"
         ),
         WorkLog(
             id = 8,
-            issueId = "ESBJ-243",
-            userId = "JIRAUSER25235",
-            timeSpent = "1h 30m",
-            timeSpentSeconds = 5400,
-            dateWorked = System.currentTimeMillis().minus(ONEDAY*8),
-            comment = "Working on issue ESBJ-243"
+            issueId = "KGE-15",
+            userId = USER,
+            timeSpent = "4h 30m",
+            timeSpentSeconds = 16200,
+            dateWorked = Date(121, 10, 16,12,0).time,
+            comment = "Working on issue KGE-15"
         ),
         WorkLog(
             id = 9,
-            issueId = "ESBJ-233",
-            userId = "JIRAUSER25235",
+            issueId = "EV-9",
+            userId = USER,
             timeSpent = "1h 30m",
             timeSpentSeconds = 5400,
-            dateWorked = System.currentTimeMillis().minus(ONEDAY*9),
-            comment = "Working on issue ESBJ-233"
+            dateWorked = Date(121, 10, 15,12,0).time,
+            comment = "Working on issue EV-9"
         ),
         WorkLog(
             id = 10,
-            issueId = "KOL-41",
-            userId = "JIRAUSER25235",
-            timeSpent = "1h 30m",
-            timeSpentSeconds = 5400,
-            dateWorked = System.currentTimeMillis().minus(ONEDAY*10),
+            issueId = "DAL-662",
+            userId = USER,
+            timeSpent = "1h",
+            timeSpentSeconds = 3600,
+            dateWorked = Date(121, 10, 12,12,0).time,
+            comment = "Working on issue DAL-662"
+        ),
+        WorkLog(
+            id = 11,
+            issueId = "EV-15",
+            userId = USER,
+            timeSpent = "1h 15m",
+            timeSpentSeconds = 4500,
+            dateWorked = Date(121, 10, 12,12,0).time,
+            comment = "Afdelingsmøde"
+        ),
+        WorkLog(
+            id = 12,
+            issueId = "EV-21",
+            userId = USER,
+            timeSpent = "30m",
+            timeSpentSeconds = 1800,
+            dateWorked = Date(121, 10, 12,12,0).time,
             comment = "Working on issue KOL-41"
+        ),
+        WorkLog(
+            id = 13,
+            issueId = "TOP-449",
+            userId = USER,
+            timeSpent = "2h",
+            timeSpentSeconds = 7200,
+            dateWorked = Date(121, 10, 12,12,0).time,
+            comment = "Working on issue TOP-449"
+        ),
+        WorkLog(
+            id = 14,
+            issueId = "EV-21",
+            userId = USER,
+            timeSpent = "2h 15m",
+            timeSpentSeconds = 8100,
+            dateWorked = Date(121, 10, 12,12,0).time,
+            comment = "Working on issue EV-21"
         )
     )
 
