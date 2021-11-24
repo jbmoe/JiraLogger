@@ -74,7 +74,7 @@ fun Content(
         state = scaffoldState,
         title = { Text("Work Logs") },
         actions = {
-            OrderDropDown { orderType ->
+            OrderDropDown(currentOrderType = state.groupBy.orderType) { orderType ->
                 onEvent(WorkLogsEvent.GroupBy(state.groupBy.copy(orderType)))
             }
             IconButton(onClick = { onEvent(WorkLogsEvent.ToggleGroupByVisibility) }) {
@@ -121,7 +121,7 @@ fun Content(
                     item(date) {
                         Text(
                             text = date,
-                            modifier = Modifier.padding(4.dp, top = 12.dp)
+                            modifier = Modifier.padding(2.dp, top = 8.dp)
                         )
                     }
                     items(items = logs) { workLog ->
