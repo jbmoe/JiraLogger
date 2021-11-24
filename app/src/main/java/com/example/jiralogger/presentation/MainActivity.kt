@@ -61,16 +61,11 @@ class MainActivity : AppCompatActivity() {
                         composable(
                             Screen.WorkLogDetail.route +
                                     "?${Constants.PARAM_WORK_LOG_ID}={${Constants.PARAM_WORK_LOG_ID}}" +
-                                    "&${Constants.PARAM_IS_EDITING}={${Constants.PARAM_IS_EDITING}}" +
                                     "&${Constants.PARAM_ISSUE_KEY}={${Constants.PARAM_ISSUE_KEY}}",
                             arguments = listOf(
                                 navArgument(Constants.PARAM_WORK_LOG_ID) {
                                     type = NavType.IntType
                                     defaultValue = -1
-                                },
-                                navArgument(Constants.PARAM_IS_EDITING) {
-                                    type = NavType.BoolType
-                                    defaultValue = false
                                 },
                                 navArgument(Constants.PARAM_ISSUE_KEY) {
                                     type = NavType.StringType
