@@ -52,7 +52,7 @@ fun WorkLogListScreen(
         state = viewModel.state.value,
         groupBys = viewModel.groupBys,
         onItemClicked = {
-            navController.navigate(Screen.WorkLogDetail.route + "?${Constants.PARAM_WORK_LOG_ID}=${it.id}")
+            navController.navigate(Screen.WorkLogAddEdit.route + "?${Constants.PARAM_WORK_LOG_ID}=${it.id}")
         },
         onEvent = { viewModel.onEvent(it) },
         navController = navController
@@ -97,7 +97,7 @@ fun Content(
             }
         },
         FAB = {
-            FloatingActionButton(onClick = { navController.navigate(Screen.WorkLogDetail.route) }) {
+            FloatingActionButton(onClick = { navController.navigate(Screen.WorkLogAddEdit.route) }) {
                 Icon(painter = painterResource(id = R.drawable.ic_baseline_more_time_24), "")
             }
         },

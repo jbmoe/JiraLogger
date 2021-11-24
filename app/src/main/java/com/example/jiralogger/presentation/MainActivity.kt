@@ -17,7 +17,6 @@ import androidx.navigation.navArgument
 import com.example.jiralogger.common.constant.Constants
 import com.example.jiralogger.presentation.issue_detail.IssueDetailScreen
 import com.example.jiralogger.presentation.issue_list.IssueListScreen
-import com.example.jiralogger.presentation.login.LoginScreen
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 import com.example.jiralogger.presentation.util.Screen
 import com.example.jiralogger.presentation.work_log_add_edit.AddEditScreen
@@ -41,9 +40,6 @@ class MainActivity : AppCompatActivity() {
                         navController = navController,
                         startDestination = Screen.IssueListScreen.route
                     ) {
-                        composable(Screen.LoginScreen.route) {
-                            LoginScreen(navController)
-                        }
                         composable(Screen.IssueListScreen.route) {
                             IssueListScreen(navController)
                         }

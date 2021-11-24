@@ -46,7 +46,7 @@ fun IssueDetailScreen(
         },
         onLogTime = {
             val route =
-                Screen.WorkLogDetail.route + "?${Constants.PARAM_ISSUE_KEY}=${state.item?.key}"
+                Screen.WorkLogAddEdit.route + "?${Constants.PARAM_ISSUE_KEY}=${state.item?.key}"
             navController.navigate(route)
         }
     )
