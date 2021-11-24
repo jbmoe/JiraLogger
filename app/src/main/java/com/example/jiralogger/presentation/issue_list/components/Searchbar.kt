@@ -12,8 +12,11 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -41,7 +44,7 @@ fun Searchbar(onValueChange: (String) -> Unit) {
         },
         trailingIcon = null,
         modifier = Modifier
-            .background(MaterialTheme.colorScheme.primaryContainer)
+            .background(MaterialTheme.colorScheme.background)
             .padding(horizontal = 4.dp)
             .height(40.dp),
         placeholderText = "Search"
@@ -67,9 +70,9 @@ private fun CustomTextField(
         value = text,
         onValueChange = { text = it },
         singleLine = true,
-        cursorBrush = SolidColor(MaterialTheme.colorScheme.onPrimaryContainer),
+        cursorBrush = SolidColor(MaterialTheme.colorScheme.onBackground),
         textStyle = LocalTextStyle.current.copy(
-            color = MaterialTheme.colorScheme.onPrimaryContainer,
+            color = MaterialTheme.colorScheme.onBackground,
             fontSize = fontSize
         ),
         decorationBox = { innerTextField ->
@@ -82,7 +85,7 @@ private fun CustomTextField(
                     if (text.isEmpty())
                         Text(
                             placeholderText,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.3f),
+                            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.3f),
                             fontSize = fontSize
                         )
                     innerTextField()
