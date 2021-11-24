@@ -1,7 +1,6 @@
 package com.example.jiralogger.data.local
 
 import androidx.room.*
-import com.example.jiralogger.domain.model.UserCredential
 import com.example.jiralogger.domain.model.WorkLog
 import kotlinx.coroutines.flow.Flow
 
@@ -18,16 +17,4 @@ interface JiraLoggerDao {
 
     @Delete
     suspend fun deleteWorkLog(workLog: WorkLog)
-
-    @Query("SELECT * FROM user_credentials WHERE name = :name")
-    suspend fun getUserCredential(name: String): UserCredential
-
-    @Query("SELECT * FROM user_credentials WHERE name = :username AND password = :password")
-    suspend fun getUserCredential(username: String, password: String): UserCredential
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertUserCredentials(userCredential: UserCredential)
-
-    @Delete
-    suspend fun deleteUserCredentials(userCredential: UserCredential)
 }

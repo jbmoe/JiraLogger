@@ -7,7 +7,6 @@ sealed class Screen(
     val drawableId: Int? = null,
     val route: String
 ) {
-    object LoginScreen : Screen(route = "login")
     object IssueListScreen :
         Screen(
             name = "Issues",
@@ -20,5 +19,5 @@ sealed class Screen(
         drawableId = R.drawable.ic_baseline_access_time_filled_24,
         route = "work_log_list_screen"
     )
-    object WorkLogDetail : Screen(route = "work_log_detail_screen")
+    object WorkLogAddEdit : Screen(route = "work_log_detail_screen")
 }

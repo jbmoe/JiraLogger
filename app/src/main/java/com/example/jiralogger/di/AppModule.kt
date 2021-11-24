@@ -9,10 +9,6 @@ import com.example.jiralogger.data.repository.ApiRepositoryImpl
 import com.example.jiralogger.data.repository.DbRepositoryImpl
 import com.example.jiralogger.domain.repository.ApiRepository
 import com.example.jiralogger.domain.repository.DbRepository
-import com.example.jiralogger.domain.use_case.user_credential.DeleteUserCredential
-import com.example.jiralogger.domain.use_case.user_credential.GetUserCredential
-import com.example.jiralogger.domain.use_case.user_credential.InsertUserCredential
-import com.example.jiralogger.domain.use_case.user_credential.UserCredentialUseCases
 import com.example.jiralogger.domain.use_case.work_log.*
 import com.example.jiralogger.domain.util.BasicAuthInterceptor
 import dagger.Module
@@ -28,14 +24,12 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
-    private val _client: (username: String, password: String) -> OkHttpClient =
-        { username, password ->
-            OkHttpClient.Builder()
-                .addInterceptor(BasicAuthInterceptor(username, password))
-                .build()
-        }
-    val client: (username: String, password: String) -> OkHttpClient =
-        { username, password -> _client(username, password) }
+    private val _client =
+        OkHttpClient.Builder()
+            .addInterceptor(BasicAuthInterceptor(Constants.USERNAME, Constants.PASSWORD))
+            .build()
+
+    val client = _client
 
     @Provides
     @Singleton
@@ -50,20 +44,10 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun providesUserCredentialUseCases(repository: DbRepository): UserCredentialUseCases {
-        return UserCredentialUseCases(
-            getUserCredential = GetUserCredential(repository),
-            insertUserCredential = InsertUserCredential(repository),
-            deleteUserCredential = DeleteUserCredential(repository)
-        )
-    }
-
-    @Provides
-    @Singleton
-    fun provideJiraApi(UsernamePassword: UsernamePassword): JiraApi {
+    fun provideJiraApi(): JiraApi {
         return Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
-            .client(client(UsernamePassword.username, UsernamePassword.password))
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(JiraApi::class.java)
@@ -95,12 +79,4 @@ object AppModule {
 //        return DbRepositoryTestImpl()
         return DbRepositoryImpl(db.jiraLoggerDao)
     }
-
-    @Provides
-    @Singleton
-    fun provideUsernamePassword(): UsernamePassword {
-        return UsernamePassword(Constants.USERNAME, Constants.PASSWORD)
-    }
 }
-
-data class UsernamePassword(val username: String, val password: String)
