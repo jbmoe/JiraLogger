@@ -35,12 +35,12 @@ class WorkLogListViewModel @Inject constructor(
     )
 
     init {
-        getWorkLogs(state.value.groupBy)
+        getWorkLogs(_state.value.groupBy)
         initDB()
     }
 
     private fun initDB() {
-        if (state.value.itemMap.isEmpty()) {
+        if (_state.value.itemMap.isEmpty()) {
             viewModelScope.launch {
                 TestData.WORK_LOG_TEST_DATA.forEach {
                     useCases.insertWorkLog(it)
@@ -61,7 +61,7 @@ class WorkLogListViewModel @Inject constructor(
                 restoreLog()
             }
             is WorkLogsEvent.GroupBy -> {
-                if (state.value.groupBy::class == event.groupBy::class && state.value.groupBy.orderType == event.groupBy.orderType) {
+                if (_state.value.groupBy::class == event.groupBy::class && _state.value.groupBy.orderType == event.groupBy.orderType) {
                     return
                 }
                 getWorkLogs(event.groupBy)
