@@ -140,7 +140,12 @@ fun DetailBody(
 
                 Spacer(Modifier.padding(8.dp))
 
-                DatePicker(modifier = Modifier.fillMaxWidth(), selectedDate = state.date.value) {
+                DatePicker(
+                    modifier = Modifier.fillMaxWidth(),
+                    selectedDate = state.date.value,
+                    placeholderText = state.date.placeholder,
+                    isError = state.date.isError
+                ) {
                     onEvent(AddEditEvent.DateChosen(it))
                 }
 

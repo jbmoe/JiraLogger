@@ -28,12 +28,14 @@ import java.util.*
 fun DatePicker(
     modifier: Modifier = Modifier,
     selectedDate: Long,
+    placeholderText: String = "",
+    isError: Boolean = false,
     activity: AppCompatActivity = LocalContext.current as AppCompatActivity,
     dateFormat: String = "E dd MMMM yyyy",
     datePicked: (Long) -> Unit
 ) {
     val sdf = SimpleDateFormat(dateFormat)
-    val display = sdf.format(Date(selectedDate))
+    val display = if (selectedDate != 0L) sdf.format(Date(selectedDate)) else ""
 
     var expanded by remember { mutableStateOf(false) }
 
@@ -47,6 +49,8 @@ fun DatePicker(
             modifier = modifier,
             value = display,
             labelText = "Date",
+            placeholderText = placeholderText,
+            isError = isError,
             onValueChange = {
 
             },
@@ -63,7 +67,7 @@ fun DatePicker(
     if (expanded) {
         showDatePicker(
             activity = activity,
-            selectedDate = selectedDate,
+            selectedDate = if (selectedDate != 0L) selectedDate else System.currentTimeMillis(),
             onDismiss = { expanded = false }) {
             datePicked(it)
         }
