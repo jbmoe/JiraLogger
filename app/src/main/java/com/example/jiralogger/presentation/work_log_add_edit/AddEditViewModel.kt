@@ -68,11 +68,9 @@ class AddEditViewModel @Inject constructor(
             }
         }
         savedStateHandle.get<String>(Constants.PARAM_ISSUE_KEY)?.let { issueId ->
-            if (issueId.isNotBlank()) {
-                _issueId.value = _issueId.value.copy(
-                    value = issueId
-                )
-            }
+            _issueId.value = _issueId.value.copy(
+                value = issueId
+            )
         }
     }
 
