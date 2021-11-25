@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
                                 },
                                 navArgument(Constants.PARAM_ISSUE_KEY) {
                                     type = NavType.StringType
-                                    defaultValue = ""
+                                    nullable = true
                                 }
                             )
                         ) {
