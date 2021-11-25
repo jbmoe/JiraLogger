@@ -45,7 +45,6 @@ fun WorkLogListItem(workLog: WorkLog, onItemClicked: (WorkLog) -> Unit, onDelete
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        modifier = Modifier.weight(1f),
                         text = workLog.comment,
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold,
@@ -96,7 +95,7 @@ fun WorkLogListItem(workLog: WorkLog, onItemClicked: (WorkLog) -> Unit, onDelete
 @Preview(name = "Dark mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
 fun Preview() {
-    val item = TestData.WORK_LOG_TEST_DATA[13]
+    val item = TestData.WORK_LOG_TEST_DATA.random()
     JiraLoggerTheme {
         WorkLogListItem(workLog = item, onItemClicked = {},{})
     }

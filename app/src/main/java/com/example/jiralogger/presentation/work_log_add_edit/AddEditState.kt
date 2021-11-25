@@ -18,9 +18,7 @@ data class AddEditState(
         label = "Date",
         placeholder = "Choose a date"
     ),
-    val timeSpentSec: InputFieldState<Int> = InputFieldState(
-        value = 0
-    ),
+    val timeSpentSec: Int = 0,
     val hoursSpent: Int = 0,
     val minutesSpent: Int = 0,
 )
