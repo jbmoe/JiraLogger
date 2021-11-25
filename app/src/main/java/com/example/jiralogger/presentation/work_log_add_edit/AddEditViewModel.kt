@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.jiralogger.common.constant.Constants
 import com.example.jiralogger.common.test_data.TestData
 import com.example.jiralogger.domain.model.InvalidLogException
+import com.example.jiralogger.domain.model.LogError
 import com.example.jiralogger.domain.model.WorkLog
 import com.example.jiralogger.domain.use_case.work_log.GetWorkLog
 import com.example.jiralogger.domain.use_case.work_log.InsertWorkLog
@@ -61,7 +62,7 @@ class AddEditViewModel @Inject constructor(
             }
             is AddEditEvent.DateChosen -> {
                 _state.value = _state.value.copy(
-                    date = _state.value.date.copy(value = event.value)
+                    date = _state.value.date.copy(value = event.value, isError = false),
                 )
             }
             is AddEditEvent.HoursChanged -> {
@@ -122,7 +123,10 @@ class AddEditViewModel @Inject constructor(
 
     private fun updateTimeSpentSeconds() {
         _state.value = _state.value.copy(
-            timeSpentSec = (_state.value.hoursSpent * 60 * 60) + (_state.value.minutesSpent * 60)
+            timeSpentSec = _state.value.timeSpentSec.copy(
+                value = (_state.value.hoursSpent * 60 * 60) + (_state.value.minutesSpent * 60),
+                isError = false
+            )
         )
     }
 
@@ -136,15 +140,29 @@ class AddEditViewModel @Inject constructor(
                         comment = if (_state.value.description.value.isNotBlank()) _state.value.description.value else "Working on issue ${_state.value.issueId}",
                         dateWorked = _state.value.date.value,
                         timeSpent = getTimeSpent(),
-                        timeSpentSeconds = _state.value.timeSpentSec,
+                        timeSpentSeconds = _state.value.timeSpentSec.value,
                         userId = TestData.USER
                     )
                 )
                 _eventFlow.emit(UiEvent.SaveLog)
             } catch (e: InvalidLogException) {
-                _state.value = _state.value.copy(
-                    issueId = _state.value.issueId.copy(isError = true)
-                )
+                when (e.err) {
+                    LogError.IssueID -> {
+                        _state.value = _state.value.copy(
+                            issueId = _state.value.issueId.copy(isError = true)
+                        )
+                    }
+                    LogError.Date -> {
+                        _state.value = _state.value.copy(
+                            date = _state.value.date.copy(isError = true)
+                        )
+                    }
+                    LogError.TimeSpent -> {
+                        _state.value = _state.value.copy(
+                            timeSpentSec = _state.value.timeSpentSec.copy(isError = true)
+                        )
+                    }
+                }
                 _eventFlow.emit(
                     UiEvent.ShowSnackbar(
                         message = e.message ?: "Couldn't save log"
@@ -177,7 +195,7 @@ class AddEditViewModel @Inject constructor(
                     issueId = _state.value.issueId.copy(value = log.issueId),
                     description = _state.value.description.copy(value = log.comment),
                     date = _state.value.date.copy(value = log.dateWorked),
-                    timeSpentSec = log.timeSpentSeconds,
+                    timeSpentSec = _state.value.timeSpentSec.copy(value = log.timeSpentSeconds),
                     minutesSpent = log.timeSpentSeconds.mod(3600) / 60,
                     hoursSpent = log.timeSpentSeconds / 3600
                 )

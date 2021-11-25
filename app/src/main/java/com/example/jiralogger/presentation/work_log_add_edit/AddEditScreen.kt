@@ -3,22 +3,22 @@ package com.example.jiralogger.presentation.work_log_add_edit
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.rememberScaffoldState
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -26,7 +26,11 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.jiralogger.R
-import com.example.jiralogger.presentation.components.*
+import com.example.jiralogger.presentation.components.DatePicker
+import com.example.jiralogger.presentation.components.NumberPicker
+import com.example.jiralogger.presentation.components.OutlinedTextField
+import com.example.jiralogger.presentation.components.SharedScaffold
+import com.example.jiralogger.presentation.components.Text
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 import com.example.jiralogger.presentation.util.preview_paramater.WorkLogDetailPreviewParameterProvider
 import com.example.jiralogger.presentation.work_log_add_edit.component.IssueDropDown
@@ -156,23 +160,35 @@ fun DetailBody(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text("Worked")
-
-                    NumberPicker(
-                        value = state.hoursSpent,
-                        suffix = "h",
-                        onChange = {
-                            onEvent(AddEditEvent.HoursChanged(it))
+                    Text("Worked", Modifier.weight(.5f))
+                    val color =
+                        if (state.timeSpentSec.isError) MaterialTheme.colorScheme.error
+                        else Color.Transparent
+                    Box(
+                        modifier = Modifier
+                            .border(1.dp, color, shape = RoundedCornerShape(4.dp))
+                            .weight(.5F)
+                    ) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            NumberPicker(
+                                value = state.hoursSpent,
+                                suffix = "h",
+                                onChange = {
+                                    onEvent(AddEditEvent.HoursChanged(it))
+                                }
+                            )
+                            NumberPicker(
+                                value = state.minutesSpent,
+                                suffix = "m",
+                                onChange = {
+                                    onEvent(AddEditEvent.MinutesChanged(it))
+                                }
+                            )
                         }
-                    )
-
-                    NumberPicker(
-                        value = state.minutesSpent,
-                        suffix = "m",
-                        onChange = {
-                            onEvent(AddEditEvent.MinutesChanged(it))
-                        }
-                    )
+                    }
                 }
             }
         }
