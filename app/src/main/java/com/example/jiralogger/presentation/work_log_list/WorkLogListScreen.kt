@@ -101,18 +101,7 @@ fun Content(
                 Icon(painter = painterResource(id = R.drawable.ic_baseline_more_time_24), "")
             }
         },
-        bottomBar = {
-            BottomNavigationBar(
-                items = listOf(
-                    Screen.IssueListScreen,
-                    Screen.WorkLogListScreen
-                ),
-                navController = navController,
-                onItemClick = {
-                    navController.navigate(it.route)
-                }
-            )
-        }
+        bottomBar = { BottomNavigationBar(navController = navController) }
     ) {
         Column {
             AnimatedVisibility(visible = state.groupByIsVisible) {
