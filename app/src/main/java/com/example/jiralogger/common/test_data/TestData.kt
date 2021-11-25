@@ -8,7 +8,7 @@ import java.util.*
 
 object TestData {
     private const val ONEDAY = 86400000L
-    private const val USER = "JIRAUSER25235"
+    const val USER = "JIRAUSER25235"
     val WORK_LOG_TEST_DATA = mutableListOf(
         WorkLog(
             id = 1,
