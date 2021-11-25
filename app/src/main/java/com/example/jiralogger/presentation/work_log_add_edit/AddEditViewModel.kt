@@ -27,34 +27,6 @@ class AddEditViewModel @Inject constructor(
     private val _state = mutableStateOf(AddEditState())
     val state: State<AddEditState> = _state
 
-//    private val _issueId = mutableStateOf(
-//        InputFieldState(
-//            value = "",
-//            label = "Issue",
-//            placeholder = "Search issues..."
-//        )
-//    )
-//    val issueId: State<InputFieldState<String>> = _issueId
-//
-//    private val _description = mutableStateOf(
-//        InputFieldState(
-//            value = "",
-//            label = "Comment",
-//            placeholder = "Describe the work you've been doing"
-//        )
-//    )
-//    val description: State<InputFieldState<String>> = _description
-//
-//    private val _date = mutableStateOf(System.currentTimeMillis())
-//    val date: State<Long> = _date
-//
-//    private val _timeSpentSec = mutableStateOf(0)
-//    private val _hoursSpent = mutableStateOf(0)
-//    val hoursSpent: State<Int> = _hoursSpent
-//
-//    private val _minutesSpent = mutableStateOf(0)
-//    val minutesSpent: State<Int> = _minutesSpent
-
     private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
