@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AddEditLogViewModel @Inject constructor(
+class AddEditViewModel @Inject constructor(
     private val getWorkLogUseCase: GetWorkLog,
     private val insertWorkLogUseCase: InsertWorkLog,
     savedStateHandle: SavedStateHandle
