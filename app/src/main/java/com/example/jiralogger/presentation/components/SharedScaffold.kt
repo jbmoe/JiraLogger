@@ -2,7 +2,6 @@ package com.example.jiralogger.presentation.components
 
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.RowScope
@@ -20,6 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.jiralogger.R
@@ -72,10 +72,12 @@ fun SharedTopAppBar(
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun BottomNavigationBar(
-    items: List<Screen>,
+    items: List<Screen> = listOf(
+        Screen.IssueListScreen,
+        Screen.WorkLogListScreen
+    ),
     navController: NavController,
-    modifier: Modifier = Modifier,
-    onItemClick: (Screen) -> Unit
+    modifier: Modifier = Modifier
 ) {
     val backStackEntry = navController.currentBackStackEntryAsState()
     NavigationBar(modifier = modifier.height(52.dp), tonalElevation = 0.dp) {
@@ -83,7 +85,21 @@ fun BottomNavigationBar(
             val selected = item.route == backStackEntry.value?.destination?.route
             NavigationBarItem(
                 selected = selected,
-                onClick = { if (!selected) onItemClick(item) },
+                onClick = {
+                    navController.navigate(item.route) {
+                        // Pop up to the start destination of the graph to
+                        // avoid building up a large stack of destinations
+                        // on the back stack as users select items
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        // Avoid multiple copies of the same destination when
+                        // reselecting the same item
+                        launchSingleTop = true
+                        // Restore state when reselecting a previously selected item
+                        restoreState = true
+                    }
+                },
                 icon = {
                     Icon(
                         painter = painterResource(id = item.drawableId!!),
@@ -123,15 +139,7 @@ fun Preview() {
             },
             bottomBar = {
                 BottomNavigationBar(
-                    items = listOf(
-                        Screen.IssueListScreen,
-                        Screen.WorkLogListScreen
-                    ),
-                    navController = navController,
-                    onItemClick = {
-                        if (navController.currentBackStackEntry?.destination?.route != it.route)
-                            navController.navigate(it.route)
-                    }
+                    navController = navController
                 )
             },
             FAB = {

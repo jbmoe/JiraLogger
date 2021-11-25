@@ -90,18 +90,7 @@ private fun Content(
                 )
             }
         },
-        bottomBar = {
-            BottomNavigationBar(
-                items = listOf(
-                    Screen.IssueListScreen,
-                    Screen.WorkLogListScreen
-                ),
-                navController = navController,
-                onItemClick = {
-                    navController.navigate(it.route)
-                }
-            )
-        }
+        bottomBar = { BottomNavigationBar(navController = navController) }
     ) {
         Column {
             val fadein = fadeIn() + scaleIn() + expandVertically()
