@@ -28,7 +28,6 @@ import androidx.navigation.NavController
 import com.example.jiralogger.R
 import com.example.jiralogger.presentation.components.*
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
-import com.example.jiralogger.presentation.util.InputFieldState
 import com.example.jiralogger.presentation.util.preview_paramater.WorkLogDetailPreviewParameterProvider
 import com.example.jiralogger.presentation.work_log_add_edit.component.IssueDropDown
 import kotlinx.coroutines.flow.collectLatest
@@ -40,12 +39,12 @@ fun AddEditScreen(
     navController: NavController,
     viewModel: AddEditViewModel = hiltViewModel()
 ) {
-    val issueId = viewModel.issueId.value
-    val description = viewModel.description.value
-    val date = viewModel.date.value
-    val hoursSpent = viewModel.hoursSpent.value
-    val minutesSpent = viewModel.minutesSpent.value
-
+//    val issueId = viewModel.issueId.value
+//    val description = viewModel.description.value
+//    val date = viewModel.date.value
+//    val hoursSpent = viewModel.hoursSpent.value
+//    val minutesSpent = viewModel.minutesSpent.value
+    val state = viewModel.state.value
     val scaffoldState = rememberScaffoldState()
 
     LaunchedEffect(key1 = true) {
@@ -64,11 +63,12 @@ fun AddEditScreen(
     }
 
     Content(
-        issueId = issueId,
-        description = description,
-        date = date,
-        hoursSpent = hoursSpent,
-        minutesSpent = minutesSpent,
+//        issueId = issueId,
+//        description = description,
+//        date = date,
+//        hoursSpent = hoursSpent,
+//        minutesSpent = minutesSpent,
+        state = state,
         scaffoldState = scaffoldState,
         onBack = { navController.popBackStack() },
         onEvent = {
@@ -82,14 +82,15 @@ fun AddEditScreen(
 @ExperimentalMaterial3Api
 @Composable
 fun Content(
-    issueId: InputFieldState<String>,
-    description: InputFieldState<String>,
-    date: Long,
-    hoursSpent: Int,
-    minutesSpent: Int,
+//    issueId: InputFieldState<String>,
+//    description: InputFieldState<String>,
+//    date: Long,
+//    hoursSpent: Int,
+//    minutesSpent: Int,
+    state: AddEditState,
     scaffoldState: ScaffoldState,
     onBack: () -> Unit,
-    onEvent: (AddEditWorkLogEvent) -> Unit
+    onEvent: (AddEditEvent) -> Unit
 ) {
     SharedScaffold(
         title = { Text("Log your time") },
@@ -100,7 +101,7 @@ fun Content(
         },
         FAB = {
             FloatingActionButton(onClick = {
-                onEvent(AddEditWorkLogEvent.Save)
+                onEvent(AddEditEvent.Save)
             }) {
                 Icon(
                     painterResource(id = R.drawable.ic_baseline_save_24),
@@ -111,11 +112,12 @@ fun Content(
         state = scaffoldState
     ) {
         DetailBody(
-            issueId = issueId,
-            description = description,
-            date = date,
-            hoursSpent = hoursSpent,
-            minutesSpent = minutesSpent,
+//            issueId = issueId,
+//            description = description,
+//            date = date,
+//            hoursSpent = hoursSpent,
+//            minutesSpent = minutesSpent,
+            state = state,
             onEvent = onEvent
         )
     }
@@ -125,12 +127,13 @@ fun Content(
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun DetailBody(
-    issueId: InputFieldState<String>,
-    description: InputFieldState<String>,
-    date: Long,
-    hoursSpent: Int,
-    minutesSpent: Int,
-    onEvent: (AddEditWorkLogEvent) -> Unit
+//    issueId: InputFieldState<String>,
+//    description: InputFieldState<String>,
+//    date: Long,
+//    hoursSpent: Int,
+//    minutesSpent: Int,
+    state: AddEditState,
+    onEvent: (AddEditEvent) -> Unit
 ) {
     Box(modifier = Modifier.fillMaxWidth()) {
         LazyColumn(
@@ -140,9 +143,9 @@ fun DetailBody(
             item {
                 IssueDropDown(
                     modifier = Modifier.fillMaxWidth(),
-                    currentIssueId = issueId,
+                    currentIssueId = state.issueId,
                     issuePicked = {
-                        onEvent(AddEditWorkLogEvent.IssueChosen(it.key))
+                        onEvent(AddEditEvent.IssueChosen(it.key))
                     }
                 )
 
@@ -152,18 +155,18 @@ fun DetailBody(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(124.dp),
-                    value = description.value,
+                    value = state.description.value,
                     onValueChange = {
-                        onEvent(AddEditWorkLogEvent.EnteredDescription(it))
+                        onEvent(AddEditEvent.EnteredDescription(it))
                     },
-                    placeholderText = description.placeholder,
-                    labelText = description.label
+                    placeholderText = state.description.placeholder,
+                    labelText = state.description.label
                 )
 
                 Spacer(Modifier.padding(8.dp))
 
-                DatePicker(modifier = Modifier.fillMaxWidth(), selectedDate = date) {
-                    onEvent(AddEditWorkLogEvent.DateChosen(it))
+                DatePicker(modifier = Modifier.fillMaxWidth(), selectedDate = state.date.value) {
+                    onEvent(AddEditEvent.DateChosen(it))
                 }
 
                 Spacer(Modifier.padding(8.dp))
@@ -176,18 +179,18 @@ fun DetailBody(
                     Text("Worked")
 
                     NumberPicker(
-                        value = hoursSpent,
+                        value = state.hoursSpent,
                         suffix = "h",
                         onChange = {
-                            onEvent(AddEditWorkLogEvent.HoursChanged(it))
+                            onEvent(AddEditEvent.HoursChanged(it))
                         }
                     )
 
                     NumberPicker(
-                        value = minutesSpent,
+                        value = state.minutesSpent,
                         suffix = "m",
                         onChange = {
-                            onEvent(AddEditWorkLogEvent.MinutesChanged(it))
+                            onEvent(AddEditEvent.MinutesChanged(it))
                         }
                     )
                 }
@@ -202,14 +205,15 @@ fun DetailBody(
 @Composable
 @Preview(name = "Light Mode", uiMode = UI_MODE_NIGHT_NO, showBackground = true)
 @Preview(name = "Dark Mode", uiMode = UI_MODE_NIGHT_YES, showBackground = true)
-fun Preview(@PreviewParameter(WorkLogDetailPreviewParameterProvider::class) state: WorkLogDetailState) {
+fun Preview(@PreviewParameter(WorkLogDetailPreviewParameterProvider::class) state: AddEditState) {
     JiraLoggerTheme {
         Content(
-            issueId = InputFieldState(value = "DAL-656"),
-            description = InputFieldState(value = "Working on issue DAL-656"),
-            date = System.nanoTime(),
-            hoursSpent = 0,
-            minutesSpent = 0,
+//            issueId = InputFieldState(value = "DAL-656"),
+//            description = InputFieldState(value = "Working on issue DAL-656"),
+//            date = System.nanoTime(),
+//            hoursSpent = 0,
+//            minutesSpent = 0,
+            state,
             scaffoldState = rememberScaffoldState(),
             {},
             {}

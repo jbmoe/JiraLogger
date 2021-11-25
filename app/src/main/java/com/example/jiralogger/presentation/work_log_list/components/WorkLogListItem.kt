@@ -21,14 +21,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.example.jiralogger.R
+import com.example.jiralogger.common.test_data.TestData
 import com.example.jiralogger.domain.model.WorkLog
 import com.example.jiralogger.presentation.components.Text
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
-import com.example.jiralogger.presentation.util.preview_paramater.WorkLogDetailPreviewParameterProvider
-import com.example.jiralogger.presentation.work_log_add_edit.WorkLogDetailState
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -96,8 +94,9 @@ fun WorkLogListItem(workLog: WorkLog, onItemClicked: (WorkLog) -> Unit, onDelete
 @Preview(name = "Light mode", uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 @Preview(name = "Dark mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
-fun Preview(@PreviewParameter(WorkLogDetailPreviewParameterProvider::class) state: WorkLogDetailState) {
+fun Preview() {
+    val item = TestData.WORK_LOG_TEST_DATA.random()
     JiraLoggerTheme {
-        WorkLogListItem(workLog = state.item as WorkLog, onItemClicked = {},{})
+        WorkLogListItem(workLog = item, onItemClicked = {},{})
     }
 }
