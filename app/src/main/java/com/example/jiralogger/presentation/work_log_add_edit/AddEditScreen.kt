@@ -39,11 +39,6 @@ fun AddEditScreen(
     navController: NavController,
     viewModel: AddEditViewModel = hiltViewModel()
 ) {
-//    val issueId = viewModel.issueId.value
-//    val description = viewModel.description.value
-//    val date = viewModel.date.value
-//    val hoursSpent = viewModel.hoursSpent.value
-//    val minutesSpent = viewModel.minutesSpent.value
     val state = viewModel.state.value
     val scaffoldState = rememberScaffoldState()
 
@@ -63,11 +58,6 @@ fun AddEditScreen(
     }
 
     Content(
-//        issueId = issueId,
-//        description = description,
-//        date = date,
-//        hoursSpent = hoursSpent,
-//        minutesSpent = minutesSpent,
         state = state,
         scaffoldState = scaffoldState,
         onBack = { navController.popBackStack() },
@@ -82,11 +72,6 @@ fun AddEditScreen(
 @ExperimentalMaterial3Api
 @Composable
 fun Content(
-//    issueId: InputFieldState<String>,
-//    description: InputFieldState<String>,
-//    date: Long,
-//    hoursSpent: Int,
-//    minutesSpent: Int,
     state: AddEditState,
     scaffoldState: ScaffoldState,
     onBack: () -> Unit,
@@ -112,11 +97,6 @@ fun Content(
         state = scaffoldState
     ) {
         DetailBody(
-//            issueId = issueId,
-//            description = description,
-//            date = date,
-//            hoursSpent = hoursSpent,
-//            minutesSpent = minutesSpent,
             state = state,
             onEvent = onEvent
         )
@@ -127,11 +107,6 @@ fun Content(
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun DetailBody(
-//    issueId: InputFieldState<String>,
-//    description: InputFieldState<String>,
-//    date: Long,
-//    hoursSpent: Int,
-//    minutesSpent: Int,
     state: AddEditState,
     onEvent: (AddEditEvent) -> Unit
 ) {
@@ -208,11 +183,6 @@ fun DetailBody(
 fun Preview(@PreviewParameter(WorkLogDetailPreviewParameterProvider::class) state: AddEditState) {
     JiraLoggerTheme {
         Content(
-//            issueId = InputFieldState(value = "DAL-656"),
-//            description = InputFieldState(value = "Working on issue DAL-656"),
-//            date = System.nanoTime(),
-//            hoursSpent = 0,
-//            minutesSpent = 0,
             state,
             scaffoldState = rememberScaffoldState(),
             {},
