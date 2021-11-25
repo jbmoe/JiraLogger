@@ -15,4 +15,10 @@ data class WorkLog(
     @ColumnInfo(name = "comment") val comment: String
 )
 
-class InvalidLogException(message: String) : Exception(message)
+class InvalidLogException(val err: LogError) : Exception(err.msg)
+
+enum class LogError(val msg: String) {
+    IssueID("Issue ID cannot be null"),
+    TimeSpent("Time spent cannot be zero"),
+    Date("Date worked cannot be null")
+}

@@ -14,11 +14,13 @@ data class AddEditState(
         placeholder = "Describe the work you've been doing"
     ),
     val date: InputFieldState<Long> = InputFieldState(
-        value = System.currentTimeMillis(),
+        value = 0L,
         label = "Date",
         placeholder = "Choose a date"
     ),
-    val timeSpentSec: Int = 0,
+    val timeSpentSec: InputFieldState<Int> = InputFieldState(
+        value = 0
+    ),
     val hoursSpent: Int = 0,
     val minutesSpent: Int = 0,
 )
