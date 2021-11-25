@@ -38,7 +38,7 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun AddEditScreen(
     navController: NavController,
-    viewModel: AddEditLogViewModel = hiltViewModel()
+    viewModel: AddEditViewModel = hiltViewModel()
 ) {
     val issueId = viewModel.issueId.value
     val description = viewModel.description.value
@@ -51,12 +51,12 @@ fun AddEditScreen(
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest { event ->
             when (event) {
-                is AddEditLogViewModel.UiEvent.ShowSnackbar -> {
+                is AddEditViewModel.UiEvent.ShowSnackbar -> {
                     scaffoldState.snackbarHostState.showSnackbar(
                         message = event.message
                     )
                 }
-                is AddEditLogViewModel.UiEvent.SaveLog -> {
+                is AddEditViewModel.UiEvent.SaveLog -> {
                     navController.navigateUp()
                 }
             }

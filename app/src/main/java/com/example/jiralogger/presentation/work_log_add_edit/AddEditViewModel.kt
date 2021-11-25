@@ -6,13 +6,12 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.jiralogger.common.constant.Constants
-import com.example.jiralogger.common.test_data.TestData
 import com.example.jiralogger.domain.model.InvalidLogException
-import com.example.jiralogger.domain.model.LogError
 import com.example.jiralogger.domain.model.WorkLog
 import com.example.jiralogger.domain.use_case.work_log.GetWorkLog
 import com.example.jiralogger.domain.use_case.work_log.InsertWorkLog
 import com.example.jiralogger.presentation.components.NumberPickerEvent
+import com.example.jiralogger.presentation.util.InputFieldState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -25,8 +24,33 @@ class AddEditViewModel @Inject constructor(
     private val insertWorkLogUseCase: InsertWorkLog,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    private val _state = mutableStateOf(AddEditState())
-    val state: State<AddEditState> = _state
+    private val _issueId = mutableStateOf(
+        InputFieldState(
+            value = "",
+            label = "Issue",
+            placeholder = "Search issues..."
+        )
+    )
+    val issueId: State<InputFieldState<String>> = _issueId
+
+    private val _description = mutableStateOf(
+        InputFieldState(
+            value = "",
+            label = "Comment",
+            placeholder = "Describe the work you've been doing"
+        )
+    )
+    val description: State<InputFieldState<String>> = _description
+
+    private val _date = mutableStateOf(System.currentTimeMillis())
+    val date: State<Long> = _date
+
+    private val _timeSpentSec = mutableStateOf(0)
+    private val _hoursSpent = mutableStateOf(0)
+    val hoursSpent: State<Int> = _hoursSpent
+
+    private val _minutesSpent = mutableStateOf(0)
+    val minutesSpent: State<Int> = _minutesSpent
 
     private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
@@ -36,6 +60,7 @@ class AddEditViewModel @Inject constructor(
     private val hours = (0..99).toList()
     private val minutes = listOf(0, 15, 30, 45)
 
+
     init {
         savedStateHandle.get<Int>(Constants.PARAM_WORK_LOG_ID)?.let { logId ->
             if (logId != -1) {
@@ -43,94 +68,81 @@ class AddEditViewModel @Inject constructor(
             }
         }
         savedStateHandle.get<String>(Constants.PARAM_ISSUE_KEY)?.let { issueId ->
-            _state.value = _state.value.copy(
-                issueId = _state.value.issueId.copy(value = issueId)
-            )
+            if (issueId.isNotBlank()) {
+                _issueId.value = _issueId.value.copy(
+                    value = issueId
+                )
+            }
         }
     }
 
-    fun onEvent(event: AddEditEvent) {
+    fun onEvent(event: AddEditWorkLogEvent) {
         when (event) {
-            is AddEditEvent.IssueChosen -> {
+            is AddEditWorkLogEvent.IssueChosen -> {
                 changeIssue(event.issueId)
             }
-            is AddEditEvent.EnteredDescription -> {
-                _state.value = _state.value.copy(
-                    description = _state.value.description.copy(value = event.value)
+            is AddEditWorkLogEvent.EnteredDescription -> {
+                _description.value = _description.value.copy(
+                    value = event.value
                 )
             }
-            is AddEditEvent.DateChosen -> {
-                _state.value = _state.value.copy(
-                    date = _state.value.date.copy(value = event.value, isError = false),
-                )
+            is AddEditWorkLogEvent.DateChosen -> {
+                _date.value = event.value
             }
-            is AddEditEvent.HoursChanged -> {
+            is AddEditWorkLogEvent.HoursChanged -> {
                 handleHoursEvent(event.event)
             }
-            is AddEditEvent.MinutesChanged -> {
+            is AddEditWorkLogEvent.MinutesChanged -> {
                 handleMinutesEvent(event.event)
             }
-            is AddEditEvent.Save -> {
+            is AddEditWorkLogEvent.Save -> {
                 save()
             }
         }
     }
 
     private fun changeIssue(issueId: String) {
-        if (_state.value.description.value.isNotBlank()) {
-            _state.value = _state.value.copy(
-                description = _state.value.description.copy(
-                    value = _state.value.description.value.replace(
-                        _state.value.issueId.value,
-                        issueId
-                    )
-                )
+        if (_description.value.value.isNotBlank()) {
+            _description.value = _description.value.copy(
+                value = _description.value.value.replace(_issueId.value.value, issueId)
             )
         }
-        _state.value = _state.value.copy(
-            issueId = _state.value.issueId.copy(value = issueId, isError = false),
+        _issueId.value = _issueId.value.copy(
+            value = issueId,
+            isError = false
         )
     }
 
     private fun handleHoursEvent(event: NumberPickerEvent) {
         if (event == NumberPickerEvent.Increase)
-            if (_state.value.hoursSpent == hours.last())
-                _state.value = _state.value.copy(hoursSpent = hours.first())
+            if (_hoursSpent.value == hours.last())
+                _hoursSpent.value = hours.first()
             else
-                _state.value = _state.value.copy(hoursSpent = _state.value.hoursSpent + 1)
+                _hoursSpent.value++
         else
-            if (_state.value.hoursSpent == hours.first())
-                _state.value = _state.value.copy(hoursSpent = hours.last())
+            if (_hoursSpent.value == hours.first())
+                _hoursSpent.value = hours.last()
             else
-                _state.value = _state.value.copy(hoursSpent = _state.value.hoursSpent - 1)
+                _hoursSpent.value--
         updateTimeSpentSeconds()
     }
 
     private fun handleMinutesEvent(event: NumberPickerEvent) {
         if (event == NumberPickerEvent.Increase)
-            if (_state.value.minutesSpent == minutes.last())
-                _state.value = _state.value.copy(minutesSpent = minutes.first())
+            if (_minutesSpent.value == minutes.last())
+                _minutesSpent.value = minutes.first()
             else
-                _state.value = _state.value.copy(
-                    minutesSpent = minutes[minutes.indexOf(_state.value.minutesSpent) + 1]
-                )
+                _minutesSpent.value = minutes[minutes.indexOf(_minutesSpent.value) + 1]
         else
-            if (_state.value.minutesSpent == minutes.first())
-                _state.value = _state.value.copy(minutesSpent = minutes.last())
+            if (_minutesSpent.value == minutes.first())
+                _minutesSpent.value = minutes.last()
             else
-                _state.value = _state.value.copy(
-                    minutesSpent = minutes[minutes.indexOf(_state.value.minutesSpent) - 1]
-                )
+                _minutesSpent.value = minutes[minutes.indexOf(_minutesSpent.value) - 1]
         updateTimeSpentSeconds()
     }
 
     private fun updateTimeSpentSeconds() {
-        _state.value = _state.value.copy(
-            timeSpentSec = _state.value.timeSpentSec.copy(
-                value = (_state.value.hoursSpent * 60 * 60) + (_state.value.minutesSpent * 60),
-                isError = false
-            )
-        )
+        _timeSpentSec.value = (_hoursSpent.value * 60 * 60) + (_minutesSpent.value * 60)
     }
 
     private fun save() {
@@ -139,33 +151,19 @@ class AddEditViewModel @Inject constructor(
                 insertWorkLogUseCase(
                     WorkLog(
                         id = currentLogId,
-                        issueId = _state.value.issueId.value,
-                        comment = if (_state.value.description.value.isNotBlank()) _state.value.description.value else "Working on issue ${_state.value.issueId.value}",
-                        dateWorked = _state.value.date.value,
+                        issueId = _issueId.value.value,
+                        comment = if (_description.value.value.isNotBlank()) _description.value.value else "Working on issue ${_issueId.value.value}",
+                        dateWorked = _date.value,
                         timeSpent = getTimeSpent(),
-                        timeSpentSeconds = _state.value.timeSpentSec.value,
-                        userId = TestData.USER
+                        timeSpentSeconds = _timeSpentSec.value,
+                        userId = "JEM"
                     )
                 )
                 _eventFlow.emit(UiEvent.SaveLog)
             } catch (e: InvalidLogException) {
-                when (e.err) {
-                    LogError.IssueID -> {
-                        _state.value = _state.value.copy(
-                            issueId = _state.value.issueId.copy(isError = true)
-                        )
-                    }
-                    LogError.Date -> {
-                        _state.value = _state.value.copy(
-                            date = _state.value.date.copy(isError = true)
-                        )
-                    }
-                    LogError.TimeSpent -> {
-                        _state.value = _state.value.copy(
-                            timeSpentSec = _state.value.timeSpentSec.copy(isError = true)
-                        )
-                    }
-                }
+                _issueId.value = _issueId.value.copy(
+                    isError = true
+                )
                 _eventFlow.emit(
                     UiEvent.ShowSnackbar(
                         message = e.message ?: "Couldn't save log"
@@ -177,8 +175,8 @@ class AddEditViewModel @Inject constructor(
 
     private fun getTimeSpent(): String {
         var toReturn = ""
-        val hours = _state.value.hoursSpent
-        val minutes = _state.value.minutesSpent
+        val hours = _hoursSpent.value
+        val minutes = _minutesSpent.value
 
         if (hours != 0) {
             toReturn += "${hours}h "
@@ -194,14 +192,18 @@ class AddEditViewModel @Inject constructor(
         viewModelScope.launch {
             getWorkLogUseCase(logId)?.also { log ->
                 currentLogId = log.id
-                _state.value = _state.value.copy(
-                    issueId = _state.value.issueId.copy(value = log.issueId),
-                    description = _state.value.description.copy(value = log.comment),
-                    date = _state.value.date.copy(value = log.dateWorked),
-                    timeSpentSec = _state.value.timeSpentSec.copy(value = log.timeSpentSeconds),
-                    minutesSpent = log.timeSpentSeconds.mod(3600) / 60,
-                    hoursSpent = log.timeSpentSeconds / 3600
+                _issueId.value = _issueId.value.copy(
+                    value = log.issueId
                 )
+                _description.value = _description.value.copy(
+                    value = log.comment
+                )
+                _date.value = log.dateWorked
+                _timeSpentSec.value = log.timeSpentSeconds
+                val hours = _timeSpentSec.value / 3600
+                val minutes = _timeSpentSec.value.mod(3600) / 60
+                _hoursSpent.value = hours
+                _minutesSpent.value = minutes
             }
         }
     }
