@@ -36,7 +36,6 @@ class AddEditViewModel @Inject constructor(
     private val hours = (0..99).toList()
     private val minutes = listOf(0, 15, 30, 45)
 
-
     init {
         savedStateHandle.get<Int>(Constants.PARAM_WORK_LOG_ID)?.let { logId ->
             if (logId != -1) {
