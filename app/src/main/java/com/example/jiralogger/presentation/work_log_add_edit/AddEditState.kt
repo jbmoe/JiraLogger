@@ -14,7 +14,7 @@ data class AddEditState(
         placeholder = "Describe the work you've been doing"
     ),
     val date: InputFieldState<Long> = InputFieldState(
-        value = 0L,
+        value = System.currentTimeMillis(),
         label = "Date",
         placeholder = "Choose a date"
     ),
