@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
@@ -18,6 +19,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
@@ -60,6 +62,7 @@ fun OutlinedTextField(
             placeholder = textOrNull(placeholderText),
             leadingIcon = leadingIcon,
             trailingIcon = trailingIconOrError(trailingIcon = trailingIcon, isError = isError),
+            keyboardOptions = KeyboardOptions.Default.copy(capitalization = KeyboardCapitalization.Sentences),
             keyboardActions = KeyboardActions(onDone = {
                 keyboardController?.hide()
             }),
