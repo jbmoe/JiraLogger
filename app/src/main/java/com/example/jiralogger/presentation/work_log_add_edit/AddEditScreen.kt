@@ -134,12 +134,10 @@ fun DetailBody(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(124.dp),
-                    value = state.description.value,
                     onValueChange = {
                         onEvent(AddEditEvent.EnteredDescription(it))
                     },
-                    placeholderText = state.description.placeholder,
-                    labelText = state.description.label
+                    inputState = state.description
                 )
 
                 Spacer(Modifier.padding(8.dp))
