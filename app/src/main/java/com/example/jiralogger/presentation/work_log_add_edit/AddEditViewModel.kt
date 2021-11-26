@@ -137,7 +137,7 @@ class AddEditViewModel @Inject constructor(
                     WorkLog(
                         id = currentLogId,
                         issueId = _state.value.issueId.value,
-                        comment = if (_state.value.description.value.isNotBlank()) _state.value.description.value else "Working on issue ${_state.value.issueId}",
+                        comment = if (_state.value.description.value.isNotBlank()) _state.value.description.value else "Working on issue ${_state.value.issueId.value}",
                         dateWorked = _state.value.date.value,
                         timeSpent = getTimeSpent(),
                         timeSpentSeconds = _state.value.timeSpentSec.value,
