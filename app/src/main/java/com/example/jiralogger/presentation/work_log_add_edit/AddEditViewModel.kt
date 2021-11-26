@@ -111,12 +111,16 @@ class AddEditViewModel @Inject constructor(
             if (_state.value.minutesSpent == minutes.last())
                 _state.value = _state.value.copy(minutesSpent = minutes.first())
             else
-                _state.value = _state.value.copy(minutesSpent = _state.value.minutesSpent + 1)
+                _state.value = _state.value.copy(
+                    minutesSpent = minutes[minutes.indexOf(_state.value.minutesSpent) + 1]
+                )
         else
             if (_state.value.minutesSpent == minutes.first())
                 _state.value = _state.value.copy(minutesSpent = minutes.last())
             else
-                _state.value = _state.value.copy(minutesSpent = _state.value.minutesSpent - 1)
+                _state.value = _state.value.copy(
+                    minutesSpent = minutes[minutes.indexOf(_state.value.minutesSpent) - 1]
+                )
         updateTimeSpentSeconds()
     }
 
