@@ -31,7 +31,7 @@ class IssueListViewModel @Inject constructor(
     init {
         getFilteredIssues(IssueFilter.Seen)
     }
-    
+
     fun onEvent(event: IssuesEvent) {
         when (event) {
             is IssuesEvent.Filter -> {
@@ -44,9 +44,10 @@ class IssueListViewModel @Inject constructor(
             is IssuesEvent.Refresh -> refresh()
             is IssuesEvent.ToggleSearchVisibility -> {
                 _state.value = _state.value.copy(
-                    filterIsVisible = false,
                     searchIsVisible = !_state.value.searchIsVisible
                 )
+                if (!_state.value.searchIsVisible)
+                    getFilteredIssues(_state.value.issueFilter)
             }
         }
     }
@@ -58,13 +59,12 @@ class IssueListViewModel @Inject constructor(
     private fun getFilteredIssues(issueFilter: IssueFilter, ignoreCache: Boolean = false) {
         getIssuesByFilter(issueFilter, ignoreCache).onEach { result ->
             val filter =
-                if (issueFilter !is IssueFilter.SEARCH) issueFilter else IssueFilter.Assigned
+                if (issueFilter is IssueFilter.SEARCH) _state.value.issueFilter else issueFilter
             when (result) {
                 is Resource.Success -> {
                     _state.value = IssueListState(
                         items = result.data?.sortedBy { it.status.name } ?: emptyList(),
                         issueFilter = filter,
-                        filterIsVisible = _state.value.filterIsVisible,
                         searchIsVisible = _state.value.searchIsVisible
                     )
                 }
@@ -73,7 +73,6 @@ class IssueListViewModel @Inject constructor(
                         IssueListState(
                             error = result.message ?: "An unexpected error occurred",
                             issueFilter = filter,
-                            filterIsVisible = _state.value.filterIsVisible,
                             searchIsVisible = _state.value.searchIsVisible
                         )
                 }
@@ -81,7 +80,6 @@ class IssueListViewModel @Inject constructor(
                     _state.value = IssueListState(
                         isLoading = true,
                         issueFilter = filter,
-                        filterIsVisible = _state.value.filterIsVisible,
                         searchIsVisible = _state.value.searchIsVisible
                     )
                 }
