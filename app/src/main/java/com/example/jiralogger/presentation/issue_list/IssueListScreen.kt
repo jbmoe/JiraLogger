@@ -89,7 +89,7 @@ private fun Content(
                     onEvent(IssuesEvent.Search(IssueFilter.SEARCH(it)))
                 }
             }
-            AnimatedVisibility(visible = state.filterIsVisible, enter = fadein, exit = fadeout) {
+            AnimatedVisibility(visible = !state.searchIsVisible, enter = fadein, exit = fadeout) {
                 TabSection(
                     currentTab = state.issueFilter,
                     tabs = filters,
