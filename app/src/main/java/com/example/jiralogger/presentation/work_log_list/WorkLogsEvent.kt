@@ -7,6 +7,5 @@ sealed interface WorkLogsEvent {
     data class GroupBy(val groupBy: WorkLogGroupBy) : WorkLogsEvent
     data class DeleteLog(val log: WorkLog) : WorkLogsEvent
     object RestoreLog : WorkLogsEvent
-    object ToggleGroupByVisibility : WorkLogsEvent
     object Refresh : WorkLogsEvent
 }

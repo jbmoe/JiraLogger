@@ -74,20 +74,6 @@ fun Content(
         state = scaffoldState,
         title = { Text("Work Logs") },
         actions = {
-//            OrderDropDown(currentOrderType = state.groupBy.orderType) { orderType ->
-//                onEvent(WorkLogsEvent.GroupBy(state.groupBy.copy(orderType)))
-//            }
-            IconButton(onClick = { onEvent(WorkLogsEvent.ToggleGroupByVisibility) }) {
-                Icon(
-                    painter = painterResource(
-                        if (state.groupByIsVisible)
-                            R.drawable.ic_baseline_filter_alt_24
-                        else
-                            R.drawable.ic_outline_filter_alt_24
-                    ),
-                    contentDescription = "Group by"
-                )
-            }
             IconButton(onClick = { onEvent(WorkLogsEvent.Refresh) }) {
                 Icon(
                     imageVector = Icons.Filled.Refresh,
