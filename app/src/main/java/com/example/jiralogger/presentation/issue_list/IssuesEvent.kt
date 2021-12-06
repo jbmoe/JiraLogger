@@ -6,6 +6,5 @@ sealed interface IssuesEvent {
     data class Filter(val filter: IssueFilter) : IssuesEvent
     data class Search(val filter: IssueFilter) : IssuesEvent
     object Refresh : IssuesEvent
-    object ToggleFilterVisibility : IssuesEvent
     object ToggleSearchVisibility : IssuesEvent
 }

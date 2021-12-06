@@ -42,14 +42,6 @@ class IssueListViewModel @Inject constructor(
                 getFilteredIssues(event.filter)
             }
             is IssuesEvent.Refresh -> refresh()
-            is IssuesEvent.ToggleFilterVisibility -> {
-                _state.value = _state.value.copy(
-                    filterIsVisible = !_state.value.filterIsVisible,
-                    searchIsVisible = false
-                )
-                if (_state.value.filterIsVisible)
-                    getFilteredIssues(_state.value.issueFilter)
-            }
             is IssuesEvent.ToggleSearchVisibility -> {
                 _state.value = _state.value.copy(
                     filterIsVisible = false,
