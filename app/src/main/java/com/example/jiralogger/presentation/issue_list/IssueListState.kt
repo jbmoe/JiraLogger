@@ -7,7 +7,6 @@ data class IssueListState(
     val isLoading: Boolean = false,
     val items: List<Issue> = emptyList(),
     val error: String = "",
-    val filterIsVisible: Boolean = true,
     val searchIsVisible: Boolean = false,
     val issueFilter: IssueFilter = IssueFilter.Assigned
 )
