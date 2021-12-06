@@ -72,17 +72,6 @@ private fun Content(
             IconButton(onClick = { onEvent(IssuesEvent.ToggleSearchVisibility) }) {
                 Icon(Icons.Default.Search, "Search")
             }
-            IconButton(onClick = { onEvent(IssuesEvent.ToggleFilterVisibility) }) {
-                Icon(
-                    painter = painterResource(
-                        if (state.filterIsVisible)
-                            R.drawable.ic_baseline_filter_alt_24
-                        else
-                            R.drawable.ic_outline_filter_alt_24
-                    ),
-                    contentDescription = "Filter"
-                )
-            }
             IconButton(onClick = { onEvent(IssuesEvent.Refresh) }) {
                 Icon(
                     imageVector = Icons.Filled.Refresh,

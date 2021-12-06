@@ -66,11 +66,6 @@ class WorkLogListViewModel @Inject constructor(
                 }
                 getWorkLogs(event.groupBy)
             }
-            is WorkLogsEvent.ToggleGroupByVisibility -> {
-                _state.value = _state.value.copy(
-                    groupByIsVisible = !_state.value.groupByIsVisible
-                )
-            }
         }
     }
 
