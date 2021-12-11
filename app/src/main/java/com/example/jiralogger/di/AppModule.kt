@@ -6,6 +6,7 @@ import com.example.jiralogger.common.constant.Constants
 import com.example.jiralogger.data.local.JiraLoggerDatabase
 import com.example.jiralogger.data.remote.JiraApi
 import com.example.jiralogger.data.repository.ApiRepositoryImpl
+import com.example.jiralogger.data.repository.ApiRepositoryTestImpl
 import com.example.jiralogger.data.repository.DbRepositoryImpl
 import com.example.jiralogger.domain.repository.ApiRepository
 import com.example.jiralogger.domain.repository.DbRepository
@@ -56,8 +57,8 @@ object AppModule {
     @Provides
     @Singleton
     fun provideIssueRepository(api: JiraApi): ApiRepository {
-//        return ApiRepositoryTestImpl()
-        return ApiRepositoryImpl(api)
+        return ApiRepositoryTestImpl()
+//        return ApiRepositoryImpl(api)
     }
 
     @Provides

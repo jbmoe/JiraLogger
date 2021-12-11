@@ -29,7 +29,7 @@ class IssueListViewModel @Inject constructor(
     private var _refreshAction: (() -> Unit)? = null
 
     init {
-        getFilteredIssues(IssueFilter.Seen)
+        getFilteredIssues(_state.value.issueFilter)
     }
 
     fun onEvent(event: IssuesEvent) {
