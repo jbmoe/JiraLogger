@@ -93,7 +93,7 @@ fun Content(
                 TabSection(
                     currentTab = state.groupBy,
                     tabs = groupBys,
-                    onTabChange = { onEvent(WorkLogsEvent.GroupBy(it.copy(state.groupBy.orderType))) }
+                    onTabChange = { onEvent(WorkLogsEvent.GroupBy(it)) }
                 )
             }
             SharedList {

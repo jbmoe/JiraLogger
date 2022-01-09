@@ -1,7 +1,6 @@
 package com.example.jiralogger.presentation.work_log_list
 
 import com.example.jiralogger.domain.model.WorkLog
-import com.example.jiralogger.domain.util.OrderType
 import com.example.jiralogger.domain.util.WorkLogGroupBy
 
 data class WorkLogListState(
@@ -9,5 +8,5 @@ data class WorkLogListState(
     val isLoading: Boolean = false,
     val error: String = "",
     val groupByIsVisible: Boolean = true,
-    val groupBy: WorkLogGroupBy = WorkLogGroupBy.Date(OrderType.Ascending)
+    val groupBy: WorkLogGroupBy = WorkLogGroupBy.Date
 )

@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.jiralogger.common.test_data.TestData
 import com.example.jiralogger.domain.model.WorkLog
 import com.example.jiralogger.domain.use_case.work_log.WorkLogUseCases
-import com.example.jiralogger.domain.util.OrderType
 import com.example.jiralogger.domain.util.WorkLogGroupBy
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -30,8 +29,8 @@ class WorkLogListViewModel @Inject constructor(
     private var _refreshAction: (() -> Unit)? = null
 
     val groupBys = listOf(
-        WorkLogGroupBy.Date(OrderType.Ascending),
-        WorkLogGroupBy.Issue(OrderType.Ascending)
+        WorkLogGroupBy.Date,
+        WorkLogGroupBy.Issue
     )
 
     init {
@@ -61,7 +60,7 @@ class WorkLogListViewModel @Inject constructor(
                 restoreLog()
             }
             is WorkLogsEvent.GroupBy -> {
-                if (_state.value.groupBy::class == event.groupBy::class && _state.value.groupBy.orderType == event.groupBy.orderType) {
+                if (_state.value.groupBy::class == event.groupBy::class) {
                     return
                 }
                 getWorkLogs(event.groupBy)
