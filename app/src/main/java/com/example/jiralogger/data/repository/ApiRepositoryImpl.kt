@@ -5,8 +5,7 @@ import com.example.jiralogger.domain.model.Issue
 import com.example.jiralogger.domain.repository.ApiRepository
 import javax.inject.Inject
 
-class
-ApiRepositoryImpl @Inject constructor(
+class ApiRepositoryImpl @Inject constructor(
     private val api: JiraApi
 ) : ApiRepository {
     private val cache: MutableMap<String, List<Issue>> = mutableMapOf()
