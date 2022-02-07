@@ -6,13 +6,15 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 
+private val darkScheme = darkColorScheme()
+private val lightScheme = lightColorScheme()
 
 @Composable
 fun JiraLoggerTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
     val scheme = if (darkTheme) {
-        darkColorScheme()
+        darkScheme
     } else {
-        lightColorScheme()
+        lightScheme
     }
 
     MaterialTheme(
