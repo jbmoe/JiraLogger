@@ -1,8 +1,8 @@
-package com.example.jiralogger.presentation.issue_detail
+package com.example.jiralogger.presentation.issue
 
 import com.example.jiralogger.domain.model.Issue
 
-data class IssueDetailState(
+data class IssueState(
     val isLoading: Boolean = false,
     val item: Issue? = null,
     val error: String = ""

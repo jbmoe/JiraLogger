@@ -1,12 +1,12 @@
-package com.example.jiralogger.presentation.issue_list
+package com.example.jiralogger.presentation.issues
 
 import com.example.jiralogger.domain.model.Issue
 import com.example.jiralogger.domain.util.IssueFilter
 
-data class IssueListState(
+data class IssuesState(
     val isLoading: Boolean = false,
+    val isError: Boolean = false,
     val items: List<Issue> = emptyList(),
     val error: String = "",
-    val searchIsVisible: Boolean = false,
-    val issueFilter: IssueFilter = IssueFilter.Assigned
+    val issueFilter: IssueFilter = IssueFilter.Assigned,
 )

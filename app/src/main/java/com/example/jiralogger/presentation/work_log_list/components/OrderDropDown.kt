@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import com.example.jiralogger.R
 import com.example.jiralogger.domain.util.OrderType
-import com.example.jiralogger.presentation.components.Text
+import com.example.jiralogger.presentation.components.PabloText
 
 @Composable
 fun OrderDropDown(currentOrderType: OrderType, onSelection: (OrderType) -> Unit) {
@@ -47,7 +47,7 @@ fun OrderDropDown(currentOrderType: OrderType, onSelection: (OrderType) -> Unit)
                 onClick = ascending,
                 colors = radioButtonColors
             )
-            Text(text = "Ascending", color = contentColor)
+            PabloText(text = "Ascending", color = contentColor)
         }
         val descending = { onSelection(OrderType.Descending) }
         Row(
@@ -58,7 +58,7 @@ fun OrderDropDown(currentOrderType: OrderType, onSelection: (OrderType) -> Unit)
                 onClick = descending,
                 colors = radioButtonColors
             )
-            Text(text = "Descending", color = contentColor)
+            PabloText(text = "Descending", color = contentColor)
         }
     }
 }

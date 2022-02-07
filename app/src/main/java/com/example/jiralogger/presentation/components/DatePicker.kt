@@ -14,10 +14,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
-import com.example.jiralogger.presentation.issue_list.IssueListState
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
-import com.example.jiralogger.presentation.util.preview_paramater.IssueListPreviewParameterProvider
 import com.google.android.material.datepicker.MaterialDatePicker
 import java.text.SimpleDateFormat
 import java.util.*
@@ -45,7 +42,7 @@ fun DatePicker(
             expanded = !expanded
         }
     ) {
-        OutlinedTextField(
+        PabloTF(
             modifier = modifier,
             value = display,
             labelText = "Date",
@@ -101,7 +98,7 @@ private fun showDatePicker(
 @Preview(name = "Light mode", uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 @Preview(name = "Dark mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
-fun Preview(@PreviewParameter(IssueListPreviewParameterProvider::class) state: IssueListState) {
+fun Previewk() {
     JiraLoggerTheme {
         DatePicker(selectedDate = System.currentTimeMillis(), datePicked = {})
     }

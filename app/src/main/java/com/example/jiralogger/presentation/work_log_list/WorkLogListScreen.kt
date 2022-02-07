@@ -1,24 +1,20 @@
 package com.example.jiralogger.presentation.work_log_list
 
 import android.content.res.Configuration
-import androidx.compose.animation.AnimatedVisibility
+import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement.SpaceBetween
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.SnackbarResult
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.rememberScaffoldState
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
@@ -29,13 +25,11 @@ import com.example.jiralogger.R
 import com.example.jiralogger.common.constant.Constants
 import com.example.jiralogger.domain.model.WorkLog
 import com.example.jiralogger.domain.util.WorkLogGroupBy
-import com.example.jiralogger.presentation.components.BottomNavigationBar
-import com.example.jiralogger.presentation.components.SharedList
-import com.example.jiralogger.presentation.components.SharedScaffold
-import com.example.jiralogger.presentation.components.Text
-import com.example.jiralogger.presentation.issue_list.components.TabSection
+import com.example.jiralogger.presentation.components.*
+import com.example.jiralogger.presentation.issues.components.TabSection
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 import com.example.jiralogger.presentation.util.Screen
+import com.example.jiralogger.presentation.util.getFormattedTime
 import com.example.jiralogger.presentation.util.preview_paramater.WorkLogListPreviewParameterProvider
 import com.example.jiralogger.presentation.work_log_list.components.WorkLogListItem
 import kotlinx.coroutines.launch
@@ -47,6 +41,7 @@ fun WorkLogListScreen(
     navController: NavController,
     viewModel: WorkLogListViewModel = hiltViewModel()
 ) {
+    Log.d("DEBUGSS", "VM1")
     Content(
         state = viewModel.state.value,
         groupBys = viewModel.groupBys,
@@ -58,6 +53,7 @@ fun WorkLogListScreen(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @ExperimentalAnimationApi
 @ExperimentalFoundationApi
 @Composable
@@ -68,63 +64,65 @@ fun Content(
     onEvent: (WorkLogsEvent) -> Unit = {},
     navController: NavController
 ) {
-    val scaffoldState = rememberScaffoldState()
+    val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
-    SharedScaffold(
-        state = scaffoldState,
-        title = { Text("Work Logs") },
+    CommonScaffold(
+        titleText = "Work Logs",
+        navigationAction = CommonScaffoldNavigationActions.Menu,
         actions = {
             IconButton(onClick = { onEvent(WorkLogsEvent.Refresh) }) {
-                Icon(
-                    imageVector = Icons.Filled.Refresh,
-                    contentDescription = "Refresh"
-                )
+                IconPablo(imageVector = Icons.Filled.Refresh)
             }
         },
-        FAB = {
+        floatingActionButton = {
             FloatingActionButton(onClick = { navController.navigate(Screen.WorkLogAddEdit.route) }) {
-                Icon(painter = painterResource(id = R.drawable.ic_baseline_more_time_24), "")
+                IconPablo(R.drawable.ic_baseline_more_time_24)
             }
         },
-        bottomBar = { BottomNavigationBar(navController = navController) }
+        snackbarHost = { SnackbarHost(snackbarHostState) },
+        navController = navController
     ) {
         Column {
-            AnimatedVisibility(visible = state.groupByIsVisible) {
-                TabSection(
-                    currentTab = state.groupBy,
-                    tabs = groupBys,
-                    onTabChange = { onEvent(WorkLogsEvent.GroupBy(it)) }
-                )
-            }
-            SharedList {
-                state.itemMap.forEach { (date, logs) ->
-                    item(date) {
-                        Text(
-                            text = date,
-                            modifier = Modifier.padding(2.dp, top = 8.dp)
-                        )
-                    }
-                    items(items = logs) { workLog ->
-                        WorkLogListItem(
-                            workLog = workLog,
-                            onItemClicked = { onItemClicked(workLog) },
-                            onDelete = {
-                                onEvent(WorkLogsEvent.DeleteLog(workLog))
-                                scope.launch {
-                                    val result = scaffoldState.snackbarHostState.showSnackbar(
-                                        message = "Log deleted",
-                                        actionLabel = "Undo"
-                                    )
-                                    if (result == SnackbarResult.ActionPerformed) {
-                                        onEvent(WorkLogsEvent.RestoreLog)
+            TabSection(
+                currentTab = state.groupBy,
+                tabs = groupBys,
+                onTabChange = { onEvent(WorkLogsEvent.GroupBy(it)) }
+            )
+            Box(modifier = Modifier.fillMaxSize()) {
+                CommonLazyList {
+                    state.itemMap.forEach { (key, logs) ->
+                        item(key) {
+                            Row(
+                                horizontalArrangement = SpaceBetween,
+                                verticalAlignment = CenterVertically,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 2.dp, end = 2.dp, top = 8.dp)
+                            ) {
+                                PabloText(text = key)
+                                state.totalMap[key]?.let { getFormattedTime(it) }
+                                    ?.let { PabloText(text = it) }
+                            }
+                        }
+                        items(items = logs) { workLog ->
+                            WorkLogListItem(
+                                workLog = workLog,
+                                onItemClicked = { onItemClicked(workLog) },
+                                onDelete = {
+                                    onEvent(WorkLogsEvent.DeleteLog(workLog))
+                                    scope.launch {
+                                        val result = snackbarHostState.showSnackbar(
+                                            message = "Log deleted",
+                                            actionLabel = "Undo"
+                                        )
+                                        if (result == SnackbarResult.ActionPerformed) {
+                                            onEvent(WorkLogsEvent.RestoreLog)
+                                        }
                                     }
                                 }
-                            }
-                        )
+                            )
+                        }
                     }
-                }
-                item {
-                    Spacer(modifier = Modifier.padding(4.dp))
                 }
             }
         }

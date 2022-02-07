@@ -1,5 +1,5 @@
 package com.example.jiralogger.domain.util
 
-interface HasName {
+interface Tabable {
     val name: String
 }
