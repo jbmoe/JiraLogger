@@ -1,4 +1,4 @@
-package com.example.jiralogger.presentation.issue_list.components
+package com.example.jiralogger.presentation.issues.components
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.LocalContentColor
@@ -24,21 +23,18 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import com.example.jiralogger.presentation.components.Text
-import com.example.jiralogger.presentation.issue_list.IssueListState
+import com.example.jiralogger.presentation.components.IconPablo
+import com.example.jiralogger.presentation.components.PabloText
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
-import com.example.jiralogger.presentation.util.preview_paramater.IssueListPreviewParameterProvider
 
 @Composable
 fun Searchbar(onValueChange: (String) -> Unit) {
     CustomTextField(
         leadingIcon = {
-            Icon(
+            IconPablo(
                 Icons.Filled.Search,
-                null,
                 tint = LocalContentColor.current.copy(alpha = 0.3f)
             )
         },
@@ -83,7 +79,7 @@ private fun CustomTextField(
                 if (leadingIcon != null) leadingIcon()
                 Box(Modifier.weight(1f)) {
                     if (text.isEmpty())
-                        Text(
+                        PabloText(
                             placeholderText,
                             color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.3f),
                             fontSize = fontSize
@@ -104,7 +100,7 @@ private fun CustomTextField(
 @Preview(name = "Light mode", uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 @Preview(name = "Dark mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
-fun Preview(@PreviewParameter(IssueListPreviewParameterProvider::class) state: IssueListState) {
+fun Preview() {
     JiraLoggerTheme {
         Searchbar {}
     }

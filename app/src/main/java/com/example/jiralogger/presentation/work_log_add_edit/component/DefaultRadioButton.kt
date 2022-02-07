@@ -17,7 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.jiralogger.domain.util.IssueFilter
-import com.example.jiralogger.presentation.components.Text
+import com.example.jiralogger.presentation.components.PabloText
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 
 @Composable
@@ -38,7 +38,7 @@ fun DefaultRadioButton(
         border = BorderStroke(2.dp, color),
         color = Color.Transparent
     ) {
-        Text(
+        PabloText(
             modifier = modifier.padding(8.dp), text = text
         )
     }

@@ -57,8 +57,8 @@ object AppModule {
     @Provides
     @Singleton
     fun provideIssueRepository(api: JiraApi): ApiRepository {
-        return ApiRepositoryTestImpl()
-//        return ApiRepositoryImpl(api)
+//        return ApiRepositoryTestImpl()
+        return ApiRepositoryImpl(api)
     }
 
     @Provides

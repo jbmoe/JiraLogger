@@ -17,10 +17,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.jiralogger.R
 import com.example.jiralogger.domain.model.Issue
-import com.example.jiralogger.presentation.components.OutlinedTextField
-import com.example.jiralogger.presentation.components.Text
-import com.example.jiralogger.presentation.issue_list.IssueListViewModel
-import com.example.jiralogger.presentation.issue_list.IssuesEvent
+import com.example.jiralogger.presentation.components.PabloTF
+import com.example.jiralogger.presentation.components.PabloText
+import com.example.jiralogger.presentation.issues.IssuesEvent
+import com.example.jiralogger.presentation.issues.IssuesViewModel
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 import com.example.jiralogger.presentation.util.ImageFromUrl
 import com.example.jiralogger.presentation.util.InputFieldState
@@ -42,7 +42,7 @@ fun IssueDropDown(
             expanded = !expanded
         }
     ) {
-        OutlinedTextField(
+        PabloTF(
             modifier = modifier,
             readOnly = true,
             value = currentIssueId.value,
@@ -66,7 +66,7 @@ fun IssueDropDown(
 private fun ExposedDropdownMenuBoxScope.Menu(
     modifier: Modifier = Modifier,
     expanded: Boolean,
-    viewModel: IssueListViewModel = hiltViewModel(),
+    viewModel: IssuesViewModel = hiltViewModel(),
     onDismiss: () -> Unit,
     onSelect: (Issue) -> Unit
 ) {
@@ -77,11 +77,11 @@ private fun ExposedDropdownMenuBoxScope.Menu(
         onDismissRequest = onDismiss
     ) {
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
-            viewModel.filters.onEach { filter ->
+            viewModel.issueFilters.onEach { filter ->
                 DefaultRadioButton(
                     text = filter.name,
                     selected = filter == viewModel.state.value.issueFilter,
-                    onSelect = { viewModel.onEvent(IssuesEvent.Filter(filter)) })
+                    onSelect = { viewModel.onEvent(IssuesEvent.OnFilterChanged(filter)) })
             }
         }
         Column(modifier = modifier.fillMaxSize()) {
@@ -119,8 +119,8 @@ private fun ListItem(modifier: Modifier = Modifier, issue: Issue) {
                 .size(18.dp)
         )
         Column(modifier = modifier.padding(horizontal = 4.dp)) {
-            Text(text = issue.key)
-            Text(
+            PabloText(text = issue.key)
+            PabloText(
                 text = issue.summary,
                 maxLines = 1,
                 color = MaterialTheme.colorScheme.onBackground.copy(.6f)

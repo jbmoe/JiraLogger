@@ -1,11 +1,14 @@
 package com.example.jiralogger.presentation.components
 
-import android.content.res.Configuration.UI_MODE_NIGHT_NO
-import android.content.res.Configuration.UI_MODE_NIGHT_YES
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,12 +21,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
-import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
+import androidx.compose.ui.unit.dp
 
 @Composable
-fun Text(
+fun PabloText(
     text: String,
     modifier: Modifier = Modifier,
     color: Color = MaterialTheme.colorScheme.onBackground,
@@ -41,7 +43,7 @@ fun Text(
     onTextLayout: (TextLayoutResult) -> Unit = {},
     style: TextStyle = LocalTextStyle.current
 ) {
-    androidx.compose.material3.Text(
+    Text(
         text = text,
         modifier = modifier,
         color = color,
@@ -62,12 +64,28 @@ fun Text(
 }
 
 @Composable
-@Preview(name = "Light Mode", uiMode = UI_MODE_NIGHT_NO, showBackground = true)
-@Preview(name = "Dark Mode", uiMode = UI_MODE_NIGHT_YES, showBackground = true)
-fun PreviewT() {
-    JiraLoggerTheme {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Text(text = "HEJ")
+fun ErrorText(errorText: String, modifier: Modifier = Modifier) {
+    Surface(
+        modifier = modifier.padding(horizontal = 20.dp),
+        shape = RoundedCornerShape(8.dp),
+        tonalElevation = 8.dp,
+        shadowElevation = 2.dp,
+        color = MaterialTheme.colorScheme.errorContainer
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            PabloText(
+                text = "¯\\_(ツ)_/¯"
+            )
+            PabloText(
+                modifier = Modifier.padding(4.dp),
+                text = errorText,
+                color = MaterialTheme.colorScheme.onErrorContainer,
+                textAlign = TextAlign.Center
+            )
         }
     }
 }
+

@@ -1,85 +1,56 @@
-package com.example.jiralogger.presentation.issue_detail
+package com.example.jiralogger.presentation.issue
 
-import android.content.res.Configuration.UI_MODE_NIGHT_NO
-import android.content.res.Configuration.UI_MODE_NIGHT_YES
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.jiralogger.R
 import com.example.jiralogger.common.constant.Constants
 import com.example.jiralogger.domain.model.Issue
-import com.example.jiralogger.presentation.components.SharedScaffold
-import com.example.jiralogger.presentation.components.Text
-import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
+import com.example.jiralogger.presentation.components.*
 import com.example.jiralogger.presentation.util.ImageFromUrl
 import com.example.jiralogger.presentation.util.Screen
-import com.example.jiralogger.presentation.util.preview_paramater.IssueDetailPreviewParameterProvider
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun IssueDetailScreen(
+fun IssueScreen(
     navController: NavController,
-    viewModel: IssueDetailViewModel = hiltViewModel()
+    viewModel: IssueViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.value
-    Content(
-        state = state,
-        onBack = {
-            navController.popBackStack()
-        },
-        onLogTime = {
-            val route =
-                Screen.WorkLogAddEdit.route + "?${Constants.PARAM_ISSUE_KEY}=${state.item?.key}"
-            navController.navigate(route)
-        }
-    )
-}
-
-@OptIn(ExperimentalAnimationApi::class)
-@Composable
-fun Content(state: IssueDetailState, onBack: () -> Unit, onLogTime: (String?) -> Unit) {
-    val scaffoldState = androidx.compose.material.rememberScaffoldState()
-    SharedScaffold(
-        state = scaffoldState,
-        title = { Text("Detail") },
-        navigationIcon = {
-            IconButton(onClick = onBack) {
-                Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
-            }
-        },
-        FAB = {
+    CommonScaffold(
+        navigationAction = CommonScaffoldNavigationActions.Back,
+        onNavigationAction = { navController.popBackStack() },
+        titleText = state.item?.key ?: "",
+        floatingActionButton = {
             ExtendedFloatingActionButton(
-                icon = {
-                    Icon(painter = painterResource(id = R.drawable.ic_baseline_more_time_24), "")
-                },
-                text = { Text(text = "Log your time") },
-                onClick = { onLogTime(state.item?.key) }
+                icon = { IconPablo(R.drawable.ic_baseline_more_time_24) },
+                text = { PabloText(text = "Log your time") },
+                onClick = {
+                    val route =
+                        Screen.WorkLogAddEdit.route + "?${Constants.PARAM_ISSUE_KEY}=${state.item?.key}"
+                    navController.navigate(route)
+                }
             )
-        }
+        },
+        navController = navController
     ) {
         DetailBody(state = state)
     }
 }
 
 @Composable
-private fun DetailBody(state: IssueDetailState) {
+private fun DetailBody(state: IssueState) {
     Box(modifier = Modifier.fillMaxSize()) {
         state.item?.let { issue ->
             LazyColumn(
@@ -96,7 +67,7 @@ private fun DetailBody(state: IssueDetailState) {
             }
         }
         if (state.error.isNotBlank()) {
-            ErrorText(state, Modifier.align(Alignment.Center))
+            ErrorText(state.error, Modifier.align(Alignment.Center))
         }
         if (state.isLoading) {
             CircularProgressIndicator(
@@ -104,18 +75,6 @@ private fun DetailBody(state: IssueDetailState) {
             )
         }
     }
-}
-
-@Composable
-private fun ErrorText(state: IssueDetailState, modifier: Modifier = Modifier) {
-    Text(
-        text = state.error,
-        color = MaterialTheme.colorScheme.error,
-        textAlign = TextAlign.Center,
-        modifier = modifier
-            .fillMaxSize()
-            .padding(horizontal = 20.dp)
-    )
 }
 
 @Composable
@@ -133,7 +92,7 @@ private fun TitleContent(issue: Issue) {
                 .padding(end = 4.dp)
                 .size(16.dp)
         )
-        Text(
+        PabloText(
             text = issue.key,
             style = MaterialTheme.typography.titleLarge,
             color = MaterialTheme.colorScheme.primary,
@@ -146,7 +105,7 @@ private fun TitleContent(issue: Issue) {
 
 @Composable
 private fun Summary(issue: Issue) {
-    Text(
+    PabloText(
         text = issue.summary,
         style = MaterialTheme.typography.headlineMedium
     )
@@ -155,22 +114,13 @@ private fun Summary(issue: Issue) {
 @Composable
 private fun Description(issue: Issue) {
     if (issue.description != "") {
-        Text(
+        PabloText(
             text = "Description",
             style = MaterialTheme.typography.headlineSmall
         )
-        Text(
+        PabloText(
             text = issue.description,
             style = MaterialTheme.typography.bodySmall
         )
-    }
-}
-
-@Preview(name = "Light Mode", uiMode = UI_MODE_NIGHT_NO, showBackground = true)
-@Preview(name = "Dark Mode", uiMode = UI_MODE_NIGHT_YES, showBackground = true)
-@Composable
-fun Preview(@PreviewParameter(IssueDetailPreviewParameterProvider::class) state: IssueDetailState) {
-    JiraLoggerTheme {
-        Content(state = state, {}) {}
     }
 }

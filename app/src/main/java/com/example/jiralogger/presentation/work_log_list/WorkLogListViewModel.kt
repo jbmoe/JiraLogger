@@ -1,5 +1,6 @@
 package com.example.jiralogger.presentation.work_log_list
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -35,7 +36,7 @@ class WorkLogListViewModel @Inject constructor(
 
     init {
         getWorkLogs(_state.value.groupBy)
-        initDB()
+//        initDB()
     }
 
     private fun initDB() {
@@ -93,7 +94,18 @@ class WorkLogListViewModel @Inject constructor(
                 itemMap = result,
                 groupBy = groupBy
             )
+            calcTotals()
         }.launchIn(viewModelScope)
         _refreshAction = { getWorkLogs(groupBy) }
+    }
+
+    private fun calcTotals() {
+        val map = mutableMapOf<String, Int>()
+        _state.value.itemMap.forEach { (key, list) ->
+            map.putIfAbsent(key, list.sumOf { it.timeSpentSeconds / 60 })
+        }
+        _state.value = _state.value.copy(
+            totalMap = map
+        )
     }
 }

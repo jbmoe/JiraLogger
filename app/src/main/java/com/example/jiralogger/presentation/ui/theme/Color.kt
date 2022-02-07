@@ -9,7 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.jiralogger.presentation.components.Text
+import com.example.jiralogger.presentation.components.PabloText
 
 @Composable
 fun outlinedTextFieldColors(
@@ -67,63 +67,63 @@ fun Preview() {
     JiraLoggerTheme {
 
         Column {
-            Text(
+            PabloText(
                 text = "displayLarge",
                 style = MaterialTheme.typography.displayLarge
             )
-            Text(
+            PabloText(
                 text = "displayMedium",
                 style = MaterialTheme.typography.displayMedium
             )
-            Text(
+            PabloText(
                 text = "displaySmall",
                 style = MaterialTheme.typography.displaySmall
             )
-            Text(
+            PabloText(
                 text = "headlineLarge",
                 style = MaterialTheme.typography.headlineLarge
             )
-            Text(
+            PabloText(
                 text = "headlineMedium",
                 style = MaterialTheme.typography.headlineMedium
             )
-            Text(
+            PabloText(
                 text = "headlineSmall",
                 style = MaterialTheme.typography.headlineSmall
             )
-            Text(
+            PabloText(
                 text = "titleLarge",
                 style = MaterialTheme.typography.titleLarge
             )
-            Text(
+            PabloText(
                 text = "titleMedium",
                 style = MaterialTheme.typography.titleMedium
             )
-            Text(
+            PabloText(
                 text = "titleSmall",
                 style = MaterialTheme.typography.titleSmall
             )
-            Text(
+            PabloText(
                 text = "bodyLarge",
                 style = MaterialTheme.typography.bodyLarge
             )
-            Text(
+            PabloText(
                 text = "bodyMedium",
                 style = MaterialTheme.typography.bodyMedium
             )
-            Text(
+            PabloText(
                 text = "bodySmall",
                 style = MaterialTheme.typography.bodySmall
             )
-            Text(
+            PabloText(
                 text = "labelLarge",
                 style = MaterialTheme.typography.labelLarge
             )
-            Text(
+            PabloText(
                 text = "labelMedium",
                 style = MaterialTheme.typography.labelMedium
             )
-            Text(
+            PabloText(
                 text = "labelSmall",
                 style = MaterialTheme.typography.labelSmall
             )

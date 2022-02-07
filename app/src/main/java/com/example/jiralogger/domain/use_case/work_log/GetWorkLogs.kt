@@ -22,10 +22,9 @@ class GetWorkLogs @Inject constructor(
 
     operator fun invoke(groupBy: WorkLogGroupBy): Flow<Map<String, List<WorkLog>>> {
         return repository.getWorkLogs().map { logs ->
-            if (groupBy is WorkLogGroupBy.Date) {
-                logs.sortedByDescending { it.dateWorked }.groupBy(date)
-            } else {
-                logs.sortedBy { it.issueId }.groupBy(issue)
+            when (groupBy) {
+                WorkLogGroupBy.Date -> logs.sortedByDescending { it.dateWorked }.groupBy(date)
+                WorkLogGroupBy.Issue -> logs.sortedBy { it.issueId }.groupBy(issue)
             }
         }
     }

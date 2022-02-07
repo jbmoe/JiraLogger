@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import com.example.jiralogger.R
 import com.example.jiralogger.common.test_data.TestData
 import com.example.jiralogger.domain.model.WorkLog
-import com.example.jiralogger.presentation.components.Text
+import com.example.jiralogger.presentation.components.PabloText
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -44,7 +44,7 @@ fun WorkLogListItem(workLog: WorkLog, onItemClicked: (WorkLog) -> Unit, onDelete
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(
+                    PabloText(
                         modifier = Modifier.weight(1f),
                         text = workLog.comment,
                         style = MaterialTheme.typography.titleMedium,
@@ -72,7 +72,7 @@ fun WorkLogListItem(workLog: WorkLog, onItemClicked: (WorkLog) -> Unit, onDelete
                             .align(Alignment.Top)
                     )
                     Spacer(Modifier.padding(4.dp))
-                    Text(
+                    PabloText(
                         text = workLog.issueId,
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.primary,
@@ -80,7 +80,7 @@ fun WorkLogListItem(workLog: WorkLog, onItemClicked: (WorkLog) -> Unit, onDelete
                             .alpha(.8f)
                     )
                     Spacer(modifier = Modifier.weight(1f))
-                    Text(
+                    PabloText(
                         text = workLog.timeSpent,
                         style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Bold,

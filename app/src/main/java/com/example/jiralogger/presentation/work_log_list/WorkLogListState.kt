@@ -5,6 +5,7 @@ import com.example.jiralogger.domain.util.WorkLogGroupBy
 
 data class WorkLogListState(
     val itemMap: Map<String, List<WorkLog>> = emptyMap(),
+    val totalMap: Map<String, Int> = emptyMap(),
     val isLoading: Boolean = false,
     val error: String = "",
     val groupByIsVisible: Boolean = true,

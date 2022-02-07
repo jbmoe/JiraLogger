@@ -42,8 +42,8 @@ fun NumberPicker(
             horizontalArrangement = Arrangement.Center
         ) {
             val textStyle = MaterialTheme.typography.bodyLarge
-            Text(text = "$value", style = textStyle)
-            Text(text = suffix, style = textStyle)
+            PabloText(text = "$value", style = textStyle)
+            PabloText(text = suffix, style = textStyle)
         }
         IconButton(modifier = Modifier, onClick = {
             onChange(NumberPickerEvent.Decrease)
