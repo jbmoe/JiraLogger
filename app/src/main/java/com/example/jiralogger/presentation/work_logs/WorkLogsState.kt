@@ -1,9 +1,9 @@
-package com.example.jiralogger.presentation.work_log_list
+package com.example.jiralogger.presentation.work_logs
 
 import com.example.jiralogger.domain.model.WorkLog
 import com.example.jiralogger.domain.util.WorkLogGroupBy
 
-data class WorkLogListState(
+data class WorkLogsState(
     val itemMap: Map<String, List<WorkLog>> = emptyMap(),
     val totalMap: Map<String, Int> = emptyMap(),
     val isLoading: Boolean = false,

@@ -4,6 +4,7 @@ import androidx.compose.animation.*
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
@@ -57,7 +58,7 @@ private fun Content(
         },
         navController = navController
     ) {
-        Column {
+        Column(modifier = Modifier.padding(it)) {
             val fadein = fadeIn() + scaleIn() + expandVertically()
             val fadeout = fadeOut() + scaleOut() + shrinkVertically()
             AnimatedVisibility(visible = searchIsVisible, enter = fadein, exit = fadeout) {

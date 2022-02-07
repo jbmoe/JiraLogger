@@ -45,34 +45,29 @@ fun IssueScreen(
         },
         navController = navController
     ) {
-        DetailBody(state = state)
-    }
-}
-
-@Composable
-private fun DetailBody(state: IssueState) {
-    Box(modifier = Modifier.fillMaxSize()) {
-        state.item?.let { issue ->
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(20.dp)
-            ) {
-                item {
-                    TitleContent(issue)
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Summary(issue)
-                    Spacer(modifier = Modifier.height(15.dp))
-                    Description(issue)
+        Box(modifier = Modifier.fillMaxSize().padding(it)) {
+            state.item?.let { issue ->
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(20.dp)
+                ) {
+                    item {
+                        TitleContent(issue)
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Summary(issue)
+                        Spacer(modifier = Modifier.height(15.dp))
+                        Description(issue)
+                    }
                 }
             }
-        }
-        if (state.error.isNotBlank()) {
-            ErrorText(state.error, Modifier.align(Alignment.Center))
-        }
-        if (state.isLoading) {
-            CircularProgressIndicator(
-                modifier = Modifier.align(Alignment.Center)
-            )
+            if (state.error.isNotBlank()) {
+                ErrorText(state.error, Modifier.align(Alignment.Center))
+            }
+            if (state.isLoading) {
+                CircularProgressIndicator(
+                    modifier = Modifier.align(Alignment.Center)
+                )
+            }
         }
     }
 }

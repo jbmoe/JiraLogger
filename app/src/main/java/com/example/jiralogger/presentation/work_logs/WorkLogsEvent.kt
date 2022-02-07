@@ -1,4 +1,4 @@
-package com.example.jiralogger.presentation.work_log_list
+package com.example.jiralogger.presentation.work_logs
 
 import com.example.jiralogger.domain.model.WorkLog
 import com.example.jiralogger.domain.util.WorkLogGroupBy

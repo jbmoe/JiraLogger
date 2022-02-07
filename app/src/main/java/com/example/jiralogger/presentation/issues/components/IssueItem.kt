@@ -30,8 +30,8 @@ import com.example.jiralogger.presentation.util.ImageFromUrl
 fun IssueItem(issue: Issue, onItemClicked: (Issue) -> Unit) {
     Surface(
         shape = RoundedCornerShape(8.dp),
-        tonalElevation = 8.dp,
-        shadowElevation = 2.dp,
+        tonalElevation = 4.dp,
+        shadowElevation = 4.dp,
     ) {
         ListItem(
             modifier = Modifier

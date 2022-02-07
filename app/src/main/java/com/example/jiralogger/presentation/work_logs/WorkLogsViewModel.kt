@@ -1,6 +1,5 @@
-package com.example.jiralogger.presentation.work_log_list
+package com.example.jiralogger.presentation.work_logs
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -17,11 +16,11 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class WorkLogListViewModel @Inject constructor(
+class WorkLogsViewModel @Inject constructor(
     private val useCases: WorkLogUseCases
 ) : ViewModel() {
-    private val _state = mutableStateOf(WorkLogListState())
-    val state: State<WorkLogListState> = _state
+    private val _state = mutableStateOf(WorkLogsState())
+    val state: State<WorkLogsState> = _state
 
     private var recentlyDeletedLog: WorkLog? = null
 

@@ -1,7 +1,6 @@
-package com.example.jiralogger.presentation.work_log_list
+package com.example.jiralogger.presentation.work_logs
 
 import android.content.res.Configuration
-import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
@@ -31,17 +30,16 @@ import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 import com.example.jiralogger.presentation.util.Screen
 import com.example.jiralogger.presentation.util.getFormattedTime
 import com.example.jiralogger.presentation.util.preview_paramater.WorkLogListPreviewParameterProvider
-import com.example.jiralogger.presentation.work_log_list.components.WorkLogListItem
+import com.example.jiralogger.presentation.work_logs.components.WorkLogItem
 import kotlinx.coroutines.launch
 
 @ExperimentalAnimationApi
 @ExperimentalFoundationApi
 @Composable
-fun WorkLogListScreen(
+fun WorkLogsScreen(
     navController: NavController,
-    viewModel: WorkLogListViewModel = hiltViewModel()
+    viewModel: WorkLogsViewModel = hiltViewModel()
 ) {
-    Log.d("DEBUGSS", "VM1")
     Content(
         state = viewModel.state.value,
         groupBys = viewModel.groupBys,
@@ -58,7 +56,7 @@ fun WorkLogListScreen(
 @ExperimentalFoundationApi
 @Composable
 fun Content(
-    state: WorkLogListState,
+    state: WorkLogsState,
     groupBys: List<WorkLogGroupBy>,
     onItemClicked: (WorkLog) -> Unit = {},
     onEvent: (WorkLogsEvent) -> Unit = {},
@@ -82,7 +80,7 @@ fun Content(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         navController = navController
     ) {
-        Column {
+        Column(modifier = Modifier.padding(it)) {
             TabSection(
                 currentTab = state.groupBy,
                 tabs = groupBys,
@@ -105,7 +103,7 @@ fun Content(
                             }
                         }
                         items(items = logs) { workLog ->
-                            WorkLogListItem(
+                            WorkLogItem(
                                 workLog = workLog,
                                 onItemClicked = { onItemClicked(workLog) },
                                 onDelete = {
@@ -134,7 +132,7 @@ fun Content(
 @Preview(name = "Light mode", uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 @Preview(name = "Dark mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
-fun Preview(@PreviewParameter(WorkLogListPreviewParameterProvider::class) state: WorkLogListState) {
+fun Preview(@PreviewParameter(WorkLogListPreviewParameterProvider::class) state: WorkLogsState) {
     JiraLoggerTheme {
         Content(state = state, navController = rememberNavController(), groupBys = emptyList())
     }

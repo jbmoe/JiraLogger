@@ -1,4 +1,4 @@
-package com.example.jiralogger.presentation.work_log_list.components
+package com.example.jiralogger.presentation.work_logs.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
