@@ -22,8 +22,8 @@ import com.example.jiralogger.presentation.issue.IssueScreen
 import com.example.jiralogger.presentation.issues.IssuesScreen
 import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 import com.example.jiralogger.presentation.util.Screen
-import com.example.jiralogger.presentation.work_log_add_edit.AddEditScreen
-import com.example.jiralogger.presentation.work_log_list.WorkLogListScreen
+import com.example.jiralogger.presentation.work_log.WorkLogScreen
+import com.example.jiralogger.presentation.work_logs.WorkLogsScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
                             setCurrentScreen(Screen.Issue)
                         }
                         composable(Screen.WorkLogListScreen.route) {
-                            WorkLogListScreen(navController)
+                            WorkLogsScreen(navController)
                             setCurrentScreen(Screen.WorkLogListScreen)
                         }
                         composable(
@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity() {
                                 }
                             )
                         ) {
-                            AddEditScreen(navController)
+                            WorkLogScreen(navController)
                             setCurrentScreen(Screen.WorkLogAddEdit)
                         }
                     }

@@ -1,4 +1,4 @@
-package com.example.jiralogger.presentation.work_log_list.components
+package com.example.jiralogger.presentation.work_logs.components
 
 import android.content.res.Configuration
 import androidx.compose.foundation.clickable
@@ -30,7 +30,7 @@ import com.example.jiralogger.presentation.ui.theme.JiraLoggerTheme
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun WorkLogListItem(workLog: WorkLog, onItemClicked: (WorkLog) -> Unit, onDelete: () -> Unit) {
+fun WorkLogItem(workLog: WorkLog, onItemClicked: (WorkLog) -> Unit, onDelete: () -> Unit) {
     Surface(
         shape = RoundedCornerShape(8.dp),
         tonalElevation = 4.dp,
@@ -98,6 +98,6 @@ fun WorkLogListItem(workLog: WorkLog, onItemClicked: (WorkLog) -> Unit, onDelete
 fun Preview() {
     val item = TestData.WORK_LOG_TEST_DATA[13]
     JiraLoggerTheme {
-        WorkLogListItem(workLog = item, onItemClicked = {},{})
+        WorkLogItem(workLog = item, onItemClicked = {},{})
     }
 }

@@ -1,4 +1,4 @@
-package com.example.jiralogger.presentation.work_log_add_edit
+package com.example.jiralogger.presentation.work_log
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.border
@@ -6,7 +6,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material3.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -20,7 +23,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.jiralogger.R
 import com.example.jiralogger.presentation.components.*
-import com.example.jiralogger.presentation.work_log_add_edit.component.IssueDropDown
+import com.example.jiralogger.presentation.work_log.component.IssueDropDown
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -28,9 +31,9 @@ import kotlinx.coroutines.launch
 @ExperimentalAnimationApi
 @ExperimentalMaterial3Api
 @Composable
-fun AddEditScreen(
+fun WorkLogScreen(
     navController: NavController,
-    viewModel: AddEditViewModel = hiltViewModel()
+    viewModel: WorkLogViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.value
     val snackbarHostState = remember { SnackbarHostState() }
@@ -39,14 +42,14 @@ fun AddEditScreen(
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest { event ->
             when (event) {
-                is AddEditViewModel.UiEvent.ShowSnackbar -> {
+                is WorkLogViewModel.UiEvent.ShowSnackbar -> {
                     scope.launch {
                         snackbarHostState.showSnackbar(
                             message = event.message
                         )
                     }
                 }
-                is AddEditViewModel.UiEvent.SaveLog -> {
+                is WorkLogViewModel.UiEvent.SaveLog -> {
                     navController.navigateUp()
                 }
             }
@@ -60,13 +63,14 @@ fun AddEditScreen(
         navController = navController,
         floatingActionButton = {
             FloatingActionButton(onClick = {
-                viewModel.onEvent(AddEditEvent.Save)
+                viewModel.onEvent(WorkLogEvent.Save)
             }) {
                 IconPablo(R.drawable.ic_baseline_save_24)
             }
         }
     ) {
         Content(
+            paddingValues = it,
             state = state,
             onEvent = { viewModel.onEvent(it) }
         )
@@ -77,10 +81,13 @@ fun AddEditScreen(
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun Content(
-    state: AddEditState,
-    onEvent: (AddEditEvent) -> Unit
+    paddingValues: PaddingValues,
+    state: WorkLogState,
+    onEvent: (WorkLogEvent) -> Unit
 ) {
-    Box(modifier = Modifier.fillMaxWidth()) {
+    Box(modifier = Modifier
+        .fillMaxWidth()
+        .padding(paddingValues)) {
         LazyColumn(
             modifier = Modifier.fillMaxWidth(),
             contentPadding = PaddingValues(20.dp)
@@ -90,7 +97,7 @@ fun Content(
                     modifier = Modifier.fillMaxWidth(),
                     currentIssueId = state.issueId,
                     issuePicked = {
-                        onEvent(AddEditEvent.IssueChosen(it.key))
+                        onEvent(WorkLogEvent.IssueChosen(it.key))
                     }
                 )
 
@@ -101,7 +108,7 @@ fun Content(
                         .fillMaxWidth()
                         .height(124.dp),
                     onValueChange = {
-                        onEvent(AddEditEvent.EnteredDescription(it))
+                        onEvent(WorkLogEvent.EnteredDescription(it))
                     },
                     inputState = state.description
                 )
@@ -114,7 +121,7 @@ fun Content(
                     placeholderText = state.date.placeholder,
                     isError = state.date.isError
                 ) {
-                    onEvent(AddEditEvent.DateChosen(it))
+                    onEvent(WorkLogEvent.DateChosen(it))
                 }
 
                 Spacer(Modifier.padding(8.dp))
@@ -141,14 +148,14 @@ fun Content(
                                 value = state.hoursSpent,
                                 suffix = "h",
                                 onChange = {
-                                    onEvent(AddEditEvent.HoursChanged(it))
+                                    onEvent(WorkLogEvent.HoursChanged(it))
                                 }
                             )
                             NumberPicker(
                                 value = state.minutesSpent,
                                 suffix = "m",
                                 onChange = {
-                                    onEvent(AddEditEvent.MinutesChanged(it))
+                                    onEvent(WorkLogEvent.MinutesChanged(it))
                                 }
                             )
                         }

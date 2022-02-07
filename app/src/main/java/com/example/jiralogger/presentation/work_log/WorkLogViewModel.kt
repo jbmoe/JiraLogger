@@ -1,4 +1,4 @@
-package com.example.jiralogger.presentation.work_log_add_edit
+package com.example.jiralogger.presentation.work_log
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -20,13 +20,13 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AddEditViewModel @Inject constructor(
+class WorkLogViewModel @Inject constructor(
     private val getWorkLogUseCase: GetWorkLog,
     private val insertWorkLogUseCase: InsertWorkLog,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    private val _state = mutableStateOf(AddEditState())
-    val state: State<AddEditState> = _state
+    private val _state = mutableStateOf(WorkLogState())
+    val state: State<WorkLogState> = _state
 
     private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
@@ -49,28 +49,28 @@ class AddEditViewModel @Inject constructor(
         }
     }
 
-    fun onEvent(event: AddEditEvent) {
+    fun onEvent(event: WorkLogEvent) {
         when (event) {
-            is AddEditEvent.IssueChosen -> {
+            is WorkLogEvent.IssueChosen -> {
                 changeIssue(event.issueId)
             }
-            is AddEditEvent.EnteredDescription -> {
+            is WorkLogEvent.EnteredDescription -> {
                 _state.value = _state.value.copy(
                     description = _state.value.description.copy(value = event.value)
                 )
             }
-            is AddEditEvent.DateChosen -> {
+            is WorkLogEvent.DateChosen -> {
                 _state.value = _state.value.copy(
                     date = _state.value.date.copy(value = event.value, isError = false),
                 )
             }
-            is AddEditEvent.HoursChanged -> {
+            is WorkLogEvent.HoursChanged -> {
                 handleHoursEvent(event.event)
             }
-            is AddEditEvent.MinutesChanged -> {
+            is WorkLogEvent.MinutesChanged -> {
                 handleMinutesEvent(event.event)
             }
-            is AddEditEvent.Save -> {
+            is WorkLogEvent.Save -> {
                 save()
             }
         }

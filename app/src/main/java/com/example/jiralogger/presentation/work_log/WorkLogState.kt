@@ -1,8 +1,8 @@
-package com.example.jiralogger.presentation.work_log_add_edit
+package com.example.jiralogger.presentation.work_log
 
 import com.example.jiralogger.presentation.util.InputFieldState
 
-data class AddEditState(
+data class WorkLogState(
     val issueId: InputFieldState<String> = InputFieldState(
         value = "",
         label = "Issue",

@@ -1,4 +1,4 @@
-package com.example.jiralogger.presentation.work_log_add_edit.component
+package com.example.jiralogger.presentation.work_log.component
 
 import android.content.res.Configuration
 import androidx.compose.foundation.BorderStroke

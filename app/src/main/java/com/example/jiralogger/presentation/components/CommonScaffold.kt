@@ -2,12 +2,15 @@ package com.example.jiralogger.presentation.components
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -114,7 +117,9 @@ private fun TopAppBar(
         title = { PabloText(text = titleText) },
         navigationIcon = {
             when (navigationActions) {
-                None -> { TODO() }
+                None -> {
+                    TODO()
+                }
                 Menu -> {
                     IconButton(onClick = onNavigationAction) {
                         IconPablo(imageVector = Icons.Default.Menu)
@@ -144,7 +149,7 @@ private fun NavBar(
     navController: NavController
 ) {
     val backStackEntry = navController.currentBackStackEntryAsState()
-    NavigationBar {
+    NavigationBar(modifier = Modifier.height(52.dp), tonalElevation = 0.dp) {
         items.forEach { item ->
             val selected = item.route == backStackEntry.value?.destination?.route
             NavigationBarItem(
